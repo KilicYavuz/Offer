@@ -1,0 +1,378 @@
+USE [master]
+GO
+/****** Object:  Database [Offer]    Script Date: 26.03.2020 21:48:27 ******/
+CREATE DATABASE [Offer]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'Offer', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\DATA\Offer.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'Offer_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\DATA\Offer_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+GO
+ALTER DATABASE [Offer] SET COMPATIBILITY_LEVEL = 140
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [Offer].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [Offer] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [Offer] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [Offer] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [Offer] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [Offer] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [Offer] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [Offer] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [Offer] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [Offer] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [Offer] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [Offer] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [Offer] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [Offer] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [Offer] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [Offer] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [Offer] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [Offer] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [Offer] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [Offer] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [Offer] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [Offer] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [Offer] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [Offer] SET RECOVERY FULL 
+GO
+ALTER DATABASE [Offer] SET  MULTI_USER 
+GO
+ALTER DATABASE [Offer] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [Offer] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [Offer] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [Offer] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [Offer] SET DELAYED_DURABILITY = DISABLED 
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'Offer', N'ON'
+GO
+ALTER DATABASE [Offer] SET QUERY_STORE = OFF
+GO
+USE [Offer]
+GO
+/****** Object:  Table [dbo].[Address]    Script Date: 26.03.2020 21:48:27 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Address](
+	[OId] [int] IDENTITY(1,1) NOT NULL,
+	[UserOId] [int] NOT NULL,
+	[AddressName] [nvarchar](50) NOT NULL,
+	[NameSurname] [nvarchar](250) NULL,
+	[AddressInfo] [nvarchar](255) NOT NULL,
+	[City] [nvarchar](20) NOT NULL,
+	[County] [nvarchar](25) NOT NULL,
+	[ZipCode] [nvarchar](6) NULL,
+	[Phone] [nvarchar](15) NULL,
+	[CreatedDate] [datetime] NOT NULL,
+ CONSTRAINT [PK_Address] PRIMARY KEY CLUSTERED 
+(
+	[OId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Categories]    Script Date: 26.03.2020 21:48:28 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Categories](
+	[OId] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](50) NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[Type] [int] NOT NULL,
+	[ParentOId] [int] NULL,
+ CONSTRAINT [PK_Categories] PRIMARY KEY CLUSTERED 
+(
+	[OId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ErrorLogs]    Script Date: 26.03.2020 21:48:28 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ErrorLogs](
+	[OId] [uniqueidentifier] NOT NULL,
+	[ErrorContext] [nvarchar](255) NULL,
+	[ErrorMessage] [nvarchar](max) NULL,
+	[ErrorSource] [nvarchar](255) NULL,
+	[StackTrace] [nvarchar](max) NULL,
+	[Detail] [nvarchar](max) NULL,
+	[ErrorType] [nvarchar](500) NULL,
+	[Tag] [nvarchar](20) NULL,
+	[CreatedDate] [datetime] NOT NULL,
+ CONSTRAINT [PK_dbo.ErrorLogs] PRIMARY KEY CLUSTERED 
+(
+	[OId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Orders]    Script Date: 26.03.2020 21:48:28 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Orders](
+	[OId] [int] IDENTITY(1,1) NOT NULL,
+	[SupplierOId] [int] NOT NULL,
+	[CustomerOId] [int] NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[State] [int] NOT NULL,
+	[PaymentState] [bit] NOT NULL,
+	[Quantity] [int] NOT NULL,
+ CONSTRAINT [PK_Orders] PRIMARY KEY CLUSTERED 
+(
+	[OId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[PartialOffers]    Script Date: 26.03.2020 21:48:28 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[PartialOffers](
+	[OId] [int] IDENTITY(1,1) NOT NULL,
+	[RequestOfferOId] [int] NOT NULL,
+	[ProductOId] [int] NOT NULL,
+	[Quantity] [int] NOT NULL,
+	[Price] [float] NOT NULL,
+	[TotalPrice] [float] NULL,
+	[CreatedDate] [datetime] NOT NULL,
+ CONSTRAINT [PK_PartialOffers] PRIMARY KEY CLUSTERED 
+(
+	[OId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Products]    Script Date: 26.03.2020 21:48:28 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Products](
+	[OId] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](50) NOT NULL,
+	[Brand] [nvarchar](50) NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[State] [bit] NOT NULL,
+	[CategoryOId] [int] NOT NULL,
+	[Price] [float] NOT NULL,
+	[Stock] [int] NOT NULL,
+	[Verified] [bit] NOT NULL,
+	[VerificationCode] [nvarchar](20) NULL,
+ CONSTRAINT [PK_Products] PRIMARY KEY CLUSTERED 
+(
+	[OId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RequestLists]    Script Date: 26.03.2020 21:48:28 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RequestLists](
+	[OId] [int] IDENTITY(1,1) NOT NULL,
+	[RequestOId] [int] NOT NULL,
+	[ProductOId] [int] NOT NULL,
+	[Quantity] [int] NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[IsPartial] [bit] NOT NULL,
+ CONSTRAINT [PK_RequestList] PRIMARY KEY CLUSTERED 
+(
+	[OId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RequestOffers]    Script Date: 26.03.2020 21:48:28 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RequestOffers](
+	[OId] [int] IDENTITY(1,1) NOT NULL,
+	[RequestOId] [int] NOT NULL,
+	[UserOId] [int] NOT NULL,
+	[UserDisplayId] [int] NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[OfferedPrice] [float] NOT NULL,
+	[IsPartialOffer] [bit] NOT NULL,
+ CONSTRAINT [PK_RequestOffers] PRIMARY KEY CLUSTERED 
+(
+	[OId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Requests]    Script Date: 26.03.2020 21:48:28 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Requests](
+	[OId] [int] IDENTITY(1,1) NOT NULL,
+	[UserOId] [int] NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[CanPartial] [bit] NOT NULL,
+ CONSTRAINT [PK_Requests] PRIMARY KEY CLUSTERED 
+(
+	[OId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[SalesLists]    Script Date: 26.03.2020 21:48:28 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[SalesLists](
+	[OId] [int] IDENTITY(1,1) NOT NULL,
+	[UserOId] [int] NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[ProductOId] [int] NOT NULL,
+	[State] [bit] NOT NULL,
+	[Price] [float] NULL,
+ CONSTRAINT [PK_SalesList] PRIMARY KEY CLUSTERED 
+(
+	[OId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Users]    Script Date: 26.03.2020 21:48:28 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Users](
+	[OId] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](50) NOT NULL,
+	[Surname] [nvarchar](50) NOT NULL,
+	[CompanyName] [nvarchar](100) NULL,
+	[Username] [nvarchar](50) NULL,
+	[Email] [nvarchar](50) NOT NULL,
+	[Password] [nvarchar](50) NULL,
+	[BirthDate] [date] NULL,
+	[State] [bit] NOT NULL,
+	[UserType] [int] NOT NULL,
+	[PhoneNumber] [int] NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+ CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED 
+(
+	[OId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[ErrorLogs] ADD  DEFAULT (newsequentialid()) FOR [OId]
+GO
+ALTER TABLE [dbo].[Products] ADD  CONSTRAINT [DF_Products_Stock]  DEFAULT ((0)) FOR [Stock]
+GO
+ALTER TABLE [dbo].[Products] ADD  CONSTRAINT [DF_Products_Verified]  DEFAULT ((0)) FOR [Verified]
+GO
+ALTER TABLE [dbo].[RequestLists] ADD  CONSTRAINT [DF_RequestList_IsPartial]  DEFAULT ((0)) FOR [IsPartial]
+GO
+ALTER TABLE [dbo].[RequestOffers] ADD  CONSTRAINT [DF_RequestOffers_CreatedDate]  DEFAULT (getdate()) FOR [CreatedDate]
+GO
+ALTER TABLE [dbo].[RequestOffers] ADD  CONSTRAINT [DF_RequestOffers_OfferedPrice]  DEFAULT ((0)) FOR [OfferedPrice]
+GO
+ALTER TABLE [dbo].[RequestOffers] ADD  CONSTRAINT [DF_RequestOffers_IsPartialOffer]  DEFAULT ((0)) FOR [IsPartialOffer]
+GO
+ALTER TABLE [dbo].[Requests] ADD  CONSTRAINT [DF_Requests_CanPartial]  DEFAULT ((0)) FOR [CanPartial]
+GO
+ALTER TABLE [dbo].[Users] ADD  CONSTRAINT [DF_Users_State]  DEFAULT ((1)) FOR [State]
+GO
+ALTER TABLE [dbo].[Address]  WITH CHECK ADD  CONSTRAINT [FK_Address_Users] FOREIGN KEY([UserOId])
+REFERENCES [dbo].[Users] ([OId])
+GO
+ALTER TABLE [dbo].[Address] CHECK CONSTRAINT [FK_Address_Users]
+GO
+ALTER TABLE [dbo].[Categories]  WITH CHECK ADD  CONSTRAINT [FK_Categories_Categories] FOREIGN KEY([ParentOId])
+REFERENCES [dbo].[Categories] ([OId])
+GO
+ALTER TABLE [dbo].[Categories] CHECK CONSTRAINT [FK_Categories_Categories]
+GO
+ALTER TABLE [dbo].[Orders]  WITH CHECK ADD  CONSTRAINT [FK_Orders_Users] FOREIGN KEY([SupplierOId])
+REFERENCES [dbo].[Users] ([OId])
+GO
+ALTER TABLE [dbo].[Orders] CHECK CONSTRAINT [FK_Orders_Users]
+GO
+ALTER TABLE [dbo].[Orders]  WITH CHECK ADD  CONSTRAINT [FK_Orders_Users1] FOREIGN KEY([CustomerOId])
+REFERENCES [dbo].[Users] ([OId])
+GO
+ALTER TABLE [dbo].[Orders] CHECK CONSTRAINT [FK_Orders_Users1]
+GO
+ALTER TABLE [dbo].[PartialOffers]  WITH CHECK ADD  CONSTRAINT [FK_PartialOffers_Products] FOREIGN KEY([ProductOId])
+REFERENCES [dbo].[Products] ([OId])
+GO
+ALTER TABLE [dbo].[PartialOffers] CHECK CONSTRAINT [FK_PartialOffers_Products]
+GO
+ALTER TABLE [dbo].[PartialOffers]  WITH CHECK ADD  CONSTRAINT [FK_PartialOffers_RequestOffers] FOREIGN KEY([RequestOfferOId])
+REFERENCES [dbo].[RequestOffers] ([OId])
+GO
+ALTER TABLE [dbo].[PartialOffers] CHECK CONSTRAINT [FK_PartialOffers_RequestOffers]
+GO
+ALTER TABLE [dbo].[Products]  WITH CHECK ADD  CONSTRAINT [FK_Products_Categories] FOREIGN KEY([CategoryOId])
+REFERENCES [dbo].[Categories] ([OId])
+GO
+ALTER TABLE [dbo].[Products] CHECK CONSTRAINT [FK_Products_Categories]
+GO
+ALTER TABLE [dbo].[RequestLists]  WITH CHECK ADD  CONSTRAINT [FK_RequestList_Products] FOREIGN KEY([ProductOId])
+REFERENCES [dbo].[Products] ([OId])
+GO
+ALTER TABLE [dbo].[RequestLists] CHECK CONSTRAINT [FK_RequestList_Products]
+GO
+ALTER TABLE [dbo].[RequestLists]  WITH CHECK ADD  CONSTRAINT [FK_RequestList_Requests] FOREIGN KEY([RequestOId])
+REFERENCES [dbo].[Requests] ([OId])
+GO
+ALTER TABLE [dbo].[RequestLists] CHECK CONSTRAINT [FK_RequestList_Requests]
+GO
+ALTER TABLE [dbo].[Requests]  WITH CHECK ADD  CONSTRAINT [FK_Requests_Users] FOREIGN KEY([UserOId])
+REFERENCES [dbo].[Users] ([OId])
+GO
+ALTER TABLE [dbo].[Requests] CHECK CONSTRAINT [FK_Requests_Users]
+GO
+ALTER TABLE [dbo].[SalesLists]  WITH CHECK ADD  CONSTRAINT [FK_SalesLists_Products] FOREIGN KEY([ProductOId])
+REFERENCES [dbo].[Products] ([OId])
+GO
+ALTER TABLE [dbo].[SalesLists] CHECK CONSTRAINT [FK_SalesLists_Products]
+GO
+ALTER TABLE [dbo].[SalesLists]  WITH CHECK ADD  CONSTRAINT [FK_SalesLists_Users] FOREIGN KEY([UserOId])
+REFERENCES [dbo].[Users] ([OId])
+GO
+ALTER TABLE [dbo].[SalesLists] CHECK CONSTRAINT [FK_SalesLists_Users]
+GO
+USE [master]
+GO
+ALTER DATABASE [Offer] SET  READ_WRITE 
+GO
