@@ -1,0 +1,22 @@
+<div class="entry-price price">
+  <ins class="ProductPrice-{{section.id}}">
+    {{ current_variant.price | default: product.variants[0].price | money }}
+  </ins>
+  <del class="ComparePrice-{{section.id}}{%if current_variant.compare_at_price <= current_variant.price or current_variant.compare_at_price == null%} d-none{%endif%}">
+    {{ current_variant.compare_at_price | default: product.variants[0].compare_at_price | default: 0 | money }}
+  </del>
+  {%- capture unit_price_base_unit -%}
+    <span class="base_unit">
+      {%- if current_variant.unit_price_measurement -%}
+        {%- if current_variant.unit_price_measurement.reference_value != 1 -%}
+          {{- current_variant.unit_price_measurement.reference_value -}}
+        {%- endif -%}
+        {{ current_variant.unit_price_measurement.reference_unit }}
+      {%- endif -%}
+    </span>
+  {%- endcapture -%}
+  <span class="UnitPrice-{{section.id}} text-nowrap{%unless current_variant.unit_price %} d-none{%endunless%}">
+    {{current_variant.unit_price_measurement.quantity_value | append: current_variant.unit_price_measurement.quantity_unit}}
+    (<span class="unit_price">{{current_variant.unit_price | money }}</span> / {{unit_price_base_unit}})
+  </span>
+</div>

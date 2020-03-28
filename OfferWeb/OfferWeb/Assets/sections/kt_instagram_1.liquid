@@ -1,0 +1,191 @@
+<!-- kt_instagram_1.liquid -->
+{%- liquid
+  assign width_section = section.settings.width_section
+  assign width_content = section.settings.width_content
+  capture width_section_
+    if width_section == 'container-fluid wide' and width_content == false
+      echo 'w-100'
+    else
+      echo width_section
+    endif
+  endcapture
+  capture width_content_
+    if width_content and width_section == 'w-100'
+      echo 'container'
+    elsif width_section == 'container-fluid wide' and width_content == false
+      echo 'container-fluid wide'
+    else
+      echo 'w-100'
+    endif   
+  endcapture
+  assign dir_body = settings.dir_body
+  assign cssAlign = 'left'
+  assign cssAlign_rev = 'right'
+  if dir_body == 'rtl'
+    assign cssAlign = 'right'
+    assign cssAlign_rev = 'left'
+  endif
+-%}
+
+{%- unless cart.attributes.theme_mobile == 'true' and section.settings.off_mobile or cart.attributes.theme_mobile == 'false' and section.settings.off_desktop -%}
+<div data-section-id="{{ section.id }}" id="Instagram-{{ section.id }}" data-section-type="instagram-section" class="{{width_section_}}{%if section.settings.off_mobile%} d-none d-lg-block{%endif%}{%if section.settings.off_desktop%} d-lg-none{%endif%}">
+  <div class="content_{{section.id}}{%if section.settings.image%} bg-image lazyload{%endif%}" style="padding:{{section.settings.section_padding|default:'0' |split:'|' |first | replace : '-',' '}};margin-top: {{section.settings.section_margin_top|default:'0'|split:'|'|first}};margin-bottom: {{section.settings.section_margin_bottom|default:'0'|split:'|'|first}};{%-if section.settings.section_bg != blank -%}background-color:{{section.settings.section_bg | color_modify: 'alpha', section.settings.section_bg_op}};{%-endif-%}"{%if section.settings.image%} data-bgset="{{section.settings.image | img_url: 'master'}}" data-sizes="auto" data-parent-fit="contain"{%endif%} data-mt-respon="{{section.settings.section_margin_top}}" data-mb-respon="{{section.settings.section_margin_bottom}}" data-p-respon="{{section.settings.section_padding}}" data-el=".content_{{section.id}}" data-el-p=".content_{{section.id}}">      
+    <div class="section-width {{width_content_}}">
+      <div id="instagramWrapper-{{ section.id }}" class="instagramWrapper row justify-content-center list-unstyled mb-0" data-user-id="{{settings.accessToken_instagram|split:'.'|first}}" data-access-token="{{settings.accessToken_instagram}}" data-limit="{{section.settings.images_limit}}" data-tag="{{settings.byTag_instagram}}">
+        <div class="item position-relative col-6 col-sm-4 col-md-3 col-lg-3 col-xl-2-10 order-xl-3">
+          <div class="instagram-feed-title">
+            <i class="fkt-instagram"></i>
+            <p>{{section.settings.titlex|html}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<noscript class="banner-css" data-section-type="kt_instagram_1">
+  {%style%}
+    .kt_instagram_1 .item {
+      margin-bottom: 2rem
+    }
+    .kt_instagram_1 .instagram-feed-title {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      background-color: #fff;
+      border: 0.1rem solid #ebebeb;
+      margin-bottom: 2rem;
+    }
+    .kt_instagram_1 .instagram-feed-title i {
+      display: inline-block;
+      font-size: 2.4rem;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .kt_instagram_1 .instagram-feed-title p {
+      margin-bottom: 0.5rem;
+    }
+    .kt_instagram_1 .instagram-feed-title a {
+      text-transform: uppercase;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+    }
+  {%endstyle%}
+</noscript>
+{%- endunless-%}
+
+{% schema %}
+  {
+    "name": "Instagram 1",
+    "class": "kt_instagram_1",
+    "settings": [
+      {
+        "type":"checkbox",
+        "id": "off_mobile",
+        "label": "Turn off on mobile?"
+      },
+      {
+        "type":"checkbox",
+        "id": "off_desktop",
+        "label": "Turn off on desktop?"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Instagram 1",
+        "info": "Name section (in editor bar)"
+      },
+      {
+        "type": "header",
+        "content": "Space settings"
+      },
+      {
+        "type": "select",
+        "id": "width_section",
+        "label": "Max width section",
+        "options": [
+          { "value": "container", "label": "1200px" },
+          { "value": "container-fluid wide", "label": "Wide" },
+          { "value": "w-100", "label": "Full width" }
+        ],
+        "default": "container"
+      },
+      {
+        "type":"checkbox",
+        "id": "width_content",
+        "label": "Max width content?"
+      },
+      {
+        "type": "text",
+        "id": "section_margin_top",
+        "label": "Margin top",
+        "info": "2.5rem|3rem|3.5rem|4rem|4.5rem|5rem"
+      },
+      {
+        "type": "text",
+        "id": "section_margin_bottom",
+        "label": "Margin bottom",
+        "info": "2.5rem|3rem|3.5rem|4rem|4.5rem|5rem"
+      },
+      {
+        "type": "text",
+        "id": "section_padding",
+        "label": "Paddings (top right bottom left)",
+        "info": "6rem 6rem 0 6rem"
+      },
+      {
+        "type": "header",
+        "content": "Background settings"
+      },
+      {
+        "type": "color",
+        "id": "section_bg",
+        "label": "Background color"
+      },
+      {
+        "type": "range",
+        "id": "section_bg_op",
+        "min": 0,
+        "max": 1,
+        "step": 0.1,
+        "label": "Opacity background color",
+        "default": 0.5
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Background image",
+        "info": "Size suggestion: 1920 x 497 pixels"
+      },
+      {
+        "type": "header",
+        "content": "Content settings"
+      },
+      {
+        "type": "richtext",
+        "id": "titlex",
+        "label": "Title",
+        "default": "<p>@midas_store <br>on instagram<\/p>"
+      },
+      {
+        "type": "range",
+        "id": "images_limit",
+        "min": 4,
+        "max": 20,
+        "step": 1,
+        "label": "Limit images",
+        "default": 12
+      }
+    ],
+    "presets": [
+      {
+        "name": "Instagram 1",
+        "category": "Socials"
+      }
+    ]
+  }
+{% endschema %}

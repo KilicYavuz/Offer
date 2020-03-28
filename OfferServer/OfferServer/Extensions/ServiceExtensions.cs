@@ -1,5 +1,5 @@
 ﻿using Contracts;
-using Entities;
+using Entities.Models;
 using LoggerService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +38,7 @@ namespace OfferServer.Extensions
         public static void ConfigureDbContext(this IServiceCollection services, IConfiguration config)
         {
             var connectionString = config["ConnectionStrings:ConnectionString"];
-            services.AddDbContext<RepositoryContext>(o => o.UseSqlServer(connectionString));
+            services.AddDbContext<OfferContext>(o => o.UseSqlServer(connectionString));
         }
 
         public static void ConfigureRepositoryWrapper(this IServiceCollection services)

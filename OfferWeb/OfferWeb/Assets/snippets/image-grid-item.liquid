@@ -1,0 +1,103 @@
+{%- liquid
+unless masonry
+  assign masonry = false
+endunless
+unless second_thumb
+  assign second_thumb = st_card[9]
+endunless
+if masonry == false
+  unless as_r
+    assign as_r = st_card[5] | default: st_card[6]
+  endunless
+  if product.tags contains 'ar__1-1'
+    assign as_r = '1/1'
+  endif
+  assign aspect_ratioW = as_r | split: '/' | first | strip | plus: 0.00
+  assign aspect_ratioH = as_r | split: '/' | last | strip | plus: 0.00
+  assign aspect_cs = aspect_ratioW|divided_by:aspect_ratioH | round: 2
+  if product.selected_or_first_available_variant.image and st_card[8] == 'true'
+    capture image_fit
+      render 'kt_image_fit', width: aspect_ratioW, height: aspect_ratioH, image_item: product.selected_or_first_available_variant.image
+    endcapture
+  else
+    capture image_fit
+      render 'kt_image_fit', width: aspect_ratioW, height: aspect_ratioH, image_item: product.featured_image
+    endcapture
+  endif
+else
+  if product.selected_or_first_available_variant.image and st_card[8] == 'true'
+    assign as_r = product.selected_or_first_available_variant.image.width | append: '/' | append: product.selected_or_first_available_variant.image.height
+    assign aspect_ratioW = as_r | split: '/' | first | strip | plus: 0.00
+    assign aspect_ratioH = as_r | split: '/' | last | strip | plus: 0.00
+    assign aspect_cs = aspect_ratioW|divided_by:aspect_ratioH | round: 2
+    capture image_fit
+      render 'kt_image_fit', width: aspect_ratioW, height: aspect_ratioH, image_item: product.selected_or_first_available_variant.image
+    endcapture
+    capture image_fit_css
+      echo 'style="padding-bottom: '
+      echo product.selected_or_first_available_variant.image.height | times:1.00|divided_by: product.selected_or_first_available_variant.image.width | times: 100.00000000
+      echo '%"'
+    endcapture
+  else
+    assign as_r = product.featured_image.width | append: '/' | append: product.featured_image.height
+    assign aspect_ratioW = as_r | split: '/' | first | strip | plus: 0.00
+    assign aspect_ratioH = as_r | split: '/' | last | strip | plus: 0.00
+    assign aspect_cs = aspect_ratioW|divided_by:aspect_ratioH | round: 2
+    capture image_fit
+      render 'kt_image_fit', width: aspect_ratioW, height: aspect_ratioH, image_item: product.featured_image
+    endcapture
+    capture image_fit_css
+      echo 'style="padding-bottom: '
+      echo product.featured_image.height | times:1.00|divided_by: product.featured_image.width | times: 100.00000000
+      echo '%"'
+    endcapture
+  endif
+endif
+-%}
+<a class="aspectRatio aspectRatioPlaceholder{%if st_card[7] == 'stretch'%} is-cover{%elsif st_card[7] == 'nonstretch'%} is-contain{%else%} is-default{%endif%}" href="{{product.url| within: collection}}" title="{{product.title}}" aria-label="{{product.title}}" {{image_fit_css}}{% if as_r == '1/1' %} style="padding-bottom: 100%"{% endif %}>
+  {% if product.selected_or_first_available_variant.image and st_card[8] == 'true' %}
+  <div class="primary-thumb {{image_fit}}" data-ogr="{{ product.featured_image | img_url: 'master' }}">
+    {%- assign img_url = product.selected_or_first_available_variant.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+    <img class="lazyload"{% if product.images.size < 1 %} style="width: 100%"{% endif %} src="data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAQAICRAEAOw==" data-src="{{ img_url }}" data-widths="[360, 540, 720, 900]" data-aspectratio="{{ product.selected_or_first_available_variant.image.aspect_ratio }}" data-sizes="auto" alt="{{ product.selected_or_first_available_variant.image.alt | escape }}">
+  </div>
+  {% else %}
+  <div class="primary-thumb {{image_fit}}" data-ogr="{{ product.featured_image | img_url: 'master' }}">
+    {%- assign img_url = product.featured_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+    <img class="lazyload"{% if product.images.size < 1 %} style="width: 100%"{% endif %} src="data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAQAICRAEAOw==" data-src="{{ img_url }}" data-widths="[360, 540, 720, 900]" data-aspectratio="{{ product.featured_image.aspect_ratio }}" data-sizes="auto" alt="{{ product.featured_image.alt | escape }}">
+  </div>
+  {% endif %}
+  {%- if product.images.size > 1 and second_thumb == true or product.images.size > 1 and second_thumb == 'true'-%}
+    {%- capture second_image -%}    
+      {%- capture image_fit -%}
+        {%- render 'kt_image_fit', width: aspect_ratioW, height: aspect_ratioH, image_item: product.images[1] -%}
+      {%- endcapture -%}
+      <div class="second-thumb {{image_fit}}">
+        {%- assign img_url = product.images[1] | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+        <img class="lazyload" src="data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAQAICRAEAOw==" data-src="{{ img_url }}" data-widths="[360, 540, 720, 900]" data-aspectratio="{{ product.images[1].aspect_ratio }}" data-sizes="auto" alt="{{ product.images[1].alt | escape }}">
+        <span class="loading-img"></span>
+      </div>
+    {%- endcapture -%}
+    {%- if st_card[8] == 'true' -%}
+      {%- assign has_next_vr_img = false -%}
+      {%- for variant in product.variants -%}
+        {%- if variant.id != product.selected_or_first_available_variant.id and variant.option1 != product.selected_or_first_available_variant.option1 and variant.image -%}
+          {%- capture image_fit -%}
+            {%- render 'kt_image_fit', width: aspect_ratioW, height: aspect_ratioH, image_item: variant.image -%}
+          {%- endcapture -%}
+          <div class="second-thumb {{image_fit}}">
+            {%- assign img_url = variant.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+            <img class="lazyload" src="data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAQAICRAEAOw==" data-src="{{ img_url }}" data-widths="[360, 540, 720, 900]" data-aspectratio="{{ product.images[1].aspect_ratio }}" data-sizes="auto" alt="{{ product.images[1].alt | escape }}">
+            <span class="loading-img"></span>
+          </div>
+          {%- assign has_next_vr_img = true -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if has_next_vr_img == false -%}
+        {{second_image}}
+      {%- endif -%}
+    {%- else -%}
+      {{second_image}}
+    {%- endif -%}
+  {%-endif-%}
+</a>

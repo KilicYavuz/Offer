@@ -1,0 +1,207 @@
+body.demo{
+	@media only screen and (min-width: 1200px) {
+		.container-fluid{	
+			padding: 0 55px !important;
+		}
+		.container{	
+			padding: 0 55px;
+			max-width: 1770px;
+		}
+	}
+	@media only screen and (min-width: 480px){
+		.min-height {
+	    min-height: 10rem;
+		}
+	}
+}
+
+.img__banner_template:hover {
+  background-position: center 100% !important;
+}
+.img__banner_template.no-animate{
+  background-position: center !important;
+}
+.img__banner_template {
+  transition: all 5s ease-out 0s;
+  -webkit-transition: all 5s ease-out 0s;
+  -moz-transition: all 5s ease-out 0s;
+}
+.hooli-view-demo > a{
+	background-color: #fff;
+  transition: all .5s ease-out 0s;
+  -webkit-transition: all .5s ease-out 0s;
+  -moz-transition: all .5s ease-out 0s;
+}
+.hooli-view-demo:hover > a{
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+}
+section#shoppage,section#feature {
+  background-color: #F5F5F5;
+}
+
+h5.heading-uppercase {
+  text-transform: capitalize;
+}
+/*------------------------------------------------------------------
+[12.9 Icon Boxes]
+*/
+
+.kt-box {
+	position: relative;
+	overflow: hidden;
+	text-align: center;
+}
+
+.kt-box .box-container {
+    position: relative;
+	overflow: hidden;
+    z-index: 10;
+}
+
+.kt-box .kt-box-icon {
+	position: relative;
+	overflow: hidden;
+	margin-bottom: 10px;
+	font-size: 52px;
+	line-height: 64px;
+	color: #d83d3e;
+}
+
+/* Style 2 */
+.kt-box.style-2 {
+	text-align: left;
+}
+
+.kt-box.style-2 .kt-box-icon {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	margin: 0;
+	width: 60px;
+	font-size: 40px;
+	padding-left: 1px;
+}
+
+.kt-box.style-2 .kt-box-icon .icon-container {
+	display: table;
+	height: 100%;
+	width: 100%;
+}
+
+.kt-box.style-2 .kt-box-icon .icon-container .ic-icon {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.kt-box.style-2.large .kt-box-icon {
+	width: 70px;
+	font-size: 50px;
+}
+
+.kt-box.style-2 .kt-box-text {
+	margin-left: 75px;
+	padding: 15px 0;
+}
+
+.kt-box.style-2.large .kt-box-text {
+	margin-left: 90px;
+}
+
+.kt-box.style-2 .kt-box-text .kt-box-lines-top::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 55px;
+	width: 21px;
+	height: 1px;
+	background: #333;
+}
+
+.kt-box.style-2.large .kt-box-text .kt-box-lines-top::before {
+	left: 70px;
+}
+
+.kt-box.style-2 .kt-box-text .kt-box-lines-top::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 55px;
+	width: 1px;
+	height: 21px;
+	background: #333;
+}
+
+.kt-box.style-2.large .kt-box-text .kt-box-lines-top::after {
+	left: 70px;
+}
+
+.kt-box.style-2 .kt-box-text .kt-box-lines-bottom::before {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 70px;
+	right: 100%;
+	margin-right: -55px;
+	height: 1px;
+	background: #333;
+}
+
+.kt-box.style-2 .kt-box-text .kt-box-lines-bottom::before{	
+	-webkit-transition-delay: .0s;
+	-moz-transition-delay: .0s;
+	-ms-transition-delay: .0s;
+	-o-transition-delay: .0s;
+	transition-delay: .0s;
+}
+
+.kt-box.style-2 .kt-box-text .kt-box-lines-top::before,
+.kt-box.style-2 .kt-box-text .kt-box-lines-top::after,
+.kt-box.style-2:hover .kt-box-text .kt-box-lines-bottom::before {
+    -webkit-transition: all .5s ease .07s;
+    -moz-transition: all .5s ease .07s;
+    -ms-transition: all .5s ease .07s;
+    -o-transition: all .5s ease .07s;
+	transition: all .5s ease .07s;
+}
+
+.kt-box.style-2:hover .kt-box-text .kt-box-lines-top::before,
+.kt-box.style-2:hover .kt-box-text .kt-box-lines-top::after,
+.kt-box.style-2:hover .kt-box-text .kt-box-lines-bottom::before {
+	background: #d83d3e;
+}
+
+.kt-box.style-2:hover .kt-box-text .kt-box-lines-top::before {
+	width: 30px;
+}
+
+.kt-box.style-2:hover .kt-box-text .kt-box-lines-top::after {
+	height: 300px;
+}
+
+.kt-box.style-2:hover .kt-box-text .kt-box-lines-top::before,
+.kt-box.style-2:hover .kt-box-text .kt-box-lines-top::after {
+    -webkit-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    -ms-transition: all .5s ease;
+    -o-transition: all .5s ease;
+	transition: all .5s ease;
+}
+
+.kt-box.style-2:hover .kt-box-text .kt-box-lines-bottom::before {
+	left: 25px;
+}
+
+.kt-box.style-2 .kt-box-text .kt-box-lines-bottom::before {
+    -webkit-transition: all .5s ease .0s;
+    -moz-transition: all .5s ease .0s;
+    -ms-transition: all .5s ease .0s;
+    -o-transition: all .5s ease .0s;
+	transition: all .5s ease .0s;
+}
+
+.kt-box.style-2 h3 {
+	font-size: 21px;
+	margin-bottom: 10px;
+	line-height: 40px;
+}

@@ -1,0 +1,546 @@
+<!-- collection-filter.liquid -->
+{% assign view = cart.attributes.theme_coll_layout | split: '_' %}
+{%-assign limit = settings.coll_limit -%}
+{% if view.size == 2 %}
+  {%-assign limit = view[1] | replace: 'pds','' | plus: 0 -%}
+{% endif %}
+{%- unless collection.handle -%}
+  {%- assign collection = collections['all'] -%}
+{%- endunless -%}
+{%-paginate collection.products by limit %}
+<div data-section-id="{{ section.id }}" data-section-type="collection-filter">
+<div class="catalog-filter"><a data-pjax-filter class="ktjax d-none" href="javascript:void(0)"></a></div> 
+{%-render 'kt_filter_json', paginate: paginate-%}
+{%-assign typeBlocks = section.blocks | map: 'type'-%}
+{%-if typeBlocks contains 'item_categories' -%}
+<noscript class="kt_categories_filter">
+  <div class="widget widget_product_categories{{prefix}}{%if settings.list_categories_linklist == blank %} {{settings.coll_shop_layout}}-layout{%endif%}">
+    <div class="layered_subtitle_heading">
+      <span class="layered_subtitle">{{ 'collections.sidebar.categories' | t }}<span></span></span>
+      <span class="ico"><i class="fkt-angle-down" aria-hidden="true"></i></span>
+    </div>
+    <ul class="product-categories kt_filterGroupItem_ul">
+      {%- if settings.list_categories_linklist == blank -%}
+        {%- for line_collection in collections -%}
+          <li class="{% if line_collection.handle == collection.handle %}current-cat{% endif %}">
+            <a class="custom-control custom-checkbox"{% if line_collection.handle == collection.handle %} href="javascript:void(0)"{%else%} href="{{line_collection.url|default: 'javascript:void(0)'}}"{% endif %}>
+              <span class="custom-control-label">{{line_collection.title}}</span>
+              <span class="count">{{line_collection.all_products_count}}</span>
+            </a>
+          </li>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for line_collection in linklists[settings.list_categories_linklist].links -%}
+        <li class="level-1{%if line_collection.links.size > 0%} level-1-has-child{%endif%}{% if line_collection.active %} current-cat showAny{% endif %}{%if forloop.first%} opened{%endif%}">
+          <a class="custom-control custom-checkbox"{% if line_collection.active %} href="javascript:void(0)"{%else%} href="{{line_collection.url|default: 'javascript:void(0)'}}"{% endif %}>
+            <span class="custom-control-label">{{line_collection.title}}</span>
+            {%- if line_collection.type == 'collection_link' -%}
+            <span class="count lazyload" data-include="{{line_collection.url}}?view=count_with_tag">{{line_collection.object.all_products_count}}</span>
+            {%- endif -%}
+          </a>
+          {% if line_collection.links.size > 0-%}
+          <ul class="child_collection"{%unless forloop.first%} style="display: none" {%endunless%}>
+            {% for child_link in line_collection.links-%}
+              <li class="level-2{% if child_link.active %} current-cat{% endif %}">
+                <a class="custom-control custom-checkbox"{% if child_link.active %} href="javascript:void(0)"{%else%} href="{{child_link.url|default: 'javascript:void(0)'}}"{% endif %}>
+                  <span class="custom-control-label">{{child_link.title}}</span>
+                  {%- if child_link.type == 'collection_link' -%}
+                  <span class="count lazyload" data-include="{{child_link.url}}?view=count_with_tag">{{child_link.object.all_products_count}}</span>
+                  {%- endif -%}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+          {%- endif -%}
+        </li>
+        {%- endfor -%}
+      {%- endif -%}
+    </ul>
+  </div>
+</noscript>
+{%-endif-%}
+</div>
+{% endpaginate -%}
+{% schema %}
+  {
+    "name": "Collection Filter",
+    "settings": [
+      {
+        "type": "textarea",
+        "id": "color_groups",
+        "default": "Color",
+        "label": "List group use style with color swatch",
+        "info": "Separate by a comma, i.e \"Color, Material, ...\"."
+      },
+      {
+        "type": "textarea",
+        "id": "brands_icon",
+        "label": "Brands link image",
+        "info": "Separate by a comma, i.e \"https://cdn.shopify.com/s/files/1/1958/5719/files/Adidas.jpg?581951153018427370, https://cdn.shopify.com/s/files/1/1958/5719/files/Apple.jpg?763180296243275461, ...\". [Upload svg file to Files](\/admin\/settings\/files) and copy name file to input."
+      }
+    ],
+    "blocks": [
+      {
+        "type": "item",
+        "name": "Filter By...",
+        "settings": [
+          { 
+            "type":"text",
+            "id":"title",
+            "label":"Filter by group title",
+            "default":"Filter By"
+          },
+          {
+            "type": "textarea",
+            "id": "tags",
+            "label": "Shop by tags list",
+            "info": "Separate by a comma, i.e \"Tag1, Tag2, Tag3\". Or all_tag"
+          },
+          {
+            "type": "header",
+            "content": "== Custom for auto filter groups"
+           },
+          { 
+            "type":"text",
+            "id":"key",
+            "label":"Filter keyword",
+            "default":"Color",
+            "info": "Tags containing keyword will be display"
+          },
+          {
+            "type": "paragraph",
+            "content": "Create tag filter groups in Shopify. This snippet is designed to group and separate out collection tags. Use admin extensions"
+          },
+          {
+            "type": "header",
+            "content": "== Select block style"
+          },
+          {
+            "type": "select",
+            "id": "block_width",
+            "options": [
+              {
+                "value": "auto",
+                "label": "Auto"
+              },
+              {
+                "value": "1",
+                "label": "1/12"
+              },
+              {
+                "value": "2",
+                "label": "2/12"
+              },
+              {
+                "value": "3",
+                "label": "3/12"
+              },
+              {
+                "value": "4",
+                "label": " 4/12"
+              },
+              {
+                "value": "5",
+                "label": "5/12"
+              },
+              {
+                "value": "6",
+                "label": "50%"
+              },
+              {
+                "value": "7",
+                "label": "7/12"
+              },
+              {
+                "value": "8",
+                "label": "8/12"
+              },
+              {
+                "value": "9",
+                "label": "9/12"
+              },
+              {
+                "value": "10",
+                "label": "10/12"
+              },
+              {
+                "value": "11",
+                "label": "11/12"
+              },
+              {
+                "value": "12",
+                "label": "Full width"
+              }
+            ],
+            "label": "Width",
+            "default": "auto"
+          },
+          {
+            "type": "select",
+            "id": "block_style",
+            "options": [
+              {
+                "value": "1",
+                "label": "Detail"
+              },
+              {
+                "value": "2",
+                "label": "Color list"
+              },
+              {
+                "value": "3",
+                "label": "Tag"
+              },
+              {
+                "value": "4",
+                "label": "Color tag"
+              },
+              {
+                "value": "5",
+                "label": "Color icon"
+              },
+              {
+                "value": "6",
+                "label": "Brand icon"
+              },
+              {
+                "value": "7",
+                "label": "Brand with icon"
+              }
+            ],
+            "label": "Style",
+            "default": "1"
+          },
+          {
+            "type": "checkbox",
+            "id": "use_split",
+            "label": "Split the column into 2"
+          }
+        ]
+      },
+      {
+        "type": "item_recent",
+        "name": "Recent products",
+        "settings": [
+          { 
+            "type":"text",
+            "id":"key",
+            "label":"Filter keyword",
+            "default":"kt_rencent",
+            "info": "Wrong: Don't change"
+          },
+          {
+            "type": "header",
+            "content": "== Select block style"
+          },
+          {
+            "type": "select",
+            "id": "block_width",
+            "options": [
+              {
+                "value": "auto",
+                "label": "Auto"
+              },
+              {
+                "value": "1",
+                "label": "1/12"
+              },
+              {
+                "value": "2",
+                "label": "2/12"
+              },
+              {
+                "value": "3",
+                "label": "3/12"
+              },
+              {
+                "value": "4",
+                "label": " 4/12"
+              },
+              {
+                "value": "5",
+                "label": "5/12"
+              },
+              {
+                "value": "6",
+                "label": "50%"
+              },
+              {
+                "value": "7",
+                "label": "7/12"
+              },
+              {
+                "value": "8",
+                "label": "8/12"
+              },
+              {
+                "value": "9",
+                "label": "9/12"
+              },
+              {
+                "value": "10",
+                "label": "10/12"
+              },
+              {
+                "value": "11",
+                "label": "11/12"
+              },
+              {
+                "value": "12",
+                "label": "Full width"
+              }
+            ],
+            "label": "Width",
+            "default": "auto"
+          }
+        ]
+      },
+      {
+        "type": "item_banner",
+        "name": "Banner",
+        "settings": [
+          { 
+            "type":"image_picker",
+            "id":"img",
+            "label":"Banner image"
+          },
+          { 
+            "type":"text",
+            "id":"key",
+            "label":"Filter keyword",
+            "default":"kt_banner",
+            "info": "Wrong: Don't change"
+          },
+          { 
+            "type":"url",
+            "id":"url",
+            "label":"Link to"
+          },
+          {
+            "type": "header",
+            "content": "== Select block style"
+          },
+          {
+            "type": "select",
+            "id": "block_width",
+            "options": [
+              {
+                "value": "auto",
+                "label": "Auto"
+              },
+              {
+                "value": "1",
+                "label": "1/12"
+              },
+              {
+                "value": "2",
+                "label": "2/12"
+              },
+              {
+                "value": "3",
+                "label": "3/12"
+              },
+              {
+                "value": "4",
+                "label": " 4/12"
+              },
+              {
+                "value": "5",
+                "label": "5/12"
+              },
+              {
+                "value": "6",
+                "label": "50%"
+              },
+              {
+                "value": "7",
+                "label": "7/12"
+              },
+              {
+                "value": "8",
+                "label": "8/12"
+              },
+              {
+                "value": "9",
+                "label": "9/12"
+              },
+              {
+                "value": "10",
+                "label": "10/12"
+              },
+              {
+                "value": "11",
+                "label": "11/12"
+              },
+              {
+                "value": "12",
+                "label": "Full width"
+              }
+            ],
+            "label": "Width",
+            "default": "auto"
+          }
+        ]
+      },
+      {
+        "type": "item_custom",
+        "name": "Custom",
+        "settings": [
+          { 
+            "type":"page",
+            "id":"content",
+            "label":"Page content"
+          },
+          { 
+            "type":"text",
+            "id":"key",
+            "label":"Filter keyword",
+            "default":"kt_custom",
+            "info": "Wrong: Don't change"
+          },
+          {
+            "type": "header",
+            "content": "== Select block style"
+          },
+          {
+            "type": "select",
+            "id": "block_width",
+            "options": [
+              {
+                "value": "auto",
+                "label": "Auto"
+              },
+              {
+                "value": "1",
+                "label": "1/12"
+              },
+              {
+                "value": "2",
+                "label": "2/12"
+              },
+              {
+                "value": "3",
+                "label": "3/12"
+              },
+              {
+                "value": "4",
+                "label": " 4/12"
+              },
+              {
+                "value": "5",
+                "label": "5/12"
+              },
+              {
+                "value": "6",
+                "label": "50%"
+              },
+              {
+                "value": "7",
+                "label": "7/12"
+              },
+              {
+                "value": "8",
+                "label": "8/12"
+              },
+              {
+                "value": "9",
+                "label": "9/12"
+              },
+              {
+                "value": "10",
+                "label": "10/12"
+              },
+              {
+                "value": "11",
+                "label": "11/12"
+              },
+              {
+                "value": "12",
+                "label": "Full width"
+              }
+            ],
+            "label": "Width",
+            "default": "auto"
+          }
+        ]
+      },
+      {
+        "type": "item_categories",
+        "name": "Categories",
+        "settings": [
+          { 
+            "type":"text",
+            "id":"key",
+            "label":"Filter keyword",
+            "default":"kt_categories",
+            "info": "Wrong: Don't change"
+          },
+          {
+            "type": "header",
+            "content": "== Select block style"
+          },
+          {
+            "type": "select",
+            "id": "block_width",
+            "options": [
+              {
+                "value": "auto",
+                "label": "Auto"
+              },
+              {
+                "value": "1",
+                "label": "1/12"
+              },
+              {
+                "value": "2",
+                "label": "2/12"
+              },
+              {
+                "value": "3",
+                "label": "3/12"
+              },
+              {
+                "value": "4",
+                "label": " 4/12"
+              },
+              {
+                "value": "5",
+                "label": "5/12"
+              },
+              {
+                "value": "6",
+                "label": "50%"
+              },
+              {
+                "value": "7",
+                "label": "7/12"
+              },
+              {
+                "value": "8",
+                "label": "8/12"
+              },
+              {
+                "value": "9",
+                "label": "9/12"
+              },
+              {
+                "value": "10",
+                "label": "10/12"
+              },
+              {
+                "value": "11",
+                "label": "11/12"
+              },
+              {
+                "value": "12",
+                "label": "Full width"
+              }
+            ],
+            "label": "Width",
+            "default": "auto"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

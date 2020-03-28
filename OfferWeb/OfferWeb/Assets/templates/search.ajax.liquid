@@ -1,0 +1,152 @@
+{%- layout none -%}
+{%- capture canonical_url -%}{% render 'kt_url_full' %}{%- endcapture -%}
+{%- assign area_width = canonical_url | split: 'width=' | last | split: '&' | first | plus: 0 -%}
+{%- paginate search.results -%}
+{%- assign productObj = 0 -%}
+{%- assign productObj_ = '' -%}
+{%- assign articleObj = 0 -%}
+{%- assign articleObj_ = '' -%}
+{%- assign pageObj = 0 -%}
+{%- assign pageObj_ = '' -%}
+{%- assign item_width = ' _small p-0 col-12' -%}
+{%- if area_width >= 768 -%}
+  {%- assign item_width = ' p-0 col-6' -%}
+{%- endif -%}
+{%- if area_width >= 1200 -%}
+  {%- assign item_width = ' p-0 col-4' -%}
+{%- endif -%}
+{%- if search.performed -%}
+  {%- for item in search.results -%}
+    {%- if item.object_type == 'product' and productObj <= 5 -%}
+      {%-capture productObj_item-%}
+      <li class="item-search{{item_width}}" data-animate="fadeIn" onclick="window.location.href='{{item.url}}'">
+        <div class="thumb">
+          {%- if item.compare_at_price > item.price -%}<div class="product-tag">{{'general.search_dropdown.sale_label'|t}}</div>{%- endif -%}
+          <a href="{{item.url}}">
+            <img src="{{ item.featured_image.src | img_url: '120x120', crop:'center' }}" alt="">
+          </a>
+        </div>
+        <div class="product-info">
+          <h4 class="product-name"><a href="{{item.url}}" title="{{item.title}}">{{ item.title | strip_html | truncate: 25}}</a></h4>
+          {%- if area_width >= 576 -%}
+          <div class="product-description">
+            {%- if item.metafields.meta.short_description -%}
+            {{ item.metafields.meta.short_description | strip_html | truncate: 70 | capitalize  }}
+            {% elsif item.description contains  '[/short description]' %}
+            {{ item.description | split: '[/short description]' | first | split: '[short description]'| last  | strip_html | truncate: 70 | capitalize  }}
+            {%-else-%}
+            {{ item.description | strip_html | truncate: 70 | capitalize  }}
+            {%-endif-%}
+          </div>
+          {%- endif -%}
+          <div class="rating">
+            <span class="shopify-product-reviews-badge" data-id="{{ item.id }}"></span>
+          </div>
+          <span class="price">
+            <ins>{{ item.price | money }}</ins>
+            {%- if item.compare_at_price > item.price -%}
+            <del>{{ item.compare_at_price  | money }} </del>
+            {%- endif -%}
+          </span> 
+        </div>
+      </li>                
+      {%- if productObj == 5 %}
+      <li class="loadmore col-12"><a href="/search?type=product&q={{ search.terms }}"><span>{{'general.search_dropdown.view_more'|t}}</span></a></li>
+      {%- endif -%}
+      {%-endcapture-%}
+      {%- assign productObj_ = productObj_ | append: productObj_item -%}
+      {%- assign productObj = productObj | plus: 1 -%}
+    {%- endif -%}
+    {%- if item.object_type == 'article' and articleObj <= 3 -%}
+      {%-capture articleObj_item-%}
+      <li class="item-search{{item_width}}" data-animate="fadeIn" onclick="window.location.href='{{item.url}}'">
+        <div class="thumb">
+          <a href="{{item.url}}">
+            {%unless item.image %}
+            <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 70px;height: 70px;"><path d="M17.958,3H6.042A3.647,3.647,0,0,0,2.4,6.647V19.379a1.589,1.589,0,0,0,1,1.491A1.636,1.636,0,0,0,4.024,21a1.592,1.592,0,0,0,1.131-.477L7.69,17.986H17.958A3.647,3.647,0,0,0,21.6,14.344v-7.7A3.647,3.647,0,0,0,17.958,3ZM20.4,14.344a2.445,2.445,0,0,1-2.442,2.442H7.437a.674.674,0,0,0-.477.234L4.307,19.672a.414.414,0,0,1-.707-.293V6.647A2.445,2.445,0,0,1,6.042,4.2H17.958A2.445,2.445,0,0,1,20.4,6.647ZM17.132,8.53a.6.6,0,0,1-.6.6h-9a.6.6,0,0,1,0-1.2h9A.6.6,0,0,1,17.132,8.53Zm0,4.5a.6.6,0,0,1-.6.6h-9a.6.6,0,1,1,0-1.2h9A.6.6,0,0,1,17.132,13.03Z"/></svg>
+            {% else %}
+            <img src="{{ item.image.src | img_url: '120x120', crop:'center' }}" alt="">
+            {% endunless %}
+          </a>
+        </div>
+        <div class="product-info">
+          <h4 class="product-name"><a href="{{item.url}}" title="{{item.title}}">{{ item.title | strip_html | truncate: 25}}</a></h4>
+          <div class="product-description">
+            {% if item.published_at %}<i class="fa fa-clock-o" aria-hidden="true"></i> {{ item.published_at | date: "%b %d, %Y" }} , <i class="fa fa-comment"></i> {{item.comments_count}}<br/> {% endif %}
+            {{ item.content | strip_html | truncate: 70 | capitalize  }}
+          </div>
+        </div>
+      </li>                
+      {%- if articleObj == 3 %}
+      <li class="loadmore col-12"><a href="/search?type=article&q={{ search.terms }}"><span>{{'general.search_dropdown.view_more'|t}}</span></a></li>
+      {%- endif -%}
+      {%-endcapture-%}
+      {%- assign articleObj_ = articleObj_ | append: articleObj_item -%}
+      {%- assign articleObj = articleObj | plus: 1 -%}
+    {%- endif -%}
+    {%- if item.object_type == 'page' and pageObj <= 3 -%}
+      {%-capture pageObj_item-%}
+        <li class="item-search{{item_width}}" data-animate="fadeIn" onclick="window.location.href='{{item.url}}'">
+          <div class="thumb">
+            <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 70px;height: 70px;"><path d="M19.838,6.26l-4.1-4.1A2.582,2.582,0,0,0,13.9,1.4H7A3.6,3.6,0,0,0,3.4,5V19A3.6,3.6,0,0,0,7,22.6H17A3.6,3.6,0,0,0,20.6,19V8.1A2.583,2.583,0,0,0,19.838,6.26ZM19.4,19A2.4,2.4,0,0,1,17,21.4H7A2.4,2.4,0,0,1,4.6,19V5A2.4,2.4,0,0,1,7,2.6h6.9a1.411,1.411,0,0,1,.99.41l4.1,4.1a1.4,1.4,0,0,1,.41.99Zm-3.3-8a.6.6,0,0,1-.6.6h-7a.6.6,0,0,1,0-1.2h7A.6.6,0,0,1,16.1,11Zm0,4.417a.6.6,0,0,1-.6.6h-7a.6.6,0,1,1,0-1.2h7A.6.6,0,0,1,16.1,15.417Z"/></svg>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name"><a href="{{item.url}}" title="{{item.title}}">{{ item.title | strip_html | truncate: 25}}</a></h4>
+            <div class="product-description">
+              {% if item.published_at %}<i class="fa fa-clock-o" aria-hidden="true"></i> {{ item.published_at | date: "%b %d, %Y" }} <br/> {% endif %}
+              {{ item.content | strip_html | truncate: 70 | capitalize  }}
+            </div>
+          </div>
+        </li>                
+      {%- if pageObj == 3 %}
+        <li class="loadmore col-12"><a href="/search?type=article&q={{ search.terms }}"><span>{{'general.search_dropdown.view_more'|t}}</span></a></li>
+      {%- endif -%}
+      {%-endcapture-%}
+      {%- assign pageObj_ = pageObj_ | append: pageObj_item -%}
+      {%- assign pageObj = pageObj | plus: 1 -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- assign searchTerms = search.terms -%}
+  {%- for collection in collections -%}
+    {%- if search.terms contains collection.id %}
+      {%- assign isCollection = collection.id | append:' ' -%}
+      {%- assign searchTerms = collection.title | append: "+" | append: search.terms | remove: isCollection -%}
+    {%- endif -%}
+  {%- endfor -%}
+  <li class="hasCount"><p>{{ 'general.search.results_with_count_html' | t: count: search.results_count, terms: searchTerms }}</p></li>
+  {%- if productObj_ != '' -%}
+  <li class="productObj order-1">
+    <span class="titleObj">{{'general.search_dropdown.products'|t}}:</span>
+    <ul class="row">
+      {{productObj_}}
+    </ul>
+  </li>
+  {%- endif -%}
+  {%- if articleObj_ != '' -%}
+  <li class="articleObj order-2">
+    <span class="titleObj">{{'general.search_dropdown.articles_group'|t}}:</span>
+    <ul class="row">
+      {{articleObj_}}
+    </ul>
+  </li>
+  {%- endif -%}
+  {%- if pageObj_ != '' -%}
+  <li class="pageObj order-2">
+    <span class="titleObj">{{'general.search_dropdown.pages_group'|t}}:</span>
+    <ul class="row">
+      {{pageObj_}}
+    </ul>
+  </li>
+  {%- endif -%}
+{%- endif -%}
+{%- if search.results_count  < 1-%}
+  {%- assign searchTerms = search.terms -%}
+  {%- for collection in collections -%}
+    {%- if search.terms contains collection.id %}
+      {%- assign isCollection = collection.id | append:' ' -%}
+      {%- assign searchTerms = collection.title | append: "+" | append: search.terms | remove: isCollection -%}
+    {%- endif -%}
+  {%- endfor -%}
+  <li class="item-search margin-0"><h6 class="margin-0">{{'general.search.no_results_html'|t : terms: searchTerms}}</h6></li>
+{%- endif -%}
+{%- endpaginate -%}

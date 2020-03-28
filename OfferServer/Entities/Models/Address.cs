@@ -1,21 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Entities.Models
 {
-    [Table("Address")]
-    public class Address : Entity<int>
+    public partial class Address
     {
-        [Required(ErrorMessage = "Address Name is required")]
-        [StringLength(50, ErrorMessage = "Address Name can't be longer than 50 characters")]
+        public int Oid { get; set; }
+        public int UserOid { get; set; }
         public string AddressName { get; set; }
-
-        [StringLength(50, ErrorMessage = "Name Surname can't be longer than 250 characters")]
         public string NameSurname { get; set; }
+        public string AddressInfo { get; set; }
+        public string City { get; set; }
+        public string County { get; set; }
+        public string ZipCode { get; set; }
+        public string Phone { get; set; }
+        public DateTime CreatedDate { get; set; }
 
-        [ForeignKey(nameof(User))]
-        public int UserOId { get; set; }
-
-        public User User { get; set; }
+        public virtual Users UserO { get; set; }
     }
 }

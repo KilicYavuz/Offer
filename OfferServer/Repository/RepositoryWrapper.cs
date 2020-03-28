@@ -1,11 +1,11 @@
 ﻿using Contracts;
-using Entities;
+using Entities.Models;
 
 namespace Repository
 {
     public class RepositoryWrapper : IRepositoryWrapper
     {
-        private RepositoryContext _repoContext;
+        private OfferContext _repoContext;
         private IUserRepository _user;
         private IAddressRepository _address;
 
@@ -35,7 +35,7 @@ namespace Repository
             }
         }
 
-        public RepositoryWrapper(RepositoryContext repositoryContext)
+        public RepositoryWrapper(OfferContext repositoryContext)
         {
             _repoContext = repositoryContext;
         }

@@ -2,8 +2,6 @@
 using Entities;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Linq;
 
 namespace OfferServer.Controllers

@@ -1,0 +1,226 @@
+{%- if settings.use_mobile_bottom_bar -%}
+<div class="{{section.settings.width_header}}">
+  <div class="kiti--DropWindow">
+    <div class="main-header-top kiti-DropWindowDesktop">
+      <div class="row min-height align-items-center justify-content-between">
+        <div class="header-control col-3 col-lg-auto d-xl-none order-first">
+          <div class="control-inner">
+            <div class="mobile-block block-menu-bar">
+              <a href="#" class="menu-bar menu-toggle"><span class="icon"><span></span><span></span><span></span></span></a>
+            </div>
+          </div>
+        </div>
+        <div class="header-logo col-6 col-lg-3 text-center text-lg-left order-1">
+          {%- render 'kt_logo_header' -%}
+        </div>
+        <div class="header-control col-12 col-lg-6 d-none d-lg-block order-last order-lg-2">
+          <div class="control-inner">           
+            <div class="block-search input-cat">
+              {% render 'search-bar', search_style: "input-cat-right" %}
+            </div>
+          </div>
+        </div>
+        {% comment %}<div class="header-control col-12 col-lg-6 order-last order-lg-2">
+          <div class="control-inner">           
+            <div class="block-search input-cat d-block">
+              {% render 'search-bar', search_style: "input-cat-right" %}
+            </div>
+          </div>
+        </div>{% endcomment %}
+        <div class="header-control col-3 order-3">
+          <div class="control-inner d-flex align-items-center justify-content-end">
+            {%- if shop.customer_accounts_enabled -%}
+            <div class="block-account d-none d-md-block">
+              <a href="{%if customer%}/account{%else%}/account/login{%endif%}" class="icon-link">
+                <div class="icon-count">
+                  <i class="fkt-icon fkt-user"></i>
+                </div>
+                <span>{{'customer.account.mini_title'|t}}</span>
+              </a>
+            </div>
+            {%- endif -%}
+            {%- if section.settings.use_whislist and shop.customer_accounts_enabled and settings.use_wishlist and pages['wishlist'].title != empty -%}
+            <div class="block-wishlist d-none d-md-block">
+              <a href="{%if customer%}/pages/wishlist{%else%}/account/login{%endif%}" class="icon-link">
+                <div class="icon-count">
+                  <i class="fkt-icon fkt-heart-o"></i>
+                  <span class="count wishlist-count">{{wishlist_count| default: 0}}</span>
+                </div>
+                <span>{{'products.wishlist.mini_title'|t}}</span>
+              </a>
+            </div>
+            {%- endif -%}
+            {%- if section.settings.use_compare and settings.use_compare-%}
+            <div class="block-compare d-none d-lg-block">
+              <div class="mini-compare load kiti--DropItem">
+                <a href="javascript:void(0)" class="icon-link" aria-label="Compare">
+                  <div class="icon-count kt-button">
+                    <i class="fkt-icon fkt-random"></i>
+                    <span class="count compareCount d-none">0</span>
+                  </div>
+                  <span>{{'products.compare.mini_title'|t}}</span>
+                </a>
+                <div class="mini-compare-content kiti--DropInner">
+                  <div class="no-compare">
+                    <p>{{'products.compare.no_compare'|t}}</p>
+                  </div>
+                  <div class="mini-compare-body">
+                  </div>
+                </div>
+              </div>
+            </div>
+            {%- endif -%}
+            {%- if section.settings.use_cart-%}
+            <div class="block-minicart">
+              {% render 'kt_mini-cart', position: "menu" %}
+            </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- unless cart.attributes.theme_mobile == 'true' -%}
+<div class="header-bottom d-none d-lg-block">
+  <div class="{{section.settings.width_header}}">
+    <div class="border-top not-sticky"></div>
+    <div class="main-header">
+      <div class="row align-items-center">
+        <div class="header-control col-auto d-lg-none">
+          <div class="control-inner">
+            <div class="mobile-block block-menu-bar">
+              <a href="#" class="menu-bar menu-toggle" aria-label="Menu toggle"><span class="icon"><span></span><span></span><span></span></span></a>
+            </div>
+          </div>
+        </div>
+        {%- if section.settings.list_categories -%}
+        <div class="header-control col-auto">
+          <div class="dropdown category-dropdown{%if section.settings.list_categories_open and template.name == 'index'%} show{%endif%}">
+            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="{%if section.settings.list_categories_open and template.name == 'index'%}true{%else%}false{%endif%}" data-display="static" title="{{section.settings.title_categories}}" aria-label="{{section.settings.title_categories}}">{{section.settings.title_categories}}</a>
+            <div class="dropdown-menu dropdown-menu-right{%if section.settings.list_categories_open and template.name == 'index'%} show{%endif%}">
+              {%- for link in linklists[section.settings.list_categories].links -%}
+              <a class="dropdown-item{%if link.title contains '[special]' %} dropdown-item-lead{%endif%}" href="{{link.url}}" aria-label="{{link.title | remove: '[special]'}}">{{link.title | remove: '[special]'}}</a>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+        {%- endif -%}
+        <div class="header-menu horizon-menu col-12 col-lg d-none d-lg-block">
+          <nav class="main-navigation" data-width="992">
+            {%- render 'menu_import', section: section -%}
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- endunless -%}
+{%- else -%}
+<div class="{{section.settings.width_header}}">
+  <div class="kiti--DropWindow">
+    <div class="main-header-top kiti-DropWindowDesktop">
+      <div class="row min-height align-items-center justify-content-between">
+        <div class="header-logo col-5 col-lg-3">
+          {%- render 'kt_logo_header' -%}
+        </div>
+        <div class="header-control col-12 col-lg-6 d-none d-lg-block">
+          <div class="control-inner">			    	
+            <div class="block-search input-cat">
+              {% render 'search-bar', search_style: "input-cat-right" %}
+            </div>
+          </div>
+        </div>
+        <div class="header-control col-7 col-lg-3">
+          <div class="control-inner d-flex align-items-center justify-content-end">
+            <div class="mobile-block block-menu-bar d-lg-none">
+              <a href="#" class="menu-bar menu-toggle"><span class="icon"><span></span><span></span><span></span></span></a>
+            </div>
+            {%- if shop.customer_accounts_enabled -%}
+            <div class="block-account">
+              <a href="{%if customer%}/account{%else%}/account/login{%endif%}" class="icon-link">
+                <div class="icon-count">
+                  <i class="fkt-icon fkt-user"></i>
+                </div>
+                <span>{{'customer.account.mini_title'|t}}</span>
+              </a>
+            </div>
+            {%- endif -%}
+            {%- if section.settings.use_whislist and shop.customer_accounts_enabled and settings.use_wishlist and pages['wishlist'].title != empty -%}
+            <div class="block-wishlist">
+              <a href="{%if customer%}/pages/wishlist{%else%}/account/login{%endif%}" class="icon-link">
+                <div class="icon-count">
+                  <i class="fkt-icon fkt-heart-o"></i>
+                  <span class="count wishlist-count">{{wishlist_count| default: 0}}</span>
+                </div>
+                <span>{{'products.wishlist.mini_title'|t}}</span>
+              </a>
+            </div>
+            {%- endif -%}
+            {%- if section.settings.use_compare and settings.use_compare-%}
+            <div class="block-compare d-none d-lg-block">
+              <div class="mini-compare load kiti--DropItem">
+                <a href="javascript:void(0)" class="icon-link" aria-label="Compare">
+                  <div class="icon-count kt-button">
+                    <i class="fkt-icon fkt-random"></i>
+                    <span class="count compareCount d-none">0</span>
+                  </div>
+                  <span>{{'products.compare.mini_title'|t}}</span>
+                </a>
+                <div class="mini-compare-content kiti--DropInner">
+                  <div class="no-compare">
+                    <p>{{'products.compare.no_compare'|t}}</p>
+                  </div>
+                  <div class="mini-compare-body">
+                  </div>
+                </div>
+              </div>
+            </div>
+            {%- endif -%}
+            {%- if section.settings.use_cart-%}
+            <div class="block-minicart">
+              {% render 'kt_mini-cart', position: "menu" %}
+            </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- unless cart.attributes.theme_mobile == 'true' -%}
+<div class="header-bottom d-none d-lg-block">
+  <div class="{{section.settings.width_header}}">
+    <div class="border-top not-sticky"></div>
+    <div class="main-header">
+      <div class="row align-items-center">
+        <div class="header-control col-auto d-lg-none">
+          <div class="control-inner">
+            <div class="mobile-block block-menu-bar">
+              <a href="#" class="menu-bar menu-toggle" aria-label="Menu toggle"><span class="icon"><span></span><span></span><span></span></span></a>
+            </div>
+          </div>
+        </div>
+        {%- if section.settings.list_categories -%}
+        <div class="header-control col-auto">
+          <div class="dropdown category-dropdown{%if section.settings.list_categories_open and template.name == 'index'%} show{%endif%}">
+            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="{%if section.settings.list_categories_open and template.name == 'index'%}true{%else%}false{%endif%}" data-display="static" title="{{section.settings.title_categories}}" aria-label="{{section.settings.title_categories}}">{{section.settings.title_categories}}</a>
+            <div class="dropdown-menu dropdown-menu-right{%if section.settings.list_categories_open and template.name == 'index'%} show{%endif%}">
+              {%- for link in linklists[section.settings.list_categories].links -%}
+              <a class="dropdown-item{%if link.title contains '[special]' %} dropdown-item-lead{%endif%}" href="{{link.url}}" aria-label="{{link.title | remove: '[special]'}}">{{link.title | remove: '[special]'}}</a>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+        {%- endif -%}
+        <div class="header-menu horizon-menu col-12 col-lg d-none d-lg-block">
+          <nav class="main-navigation" data-width="992">
+            {%- render 'menu_import', section: section -%}
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- endunless -%}
+{%- endif -%}

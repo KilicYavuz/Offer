@@ -1,7 +1,7 @@
 ﻿using Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 
 namespace OfferServer.Controllers
 {
@@ -12,11 +12,12 @@ namespace OfferServer.Controllers
         private readonly ILoggerManager _logger;
         private readonly IRepositoryWrapper _repoWrapper;
 
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="User"/> class.
+        /// Profile, Address vb.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="repoWrapper">The repo wrapper.</param>
         public User(ILoggerManager logger, IRepositoryWrapper repoWrapper)
         {
             _logger = logger;
@@ -40,8 +41,8 @@ namespace OfferServer.Controllers
                 var users = _repoWrapper.User.GetAllUsers();
 
                 _logger.LogInfo($"Returned all users from database.");
-
-                return Ok(users);
+                var json = JsonConvert.SerializeObject(users);
+                return Ok(json);
             }
             catch (Exception ex)
             {

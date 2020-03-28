@@ -1,0 +1,101 @@
+<div class="kt_layerFilterJS">
+{%- section 'collection-filter' -%}
+	{%- if settings.coll_breadcrumb_enable -%}
+	<div class="{{settings.coll_width_section}}">
+	  <div class="section-width{%if settings.coll_width_content and settings.coll_width_section == 'w-100'%} container{%else%} w-100{%endif%}">
+		  {%-render 'kt_breadcrumb' -%}
+		</div>
+	</div>
+	<div class="w-100 border-top mb-3" style="border-color: rgba(235, 235, 235, 0.55) !important"></div>
+	{%- endif -%}  
+	{%- if settings.coll_sidebar_layout == '' and settings.coll_shop_layout == 'market' -%}
+	{%- section 'md-collection-banners-box' -%}
+	{%- section 'md-collection-brand' -%}
+	{%- section 'md-collection-list_item_cattegories' -%}
+	{%- section 'md-collection-product_section_slide' -%}
+  {%- endif -%}
+	<div class="{{settings.coll_width_section}}">
+	  <div class="section-width{%if settings.coll_width_content and settings.coll_width_section == 'w-100'%} container{%else%} w-100{%endif%}">	  	
+		  <div class="main-container shop_tyle_{{settings.coll_shop_layout|default:'default'}} pb-4 w-100">
+		    <div class="{{settings.coll_sidebar_layout|default: 'no'}}-sidebar filters-{{settings.filter_type}} w-100">
+			  	<div class="row">
+
+						{%- assign mainColl = '' -%}
+						{%- if settings.coll_sidebar_layout != '' -%}
+							{%- if settings.coll_width_content -%}
+								{%- if settings.coll_shop_layout == 'market' -%}
+									{%- assign mainColl = 'col-lg-8-10' -%}
+								{%- else -%}
+									{%- assign mainColl = 'col-lg-9' -%}
+								{%- endif -%}
+							{%-else-%}
+								{%- if settings.coll_shop_layout == 'market' -%}
+									{%- assign mainColl = 'col-lg-8-10' -%}
+								{%- else -%}
+									{%- assign mainColl = 'col-lg-10' -%}
+								{%- endif -%}
+							{%- endif -%}
+						{%- endif -%}
+
+						{%- assign sidebarColl = 'col-lg-2' -%}
+						{%- if settings.coll_width_content -%}
+							{%- if settings.coll_shop_layout == 'market' -%}
+								{%- assign sidebarColl = 'col-lg-2-10' -%}
+							{%- else -%}
+								{%- assign sidebarColl = 'col-lg-3' -%}
+							{%- endif -%}
+						{%-else-%}
+							{%- if settings.coll_shop_layout == 'market' -%}
+								{%- assign sidebarColl = 'col-lg-2-10' -%}
+							{%- else -%}
+								{%- assign sidebarColl = 'col-lg-2' -%}
+							{%- endif -%}
+						{%- endif -%}
+
+			  		<div class="main-content col-12 {{mainColl}}">
+				  		{%- if settings.coll_sidebar_layout != '' and settings.coll_shop_layout == 'market' -%}
+			  			{%- section 'md-collection-banners-box' -%}
+			  			{%- section 'md-collection-brand' -%}
+			  			{%- section 'md-collection-list_item_cattegories' -%}
+							{%- section 'md-collection-product_section_slide' -%}
+				      {%- endif -%}
+							{%- render 'collection-template' -%}
+			  		</div>
+			  		{%- if settings.coll_sidebar_layout != '' -%}
+		        <div class="sidebar clearfix col-12 {{sidebarColl}} d-none d-lg-block">
+		          <div class="kt_layerFilter kt_sidebar">
+		            <div class="filter-clean">
+		              <div class="head">
+		                <label>{{'collections.filters.title'|t}}:</label>
+		                <a data-pjax-filter="" href="{{collections[collection.handle].url}}" class="sidebar-filter-clear{%if items_filter_check.size <= 0 or current_tags.size == null %} d-none{% endif %}">{{'collections.filters.clean'|t}}</a>
+		              </div>
+		              <div class="filter-container__selected-filter {%if items_filter_check.size <= 0 or current_tags.size == null %} d-none{% endif %}">
+		                {%- render 'kt_filter_selected' -%}
+		              </div>
+		            </div>
+		            <div class="kt_layerfilterGroups kt_layerfilterGroupsDesktop" data-toggle="show"></div>
+		          </div>
+		        </div>
+			      {%- endif -%}
+			  	</div>
+			  </div>
+			</div>
+		</div>
+	</div>
+  {%- if settings.coll_sidebar_layout == '' -%}
+  <div class="kt_layerFilter kt_canvas">
+    <div class="filter_cavas_wrapper">
+      <div class="filter-clean">
+        <div class="head">
+          <label class="filter-close"><i class="fkt-close" aria-hidden="true"></i><span>{{'collections.filters.title'|t}}</span></label>
+          <a data-pjax-filter="" href="{{collections[collection.handle].url}}" class="sidebar-filter-clear{%if items_filter_check.size <= 0 or current_tags.size == null %} d-none{% endif %}">{{'collections.filters.clean'|t}}</a>
+        </div>
+        <div class="filter-container__selected-filter {%if items_filter_check.size <= 0 or current_tags.size == null %} d-none{% endif %}">
+          {%- render 'kt_filter_selected' -%}
+        </div>
+      </div>
+      <div class="kt_layerfilterGroups kt_layerfilterGroupsDesktop" data-toggle="show"></div>
+    </div>
+  </div>
+  {%- endif -%}
+</div>

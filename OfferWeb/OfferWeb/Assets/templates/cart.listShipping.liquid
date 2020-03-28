@@ -1,0 +1,18 @@
+{%-layout none-%}
+{%-capture listZone-%}
+[{"name":"vietnam","code":"VN","shipping_rates":"[{\"id\":165923061808,\"weight_low\":0,\"weight_high\":5,\"name\":\"Standard Shipping\",\"price\":\"10.00\",\"shipping_zone_id\":111538667568},{\"id\":165923094576,\"weight_low\":5,\"weight_high\":20,\"name\":\"Heavy Goods Shipping\",\"price\":\"20.00\",\"shipping_zone_id\":111538667568}]"},{"name":"rest of world","code":"*","shipping_rates":"[{\"id\":165923127344,\"weight_low\":0,\"weight_high\":20,\"name\":\"International Shipping\",\"price\":\"20.00\",\"shipping_zone_id\":111538700336}]"}]
+{%-endcapture-%}
+{%- assign option_name = canonical_url | split: '?q=' | last | upcase -%}
+{%- assign checkZone = '"code":"' | append: option_name | append: '",' -%}
+{%- capture flag -%}"flag":"{%- render 'flags-svg', code: option_name -%}",{%- endcapture -%}
+{%- if listZone contains checkZone -%}
+  {%- assign zoneOptions = listZone | split: checkZone | last | split: ',{"name"' | first | prepend: flag | prepend: checkZone | prepend: '{' | replace: '}]"}]', '}]"}' -%}
+{%- endif -%}
+{{zoneOptions}}
+{%- unless zoneOptions -%}
+{%- capture flag -%}"flag":"//cdn.shopify.com/s/assets/flags/fallback-f2f97b483f85d709c5e86ef4c82a768b79e1a3e19407c6ca68337a6a1e50e9f7.svg",{%- endcapture -%}
+{%- if listZone contains '"code":"*"' -%}
+  {%- assign zoneOptions = listZone | split: '"code":"*",' | last | split: ',{"name"' | first | prepend: flag | prepend: '"code":"*",' | prepend: '{'| replace: '}]"}]', '}]"}' -%}
+{%- endif -%}
+{{zoneOptions}}
+{%endunless%}

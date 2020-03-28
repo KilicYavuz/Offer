@@ -1,0 +1,4 @@
+{%- unless style_btn -%}
+  {%-assign style_btn = ''-%}
+{%- endunless -%}
+<a href="{%if customer%}{%if wishlist contains product.id%}/pages/wishlist{%else%}#{%endif%}{%else%}/account/login{%endif%}" class="{{style_btn}} wishlist kt-wishlist{%if customer%}{%if wishlist contains product.id%} added{%endif%}{%endif%}" data-customer_id="{{customer.id}}" data-email="{{customer.email}}"{%if customer%} data-action="{%if wishlist contains product.id%}view{%else%}add{%endif%}"{%endif%} data-handle="{{product.handle}}" data-id="{{product.id}}" aria-label="Wishlist"><i class="fkt-heart-o"></i><span class="text-nowrap btn-name">{%if wishlist contains product.id%}{{'products.wishlist.view_wishlist'|t}}{%else%}{{'products.wishlist.add_to_wishlist'|t}}{%endif%}</span></a>

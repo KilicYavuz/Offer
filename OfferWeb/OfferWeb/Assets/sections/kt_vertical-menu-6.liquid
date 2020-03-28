@@ -1,0 +1,438 @@
+{%- if template.suffix == 'vertical-menu' -%}
+{%- assign linkList = linklists[section.settings.list_].links[6] -%}
+{%- else -%}
+{%- capture canonical_url -%}{% render 'kt_url_full'%}{%- endcapture -%}
+{%- assign queryUrl = canonical_url | split: 'q=' | last | split: '&' | first | replace: ' +', '+' | replace: '+ ', '+' | split: '+'-%}
+{%- assign linkList = linklists[queryUrl[0]].links[6] -%}
+{%- endif -%}
+<!-- start -->
+<div class="megamenu">
+  <div class="row no-gutters">
+  {%- for block in section.blocks -%}
+    {%- assign col_responsive = block.settings.col | split: '|' -%}
+    {% capture col_resp %}col-{{ col_responsive[0] }} col-sm-{{ col_responsive[1] }} col-md-{{ col_responsive[2] }} col-lg-{{ col_responsive[3] }} col-xl-{{ col_responsive[4] }}{% endcapture %}
+    <div class="{{col_resp|default : 'col-auto'}}">
+      {%- case block.type -%}
+      {%- when 'child' -%}
+      <div class="menu-col">
+        <div class="row">
+          {%- assign link_handle = linkList.links | map: 'handle' | join: ' '-%}
+          {%- assign special_list =  block.settings.special_items | split: ','-%}
+          {%- assign per = block.settings.menu_links_per_col | plus: 0-%}
+          {%-if link_handle contains 'breakcol'-%}
+            {%- assign count = 0 -%}
+            {%- assign idx = 0 -%}
+            {%- for link in linkList.links -%}
+            {%- if count == 0 -%}
+            <div class="{%if per != 1%}col-md-{%if per == 2%}6{%elsif per == 3%}4{%elsif per >= 4%}3{%endif%} {%endif%}col-sm-12">
+              <ul>
+                {%-endif-%}
+                {%- unless link.handle == 'breakcol'-%}
+                {%- assign idx = idx | plus: 1 -%}
+                {%- assign idx_ = idx | append: '' -%}
+                <li class="{%if link.title contains '[title]'%} title_lv1{%endif%}{%if special_list contains idx_ %} dropdown-item-lead{%endif%}">
+                  <a href="{{link.url}}">
+                    <span>{{link.title | split: '{' | first | remove:'[title]'}}
+                      {%- if link.title contains '{'-%}
+                      {%- assign label  = link.title |  split: '{' | last  | split: '}' | first-%}
+                      <span class="label-menu {{label | handleize }}">{{label|escape }}
+                      </span> 
+                      {%- endif -%}
+                    </span>
+                  </a>
+                  {%- if link.links.size > 0 -%}
+                    {%- for sub_link in link.links -%}
+                    {%- assign idx = idx | plus: 1 -%}
+                    {%- assign idx_ = idx | append: '' -%}
+                    <li class="{%if link.active%}active{%endif%}{%if special_list contains idx_ %} dropdown-item-lead{%endif%}">
+                      <a href="{{ sub_link.url }}">
+                        <span>
+                          {{sub_link.title | split: '{' | first }}
+                          {%-if sub_link.title contains '{'-%}
+                          {%-assign label = sub_link.title |  split: '{' | last  | split: '}' | first-%}
+                          <span class="label-menu {{label | handleize }}">{{label|escape }}<span></span></span> 
+                          {%-endif-%}
+                        </span>
+                      </a>
+                    </li>
+                    {%- endfor -%}
+                  {%- endif -%}
+                </li>
+                {%-endunless-%}
+                {%- if forloop.last or link.handle == 'breakcol'-%}
+              </ul>
+            </div>
+            {%- assign count = 0 -%}
+            {%- else -%}
+            {%- assign count = count | plus: 1 -%}
+            {%- endif -%}
+            {%- endfor -%}
+          {%-elsif per >= 1 -%}
+            {%- assign count = 0-%}
+            {%- assign idx = 0 -%}
+            {%- for link in linkList.links-%}
+            {%- if block.settings.menu_links_per_col != '1'-%}
+            {%- assign size = linkList.links.size  | plus: 0-%}
+            {%- assign per = block.settings.menu_links_per_col | plus: 0-%}
+            {%- assign size_per = size | divided_by: per | ceil-%}
+            {%- assign breakline = size_per-%}
+            {%- endif-%}
+            {%-if count == 0 -%}
+            <div class="{%if per != 1%}col-md-{%if per == 2%}6{%elsif per == 3%}4{%elsif per >= 4%}3{%endif%} {%endif%}col-sm-12">
+              <ul>
+                {%- endif-%}
+                {%- assign idx = idx | plus: 1 -%}
+                <li class="{%if link.title contains '[title]'%} title_lv1{%endif%}{%if special_list contains idx %} dropdown-item-lead{%endif%}">
+                  <a href="{{link.url}}">
+                    <span>{{link.title | split: '{' | first | remove:'[title]'}}
+                      {%- if link.title contains '{'-%}
+                      {%- assign label  = link.title |  split: '{' | last  | split: '}' | first-%}
+                      <span class="label-menu  {{label | handleize }}">{{label|escape }}
+                      </span> 
+                      {%- endif -%}
+                    </span>
+                  </a>
+                  {%- if link.links.size > 0 -%}
+                    {%- for sub_link in link.links -%}
+                    {%- assign idx = idx | plus: 1 -%}
+                    <li class="{%if link.active%}active{%endif%}{%if special_list contains idx %} dropdown-item-lead{%endif%}">
+                      <a href="{{ sub_link.url }}">
+                        <span>
+                          {{sub_link.title | split: '{' | first }}
+                          {%-if sub_link.title contains '{'-%}
+                          {%-assign label = sub_link.title |  split: '{' | last  | split: '}' | first-%}
+                          <span class="label-menu {{label | handleize }}">{{label|escape }}<span></span></span> 
+                          {%-endif-%}
+                        </span>
+                      </a>
+                    </li>
+                    {%- endfor -%}
+                  {%- endif -%}
+                </li>
+                {%-if forloop.last or count == breakline-%}
+              </ul>
+            </div>
+            {%-assign count = 0-%}
+            {%-else-%}
+            {%-assign count = count | plus: 1-%}
+            {%-endif-%}
+            {%-endfor-%}
+          {%-endif-%}
+        </div>
+      </div>
+      {%- when 'banner_1' -%}
+      <div class="banner{%if block.settings.float%} _f-right banner-effect1{%endif%}">
+        <a href="{{block.settings.url| default: '#'}}">
+          <img class="lazyload" src="data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAQAICRAEAOw==" data-src="{{block.settings.promo_image| img_url: 'master'}}" alt="{{block.settings.promo_image.alt}}">
+        </a>
+      </div>
+      {%- when 'brands_1' -%}
+        {%- assign count = 0 -%}
+        {%- if block.settings.brand_image_1 != blank -%}{%- assign count = count | plus: 1 -%}{%- endif -%}
+        {%- if block.settings.brand_image_2 != blank -%}{%- assign count = count | plus: 1 -%}{%- endif -%}
+        {%- if block.settings.brand_image_3 != blank -%}{%- assign count = count | plus: 1 -%}{%- endif -%}
+        {%- if block.settings.brand_image_4 != blank -%}{%- assign count = count | plus: 1 -%}{%- endif -%}
+        {%- if block.settings.brand_image_5 != blank -%}{%- assign count = count | plus: 1 -%}{%- endif -%}
+        {%- if block.settings.brand_image_6 != blank -%}{%- assign count = count | plus: 1 -%}{%- endif -%}
+        {%- if block.settings.brand_image_7 != blank -%}{%- assign count = count | plus: 1 -%}{%- endif -%}
+        {%- if block.settings.brand_image_8 != blank -%}{%- assign count = count | plus: 1 -%}{%- endif -%}
+        {%- if block.settings.brand_image_9 != blank -%}{%- assign count = count | plus: 1 -%}{%- endif -%}
+        {%- if block.settings.brand_image_10 != blank -%}{%- assign count = count | plus: 1 -%}{%- endif -%}
+        {%- case count -%}
+          {%- when 4 -%}
+          {%- assign column = 'col-3' -%}
+          {%- when 5 -%}
+          {%- assign column = 'col-2-10' -%}
+          {%- when count >= 6 -%}
+          {%- assign column = 'col-2' -%}
+          {%- else -%}
+          {%- assign column = 'col-4' -%}
+        {%- endcase -%}
+        <div class="col-12 w-100 pt-2 pb-2 border-top">
+          <div class="brands-slide row">
+            {%- for i in (1..10) -%}
+              {%- assign brand_image = 'brand_image_' | append: i -%}
+              {%- if block.settings[brand_image] != blank -%}
+              <div class="image__brand {{column}}">
+                <a class="icon__brand" href="{{ block.settings.brand_call_to_action }}" title="{{block.settings.image.alt}}" aria-label="{{block.settings.image.alt|default: shop.name}}">
+                  {%- assign image_item = block.settings[brand_image] -%}
+                  {%-assign width = image_item.width -%}{%-assign height = image_item.height | plus: 0.00-%}
+                  <div class="img__banner position-relative lazyload" style="padding-bottom: {{height|divided_by: width | times: 100.00000000}}%;" data-bgset="{%- render 'bgset', image: image_item -%}" data-sizes="auto">
+                  </div>
+                </a>
+              </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endcase -%}
+    </div>
+  {%- endfor -%}
+  </div>
+</div>
+<!-- end -->
+{% schema %}
+  {
+  "name": "Vertical menu item 07",
+  "settings": [
+    {
+      "type":"link_list",
+      "id":"list_",
+      "label":"Parent link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "child",
+      "name": "Child items",
+      "settings": [
+        {
+          "type": "select",
+          "id": "menu_links_per_col",
+          "label": "Select munber per col",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column"
+            },
+            {
+              "value": "2",
+              "label": "2 column"
+            },
+            {
+              "value": "3",
+              "label": "3 column"
+            },
+            {
+              "value": "4",
+              "label": "4 column"
+            }
+          ],
+          "default": "2"
+        },
+        {
+          "type": "textarea",
+          "id": "special_items",
+          "label": "Special items",
+          "info": "Location item. Ex: 1,2"
+        },
+        {
+          "type": "header",
+          "content": "============================ Width block"
+        },
+        {
+          "type": "textarea",
+          "id": "col",
+          "label": "Block column (support reponsive)",
+          "default": "8",
+          "info": "Responsive: 12|6|4|3|3"
+        }
+      ]
+    },
+    {
+      "type": "banner_1",
+      "name": "Banner item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "promo_image",
+          "label": "Banner image",
+          "info": "Image size suggestion: 100 x 100 pixels"
+        },
+        { 
+          "type":"url",
+          "id":"url",
+          "label":"Link to"
+        },
+        {
+          "type": "checkbox",
+          "id" :"float",
+          "label": "Float right?"
+        },
+        {
+          "type": "header",
+          "content": "============================ Width block"
+        },
+        {
+          "type": "textarea",
+          "id": "col",
+          "label": "Block column (support reponsive)",
+          "default": "4",
+          "info": "Responsive: 12|6|4|3|3"
+        }
+      ]
+    },
+    {
+      "type": "brands_1",
+      "name": "Brands item",
+      "settings": [
+        {
+          "type": "header",
+          "content": "============================ Images"
+        },
+        {
+          "type": "paragraph",
+          "content": "== Item 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "brand_image_1",
+          "label": "Brand image",
+          "info": "Image size suggestion: 150 x 60 pixels"
+        },
+        { 
+          "type":"url",
+          "id":"url_1",
+          "label":"Link to"
+        },
+        {
+          "type": "paragraph",
+          "content": "== Item 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "brand_image_2",
+          "label": "Brand image",
+          "info": "Image size suggestion: 150 x 60 pixels"
+        },
+        { 
+          "type":"url",
+          "id":"url_2",
+          "label":"Link to"
+        },
+        {
+          "type": "paragraph",
+          "content": "== Item 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "brand_image_3",
+          "label": "Brand image",
+          "info": "Image size suggestion: 150 x 60 pixels"
+        },
+        { 
+          "type":"url",
+          "id":"url_3",
+          "label":"Link to"
+        },
+        {
+          "type": "paragraph",
+          "content": "== Item 4"
+        },
+        {
+          "type": "image_picker",
+          "id": "brand_image_4",
+          "label": "Brand image",
+          "info": "Image size suggestion: 150 x 60 pixels"
+        },
+        { 
+          "type":"url",
+          "id":"url_4",
+          "label":"Link to"
+        },
+        {
+          "type": "paragraph",
+          "content": "== Item 5"
+        },
+        {
+          "type": "image_picker",
+          "id": "brand_image_5",
+          "label": "Brand image",
+          "info": "Image size suggestion: 150 x 60 pixels"
+        },
+        { 
+          "type":"url",
+          "id":"url_5",
+          "label":"Link to"
+        },
+        {
+          "type": "paragraph",
+          "content": "== Item 6"
+        },
+        {
+          "type": "image_picker",
+          "id": "brand_image_6",
+          "label": "Brand image",
+          "info": "Image size suggestion: 150 x 60 pixels"
+        },
+        { 
+          "type":"url",
+          "id":"url_6",
+          "label":"Link to"
+        },
+        {
+          "type": "paragraph",
+          "content": "== Item 7"
+        },
+        {
+          "type": "image_picker",
+          "id": "brand_image_7",
+          "label": "Brand image",
+          "info": "Image size suggestion: 150 x 60 pixels"
+        },
+        { 
+          "type":"url",
+          "id":"url_7",
+          "label":"Link to"
+        },
+        {
+          "type": "paragraph",
+          "content": "== Item 8"
+        },
+        {
+          "type": "image_picker",
+          "id": "brand_image_8",
+          "label": "Brand image",
+          "info": "Image size suggestion: 150 x 60 pixels"
+        },
+        { 
+          "type":"url",
+          "id":"url_8",
+          "label":"Link to"
+        },
+        {
+          "type": "paragraph",
+          "content": "== Item 9"
+        },
+        {
+          "type": "image_picker",
+          "id": "brand_image_9",
+          "label": "Brand image",
+          "info": "Image size suggestion: 150 x 60 pixels"
+        },
+        { 
+          "type":"url",
+          "id":"url_9",
+          "label":"Link to"
+        },
+        {
+          "type": "paragraph",
+          "content": "== Item 10"
+        },
+        {
+          "type": "image_picker",
+          "id": "brand_image_10",
+          "label": "Brand image",
+          "info": "Image size suggestion: 150 x 60 pixels"
+        },
+        { 
+          "type":"url",
+          "id":"url_10",
+          "label":"Link to"
+        },
+        {
+          "type": "header",
+          "content": "============================ Width block"
+        },
+        {
+          "type": "textarea",
+          "id": "col",
+          "label": "Block column (support reponsive)",
+          "default": "12",
+          "info": "Responsive: 12|6|4|3|3"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

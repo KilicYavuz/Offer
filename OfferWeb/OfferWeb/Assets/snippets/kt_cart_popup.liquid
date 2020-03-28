@@ -1,0 +1,100 @@
+<section id="cartModal" class="modal fade" aria-hidden="true" role="dialog" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title cart__popup-title h4 mb-0">{{ 'cart.popup.title_popup' | t }}</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body cart__popup p-3">
+        <div class="row has-item"{% if cart.item_count == 0 %} style="display:none"{% endif %}>
+          <div class="col-12 col-lg-8">
+            <div class="itemList ajax__list-cart loading"></div>
+            {%-if settings.cart_notes_popup_enable -%}
+            <div class="cart_totals note mt-2">
+              <h6 class="cart__popup-title">{{ 'cart.general.note' | t }}</h6>
+              <form action="{{routes.cart_url}}" method="post" novalidate id="upadteCartNote">
+                <div class="form-group">
+                  <label class="sr-only" for="upadteCartNote">{{ 'cart.general.note' | t }}</label>
+                  <textarea class="form-control" name="note" id="upadteCartNote" rows="3">{{ cart.note }}</textarea>
+                </div>
+              </form>
+            </div>
+            {%-endif-%}
+          </div>
+          <div class="col-12 col-lg-4">
+            <div class="cart__popup-action">
+              <h6 class="d-flex align-items-center justify-content-between totalBox mb-0">
+                <span class="mr-1">{{ 'cart.general.subtotal' | t }}: </span>
+                <span class="cart__popup-total cartCost">{{ cart.total_price | money }}</span>
+              </h6>
+              <form action="/checkout" method="POST">
+                <div class="box-coupon mt-2">
+                  <div class="form-group">
+                    <label class="sr-only" for="coupon_code">Email address</label>
+                    <input type="text" name="discount" class="form-control" id="coupon_code" placeholder="Coupon code">
+                  </div>
+                </div>
+                {% if settings.use_threshold_in_popup %}
+                <div class="spendFreeShip">
+                  <div class="progress">
+                    {% assign shipping_above = settings.free_shipping_above|remove:'.' | plus: 0 %}
+                    {% assign percent = cart.total_price | times: 1.0 | divided_by: shipping_above | times: 100.0 %}
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{percent}}%;" aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="{{shipping_above}}"></div>
+                  </div>
+                  <div class="text_progress">
+                    {% assign shipping_above_html = shipping_above | money %}
+                    <span>{{'products.shipping_threshold.spend_text_in_cart_drawer_html' | t: shipping_above: shipping_above_html}}</span>
+                    <span>{{'products.shipping_threshold.congratulations' | t }}</span>
+                  </div>
+                </div>
+                {% endif %}
+                {%- if settings.terms_conditions -%}
+                <div class="agree_checkbox">
+                  <label class="label-for-checkbox">
+                    <input type="checkbox" name="checkbox" class="input-checkbox kt_agree">
+                    {{settings.terms_and_privacy_conditions|replace: '<p>','<p class="m-0" style="display: inline-block;">'|html}}
+                  </label>
+                </div>
+                {%- endif -%}
+                <a href="/checkout" class="check-out btn btn-primary btn-block kt_agree_swich"{% if settings.terms_conditions %} style="opacity: 0.7;pointer-events: none"{% endif %}>{{ 'cart.general.checkout' | t }}</a>
+                {% if additional_checkout_buttons %}
+                <div class="additional-checkout-buttons has-item clearfix">
+                  {{ content_for_additional_checkout_buttons }}
+                </div>
+                {% endif %}
+              </form>
+            </div>
+          </div>
+        </div>
+        <p class="empty h6 no-item m-0 text-center clearfix"{% if cart.item_count > 0 %} style="display:none"{% endif %}>{{ 'cart.general.empty' | t }}</p>
+      </div>      
+      <div class="modal-footer">
+        <div class="row justify-content-center">
+          <div class="col-12 col-md-10 col-lg-6">
+            {%- assign img_trust = settings.trust_image_popup | default: settings.trust_image_ -%}
+            {%- if img_trust != blank -%}
+            <div class="mb-2 mb-lg-0">
+              <img class="lazyload" alt="{{img_trust.alt}}" src="data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAQAICRAEAOw==" data-src="{{img_trust| img_url: 'master'}}">
+            </div>
+            {%- endif -%}
+          </div>
+          <div class="col-12 col-lg-6">
+            <div class="row justify-content-end justify-content-md-center justify-content-lg-end">
+              <div class="col-12 col-xs-6 col-sm-auto">
+                <a href="{{routes.all_products_collection_url}}" class="btn btn-outline-dark-2">{{ 'cart.general.continue_shopping' | t }}</a>
+              </div>
+              <div class="col-12 col-xs-6 col-sm-auto">
+                <a href="{{routes.cart_url}}" class="btn btn-outline-primary-2">{{ 'cart.general.view' | t }}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {%- if settings.cart_products_popup_enable -%}
+      <div class="lazyload loadvariant" data-include="/recommendations/products?section_id=kt_relatedProducts_cartPopup&product_id={{cart.items[0].product.id}}&limit=5&design_theme_id={{theme.id}}"></div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>

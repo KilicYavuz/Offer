@@ -1,0 +1,35 @@
+{%- if settings.show_multiple_currencies -%}
+<a href="javascript:void(0)" class="text-link fkt-angle-down_ title__topbarMenu currency_display">
+	<span class="currency__name">{{ cart.currency.iso_code | default: shop.currency }}</span>
+</a>                                                
+<div class="kiti--DropInner w-auto pt-1i pb-0i currency-list currency-lists">
+	<ul class="currency mg_currency_widget list-unstyled mb-0">
+    {%- if settings.currency_options == 'customize' -%}
+      {%-assign codes = 'USD,EUR,GBP,CAD,ARS,AUD,BBD,BDT,BSD,BHD,BRL,BOB,BND,BGN,ILS,MMK,KYD,CLP,CNY,COP,CRC,HRK,CZK,DKK,DOP,XCD,EGP,XPF,FJD,GHS,GTQ,GYD,GEL,HKD,HUF,ISK,INR,IDR,NIS,JMD,JPY,JOD,KZT,KES,KWD,LVL,LTL,MXN,MYR,MUR,MDL,MAD,MNT,MZN,ANG,NZD,NGN,NOK,OMR,PKR,PYG,PEN,PHP,PLN,QAR,RON,RUB,SAR,RSD,SCR,SGD,SYP,ZAR,KRW,LKR,SEK,CHF,TWD,THB,TZS,TTD,TRY,UAH,AED,UYU,VEB,VND,ZMK' | split: ','-%}
+      {%-assign supported_codes = settings.supported_currencies | split: ' '-%}
+      <li class="mg-currency-item active">	    
+        <span class="sym"><span class="flags {{shop.currency}}"></span>{%-render 'kt-currency-name', cur: shop.currency-%}</span>
+      </li>
+      {%-for code in supported_codes-%}
+      {%-if code != shop.currency and codes contains code-%}
+      <li class="mg-currency-item">	    
+        <span class="sym"><span class="flags {{code}}"></span>{%-render 'kt-currency-name', cur: code-%}</span>
+      </li>
+      {%-endif-%}
+      {%- endfor -%}
+    {%- elsif settings.currency_options == 'shopify' and shop.enabled_currencies -%}
+      {%- for currency in shop.enabled_currencies -%}
+        {%- if currency == cart.currency -%}
+          <li class="mg-currency-item active">      
+            <span class="sym"><span class="flags {{currency.iso_code}}"></span>{%-render 'kt-currency-name', cur: currency.iso_code-%}</span>
+          </li>
+        {%- else _%}
+          <li class="mg-currency-item">     
+            <span class="sym"><span class="flags {{currency.iso_code}}"></span>{%-render 'kt-currency-name', cur: currency.iso_code-%}</span>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+	</ul>
+</div>
+{%- endif -%}

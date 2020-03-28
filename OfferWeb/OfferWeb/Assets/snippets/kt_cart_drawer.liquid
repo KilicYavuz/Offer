@@ -1,0 +1,111 @@
+<section class="cart-drawer" data-section-id="cartDrawer" data-section-type="kt-cart-drawer">
+  <div class="cart-drawer__content d-flex flex-wrap align-content-between h-100">
+    <div class="flex-top w-100">
+      <div class="head__cart-drawer p-3 text-center border-bottom">
+        <button type="button" class="close__cart-drawer" data-form="cart-drawer" aria-label="Close">
+          <i class="fkt-close"></i>
+        </button>
+        <h3 class="title-ajax__cart h5 title m-0">{{ 'cart.general.items_with_count_html' | t: count: cart.item_count }}</h3>
+      </div>
+      <div class="content__cart-drawer">
+        <div class="spinner-box">
+          <div class="pulse-container"><div class="pulse-bubble pulse-bubble-1"></div><div class="pulse-bubble pulse-bubble-2"></div><div class="pulse-bubble pulse-bubble-3"></div></div>
+        </div>
+        <p class="empty h6 no-item m-0 text-center clearfix"{% if cart.item_count > 0 %} style="display:none"{% endif %}>{{ 'cart.general.empty' | t }}</p>
+        <ul class="items__cart-drawer ajax__list-cart row p-0 mb-0 kt_scroll"></ul>
+      </div>
+    </div>
+    <div class="footer__cart-drawer w-100 border-top">
+      <div class="note__cart-drawer has-item"{% if cart.item_count == 0 %} style="display:none"{% endif %}>
+        <div class="buts">
+          <span class="but title" onclick="$(this).parents('.note__cart-drawer').toggleClass('show');$(this).parents('.note__cart-drawer').find('#upadteCartNote').toggle(400)">{{ 'cart.general.note_button' | t }}</span>
+          <span class="but update" style="display:none"><i class="fkt-check" aria-hidden="true"></i></span>
+        </div>
+        <form action="{{routes.cart_url}}" method="post" novalidate id="upadteCartNote" style="display:none">
+          <label>{{ 'cart.general.note' | t }}</label>
+          <textarea name="note" id="CartSpecialInstructions" rows="4">{{ cart.note }}</textarea>
+        </form>
+      </div>
+      <table class="table has-item"{% if cart.item_count == 0 %} style="display:none"{% endif %}>
+        <tbody>
+          <tr>
+            <th scope="row">{{ 'cart.general.subtotal' | t }}: </th>
+            <td><span class="cartCost" data-price="{{ cart.total_price }}">{{ cart.total_price | money }}</span></td>
+          </tr>
+          {%- if settings.shipping_calculator and settings.shipping_calculator_cart_drawer -%}
+          <tr>
+            <th scope="row">
+              {%- capture currAddress -%}{{cart.attributes.theme_shipping}}{%- endcapture -%}
+              {%- assign currAddress = currAddress | replace:'&quot;','"' | split:','-%}
+              {%- assign zipcode = currAddress[0] | split: '{"zip":"' | last| remove:'"' -%}
+              {%- assign country = currAddress[1] | split: '"country":"' | last| remove:'"' -%}
+              {%- assign province = currAddress[2] | split: '"province":"' | last| remove:'"}' -%}
+
+              <div class="get__shipping has-item"{%if currAddress.size == 3 %} data-curr-address='{{cart.attributes.theme_shipping | replace:'&quot;','"'}}'{%endif%}{%unless cart.item_count > 0%} style="display:none"{%endunless%}>
+                <span style="white-space: nowrap;">{{'cart.shipping_box.shipping_to_cart_drawer'|t}}: </span><br>
+                <div class="hidden_select">
+                  <input type="text" id="address_zip" name="address[zip]" value="{{zipcode}}" placeholder="Zip/Postal Code" required="">
+                </div>
+                <div class="hidden_select"{%unless currAddress.size == 3 and zipcode != '1'%} style="display: none"{%endunless%}>
+                  <span class="label_hidden_select" data-select="#address__province"></span>
+                  <select id="address_province" name="address[province]"{%if currAddress.size == 3%} data-default="{{province}}"{%endif%} aria-label="Province"></select>
+                </div>
+                <div class="hidden_select">
+                  <span class="label_hidden_select" data-select="#address__country">{%if currAddress.size == 3%}{{country}}{%else%}{{country_option_tags|split:'</option>'|first|split:']">'|last}}{%endif%}</span>
+                  <select id="address_country" name="address[country]"{%if currAddress.size == 3%} data-default="{{country}}"{%endif%} aria-label="Country"></select>
+                </div>
+                <div class="hidden_select icon" data-toggle="tooltip" data-placement="top" title="Click on Calculate shipping">
+                  <div class="btn btn-link icon__shipping calculate__shipping"><span>{{'cart.shipping_box.button'|t}}</span><i class="fkt-truck"></i></div>
+                </div>
+              </div>
+            </th>
+            <td>
+              <div class="content__shipping"></div>
+            </td>
+          </tr>
+          <tr class="afterShip" style="display:none">
+            <th scope="row">{{'cart.general.cart_totals'|t}}: </th>
+            <td><span class="cartCostPlusShipping">{{ cart.total_price | money }}</span></td>
+          </tr>
+          {%- endif -%}
+        </tbody>
+      </table>
+      {% if settings.use_threshold_in_drawer %}
+      <div class="spendFreeShip has-item"{% if cart.item_count == 0 %} style="display:none"{% endif %}>
+        <div class="progress">
+          {% assign shipping_above = settings.free_shipping_above|remove:'.' | plus: 0 %}
+          {% assign percent = cart.total_price | times: 1.0 | divided_by: shipping_above | times: 100.0 %}
+          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{percent}}%;" aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="{{shipping_above}}"></div>
+        </div>
+        <div class="text_progress">
+          {% assign shipping_above_html = shipping_above | money %}
+          <span>{{'products.shipping_threshold.spend_text_in_cart_drawer_html' | t: shipping_above: shipping_above_html}}</span>
+          <span>{{'products.shipping_threshold.congratulations' | t }}</span>
+        </div>
+      </div>
+      {% endif %}
+      {%- if settings.terms_conditions -%}
+      <div class="agree_checkbox has-item"{%unless cart.item_count > 0%} style="display:none"{%endunless%}>
+        <label class="label-for-checkbox">
+          <input type="checkbox" name="checkbox" class="input-checkbox kt_agree">
+          {{settings.terms_and_privacy_conditions|replace: '<p>','<p class="m-0" style="display: inline;">'|html}}
+        </label>
+      </div>
+      {%- endif -%}
+      <div class="group-button has-item clearfix pt-1"{% if cart.item_count == 0 %} style="display:none"{% endif %}>
+        <a href="{{routes.cart_url}}" class="btn btn-outline-primary-2">{{ 'cart.general.view' | t }}</a>
+        <a href="/checkout" class="check-out btn btn-primary kt_agree_swich"{% if settings.terms_conditions %} style="opacity: 0.7;pointer-events: none"{% endif %}>{{ 'cart.general.checkout_small' | t }}</a>
+      </div>
+      {% if additional_checkout_buttons %}
+      <div class="additional-checkout-buttons has-item clearfix"{% if cart.item_count == 0 %} style="display:none"{% endif %}>
+        {{ content_for_additional_checkout_buttons }}
+      </div>
+      {% endif %}
+      {%-if settings.trust_image_-%}
+      <div class="text-center has-item mt-2 mb-4"{% if cart.item_count == 0 %} style="display:none"{% endif %}>
+        <img class="lazyload" alt="{{settings.trust_image_.alt}}" src="data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAQAICRAEAOw==" data-src="{{settings.trust_image_| img_url: 'master'}}">
+      </div>
+      {%-endif-%}
+    </div>
+  </div>
+</section>

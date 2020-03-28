@@ -1,0 +1,21 @@
+{%- assign responsive_ = section.settings.announcement_reponsive | strip_newlines | json | remove: '\t' | remove: '\' | remove: ' ' | replace: '"{"','{"' | replace: '}}"','}}' -%}
+{%- assign items_ = responsive_ | split: '"slidesPerView":' | last | split: ',' | first | plus: 0 -%}
+<div class="announcement header-announcement{%if section.settings.announcement_onm%} d-none d-lg-block{%endif%}{%if section.settings.announcement_ont%} d-lg-none{%endif%}{%unless section.settings.sticky_header_announcement %} not-sticky{%endunless%}{%if template.name == 'product' and settings.show_sticky_add and settings.use_add_to_cart_btn%} not-sticky{%endif%}{%if section.settings.announcement_image%} bg-image lazyload{%endif%}" style="display: none;padding: {{section.settings.announcement_padding|default:'0'|split:'|' |first | replace : '-',' '}};margin-top: {{section.settings.announcement_margin_top|default:'0'|split:'|'|first}};margin-bottom: {{section.settings.announcement_margin_bottom|default:'0'|split:'|'|first}};background-position: center;"{%if section.settings.announcement_image%} data-bgset="{{section.settings.announcement_image | img_url: 'master'}}" data-sizes="auto" data-parent-fit="contain"{%endif%} data-mt-respon="{{section.settings.announcement_margin_top}}" data-mb-respon="{{section.settings.announcement_margin_bottom}}" data-p-respon="{{section.settings.announcement_padding}}" data-el=".header-announcement" data-el-p=".header-announcement">
+  <div class="section-width {{section.settings.width_announcement}}">
+  	<div class="position-relative">
+	  	<div class="swiper-container nav-default" data-breakpoints='{{responsive_}}' data-autoplay="true" data-slides-per-view="{{items_}}" data-nav="true" data-delay="10">
+				<div class="swiper-wrapper">
+		    {%- for block in section.blocks -%}
+	      {%- if block.type == 'announcement' -%}
+	      {%- if block.settings.message_richtext != blank -%}
+	        <div class="swiper-slide announcement-item text-center">{{block.settings.message_richtext}}</div>
+	      {%- endif -%}
+	      {%- endif -%}
+		    {%- endfor -%}
+			  </div>
+			  <div class="swiper-button-prev fkt-angle-left fkt-lg fkt-va"></div><div class="swiper-button-next fkt-angle-right fkt-lg fkt-va"></div>
+			</div>
+			<button class="close close-header-announcement"></button>
+  	</div>
+	</div>
+</div>

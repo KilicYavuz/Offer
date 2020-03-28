@@ -1,0 +1,76 @@
+{%- liquid
+  unless key
+    assign key = 'thumbnail'
+  endunless
+  unless section_id
+    assign section_id = section.id
+  endunless  
+-%}
+
+<div class="{{key}}s-wrapper {{key}}s-wrapper-{{ section_id }}" {{dataJs}}>
+  <div class="product-single__{{key}}s product-single__{{key}}s-{{ section_id }}{% unless key == 'thumbnail' %} SlickPhotoswipGallery{% endunless %} row">
+    {%- assign aspect_image = product.featured_image.width | times: 1.00 |divided_by:product.featured_image.height| round: 2 -%}
+    {%- assign forIdx = 0 -%}
+    {%- assign positionIdx = 0 -%}
+    {%- for image in product.images -%}
+      {%- if image.alt == "kt_360" -%}{%-break-%}{%- endif -%}
+
+      {%- assign checkVideoFromAlt = image.alt -%}
+      {%- assign kt_video = false -%}
+      {%- if checkVideoFromAlt contains '||video:' -%}
+        {%- assign kt_video = true -%}
+        {%- assign vUrl = checkVideoFromAlt | split: '||video:' | last -%}
+      {%- endif -%}
+
+      {%- assign kt_visible = false -%}
+      {%- if settings.gallery == false -%}
+        {%- assign kt_visible = true -%}
+      {%- endif -%}
+
+      {%- if imgsPos0 <= forloop.index and imgsPos1 > forloop.index -%}
+        {%- assign kt_visible = true -%}
+      {%- endif -%}
+      {%- if imgsPos0 == imgsPos1 and imgsPos0 == forloop.index -%}
+        {%- assign kt_visible = true -%}
+      {%- endif -%}
+      {%- if imgsPos0 == imgsPos1 and imgsPos0 == forloop.index and imgsPos1 == product.images.size or forloop.index == imgsPos1 and imgsPos1 == product.images.size -%}
+        {%- assign kt_visible = true -%}
+      {%- endif -%}
+      {%- assign prevlastPositionImage = imgsPos.size | minus: 2 -%}
+      {%- assign lastPositionImage = imgsPos.size | minus: 1 -%}
+      {%- if imgsPos[prevlastPositionImage] != imgsPos[lastPositionImage] and forloop.index == imgsPos1 and imgsPos1 == product.images.size -%}
+        {%- assign kt_visible = true -%}
+      {%- endif -%}
+      
+      {%- if kt_visible -%}
+        {%- assign positionCss = 'one_hundred' -%}
+        {%- unless forIdx == 0 -%}
+          {%- assign positionCss = 'sixties' -%}
+          {%- if positionIdx == 1 or positionIdx == 2 -%}
+          {%- assign positionCss = 'forty' -%}
+            {%- if positionIdx == 2 -%}
+              {%- assign positionIdx = -1 -%}
+            {%- endif -%}
+          {%- endif -%}
+          {%- assign positionIdx = positionIdx | plus: 1 -%}
+        {%- endunless -%}
+        <div class="product-single__{{key}}s-item {{positionCss}} gallery-{% if kt_video %}video{%else%}image{%endif%} is-default" data-src="{{ image.src | img_url: 'master'}}">
+          <a href="javascript:void(0)" class="product-single__{{key}} product-single__{{key}}--{{ section_id }} aspectRatio aspectRatioPlaceholder" title="{%-if image.attached_to_variant? -%}{{image.variants.first.title}}{%- endif -%}" data-src="{{ image.src | img_url: product_image_size, scale: product_image_scale }}" data-id="{%-if image.attached_to_variant? -%}{{image.variants.first.id}}{%- endif -%}" style="max-width:{{ image.width}}px;padding-bottom: {{image.height | times: 1.00 |divided_by:image.width | times: 100.00000000}}%">
+            {%- assign img_url = image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+            <img class="product-single__{{key}}-image img-responsive lazyload" src="data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAQAICRAEAOw==" data-src="{{ img_url }}" data-widths="[180, 360, 540, 720, 900, 1080]" data-aspectratio="{{ image.aspect_ratio }}" data-sizes="auto" alt="{{ image.alt | escape | default: product.title }}" data-srcbase="{{image.src | img_url: product_thumb_size, scale: 2}}" data-srcfix="{{image.src | img_url: 'master' }}" data-size="{{image.width}}x{{image.height}}" style="width:{{ image.width}}px;max-width: 100% !important;">
+            {%- if kt_video and vUrl contains '.mp4' -%}
+              <div class="video_content">
+                <video class="video-element" controls="controls" loop poster="{{image.src | img_url: 'master'}}">
+                  <source type="video/mp4" src="{{vUrl}}">
+                </video>
+              </div>
+            {%- endif -%}
+            <span class="loading-img"></span>
+          </a>
+        </div>
+        {%- assign forIdx = forIdx | plus: 1 -%}        
+      {%- endif -%}
+    {%- endfor -%}
+    <div class="grid-sizer"></div>
+  </div>
+</div>

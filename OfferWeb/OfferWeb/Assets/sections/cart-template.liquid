@@ -1,0 +1,380 @@
+<!-- cart-template.liquid -->
+<div class="{{section.settings.width_section}} cart-container{% if cart.item_count == 0 %} cart-empty_{% endif %}" data-section-id="{{ section.id }}" data-section-type="cart-template">
+  <div class="content_{{section.id}}">   
+    <div class="section-width{%if section.settings.width_content and section.settings.width_section == 'w-100'%} container{%else%} w-100{%endif%}">
+      {%-render 'kt_breadcrumb'-%}
+      <div class="border-top mb-2" style="opacity: .3;"></div>
+      <div class="cart main-content pb-6i">
+        <div class="row">
+          {%- if settings.countdown_cart and cart.item_count > 0 -%}
+          <div class="col-12 mb-1">
+            <div class="cart-notification alert alert-warning alert-dismissible fade show" role="alert">
+              {{settings.countdown_cart_text|html}}
+            </div>
+          </div>
+          <script>
+            let settMinutes = 60 * {{settings.countdown_cart_minutes}}, time = parseInt(sessionStorage.getItem('cartTime')), display = document.querySelector('#timer_count');
+            function startTimer(duration, display) {
+              let timer = duration, minutes, seconds;
+              let countdown = setInterval(function () {
+                  minutes = parseInt(timer / 60, 10)
+                  seconds = parseInt(timer % 60, 10);
+                  minutes = minutes < 10 ? minutes : minutes;
+                  seconds = seconds < 10 ? "0" + seconds : seconds;
+                  display.textContent = minutes + ":" + seconds;
+                  let calc = 60 * parseInt(timer / 60, 10) + parseInt(timer % 60, 10);
+                  sessionStorage.setItem('cartTime', calc);
+                  if (--timer < 0) {
+                    window.clearInterval(countdown);
+                    display.textContent = "0:00";
+                  }
+              }, 1000);
+            };
+            if (time > 0) {startTimer(time, display);}
+            else {startTimer(settMinutes, display)}
+          </script>
+          {%- endif -%}
+          {% if cart.item_count > 0 %}
+          <div class="col-12 col-lg-9">
+            <form action="{{routes.cart_url}}" method="post" novalidate>
+              <table class="table table-cart mt-1">
+                <thead>
+                  <tr>
+                    <th>{{ 'cart.label.product' | t }}</th>
+                    <th>{{ 'cart.label.price' | t }}</th>
+                    <th>{{ 'cart.label.quantity' | t }}</th>
+                    <th>{{ 'cart.label.total' | t }}</th>
+                    <th>&nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in cart.items %}
+                  <tr class="mb-2 mb-md-0">
+                    <td class="product-col">
+                      <div class="product w-100 d-flex align-items-start align-items-md-center">
+                        <figure class="product-media">
+                          <a href="{{ item.url }}">
+                            {%- if item.image -%}
+                              {%- assign check_break = false -%}
+                              {%- assign check_not_img_one = false -%}
+                              {%- if item.variant.featured_image != null or item.product.has_only_default_variant -%}
+                                <img class="cart__image" alt="{{ item.title | escape |strip_html }}" src="{{ item| img_url: '104x120', crop:'top'}}">                   
+                              {%- else -%}
+                                 {%- assign check_break = false -%}
+                                 {%- assign check_not_img_one = false -%}
+                                 {%- for option in item.product.options -%}
+                                    {%- assign downcased_option = option | downcase -%}
+                                    {%- if downcased_option == 'color' or downcased_option == 'colour' or gl_color_name contains downcased_option_check -%}
+                                       {%- assign item_title_variant = item.variant.options[forloop.index0] -%}
+                                       {%- for image in item.product.images -%}
+                                          {%- if image.attached_to_variant? -%}
+                                             {% for variant in image.variants %}
+                                                {%- if variant.title contains item_title_variant and variant.image.src != blank -%}
+                                                   <img class="cart__image" alt="{{ image.alt | escape |strip_html }}" src="{{ image.src| img_url: '104x120', crop:'top' }}">
+                                                   {%- assign check_not_img_one = false -%}
+                                                   {%- assign check_break = true -%}
+                                                   {%- break -%}
+                                                {%- else -%}
+                                                   {%- assign check_not_img_one = true -%}
+                                                {%- endif-%}
+                                             {% endfor %}
+                                             {%- if check_break -%}{%- break -%}{%- endif-%}
+                                          {%- else -%}
+                                             {%- assign check_not_img_one = true -%}
+                                          {%- endif-%}
+                                       {%- endfor -%}
+                                    {%- else -%}
+                                       {%- assign check_not_img_one = true -%}
+                                    {%- endif -%}
+                                 {%- endfor -%}
+                              {%- endif -%}
+                              {%- if check_not_img_one and check_break == false -%}
+                              <img class="cart__image" alt="{{ item.title | escape |strip_html }}" src="{{ item| img_url: '104x120', crop:'top' }}">
+                              {%- endif -%}
+                            {%- else-%}
+                              {{ 'noimage.gif'| asset_img_url: '104x120', crop:'top' | img_tag }}
+                            {%- endif -%}
+                          </a>
+                        </figure>
+                        <div class="cart__meta">
+                          <h3 class="product-title">
+                            <a href="{{ item.url }}">{{ item.product.title }}</a>
+                          </h3>
+                          {% unless item.variant.title contains 'Default' %}
+                          <div class="cart__meta-text">
+                            {% for option in item.product.options %}
+                            {{ option }}: {{ item.variant.options[forloop.index0] }}<br>
+                            {% endfor %}
+                          </div>
+                          {% endunless %}
+                          {%- assign property_size = item.properties | size -%}
+                          {% if property_size > 0 %}
+                            <div class="cart__meta-text">
+                              {% for p in item.properties %}
+                                {% unless p.last == blank %}
+                                    {% if p.last contains 'h5' %}
+                                      <div class="bundle_properties">{{ p.first }}: {{ p.last}}</div>
+                                    {% else %}
+                                  {{ p.first }}:
+                                  {% if p.last contains '/uploads/' %}
+                                    <a href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
+                                  {% else %}
+                                    {{ p.last}}                    
+                                  {% endif %}
+                                  {% endif %}
+                                {% endunless %}
+                              {% endfor %}
+                            </div>
+                          {% endif %}
+                          <div class="cart__meta-price d-md-none">
+                            <span>{{ item.line_price | money }}</span>
+                            {% if item.line_level_discount_allocations.size > 0 %}
+                            <span class="question_mark position-relative"> (?)
+                            {% for discount_allocation in item.line_level_discount_allocations %}
+                              <div class="info-discount position-absolute text-uppercase">
+                                {{ discount_allocation.discount_application.title }} -{{ discount_allocation.amount | money }}
+                              </div>
+                            {%- endfor -%}
+                            </span>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="price-col">
+                      {{ item.original_line_price | money }}
+                    </td>
+                    <td class="quantity-col quantity">
+                      <div class="cart-product-quantity">
+                        <div class="input-group input-spinner">
+                          <div class="input-group-prepend">
+                            <button style="min-width: 26px" class="btn btn-decrement btn-spinner qtyminus" type="button"><i class="fkt-minus"></i></button>
+                          </div>
+                          <input type="text" data-step="1" name="updates[]" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0" {% if item.variant.inventory_management != null %} max="{{item.variant.inventory_quantity}}"{% endif %} class="form-control input-qty" size="4" pattern="[0-9]*" style="text-align: center">
+                          <div class="input-group-append">
+                            <button style="min-width: 26px" class="btn btn-increment btn-spinner qtyplus" type="button"><i class="fkt-plus"></i></button>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="total-col">
+                      <span>{{ item.line_price | money }}</span>
+                      {% if item.line_level_discount_allocations.size > 0 %}
+                      <div class="text-nowrap">
+                        {% for discount_allocation in item.line_level_discount_allocations %}
+                        <span>-{{ discount_allocation.amount | money }}</span>
+                        <span class="question_mark position-relative"> (?)
+                          <div class="info-discount position-absolute text-uppercase">
+                            {{ discount_allocation.discount_application.title }}
+                          </div>
+                        </span>
+                      {%- endfor -%}
+                      </div>
+                      {% endif %}
+                    </td>
+                    <td class="remove-col">
+                      <a href="{{routes.cart_change_url}}?line={{ forloop.index }}&amp;quantity=0" class="btn-remove" title="{{ 'cart.general.remove' | t }}">
+                        <i class="fkt-close" aria-hidden="true"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <div class="cart-bottom mb-2i">
+                {% if section.settings.cart_notes_enable %}
+                <div class="cart-note w-100">
+                  <div class="input-group">
+                    <textarea rows="3" name="note" class="form-control" placeholder="{{'cart.general.note'|t}}">{{ cart.note }}</textarea>
+                  </div>
+                </div>
+                {% endif %}
+              </div>
+              <div class="cart-bottom">
+                <div class="cart-discount">
+                  <div class="input-group">
+                    <input type="text" name="discount_code" class="form-control" value="" placeholder="{{ 'cart.discount_box.input_placeholder' | t }}">
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-outline-dark-2"><span>{{'cart.general.update'|t}}</span><i class="fkt-refresh"></i></button>
+              </div>
+            </form>
+          </div>
+          <aside class="col-lg-3">
+            <div class="summary summary-cart">
+              <h3 class="summary-title">{{'cart.summary_box.title'|t}}</h3>
+              <table class="table table-summary">
+                <tbody>
+                  <tr class="summary-subtotal">
+                    <td>{{'cart.summary_box.subtotal'|t}}:</td>
+                    <td><span class="cartCost" data-price="{{ cart.total_price }}">{{ cart.original_total_price | money }}</span></td>
+                  </tr>
+                  <!-- Cart level discounts -->
+                  {%- if cart.cart_level_discount_applications != blank -%}
+                  <tr class="summary-discounts">
+                    <td>{{'cart.summary_box.discount'|t}}:</td>
+                    <td class="text-nowrap">
+                    {%- for discount_application in cart.cart_level_discount_applications -%}
+                      <span>-{{ discount_application.total_allocated_amount | money }}</span>
+                      <span class="question_mark position-relative"> (?)
+                        <div class="info-discount position-absolute text-uppercase">
+                          {{ discount_application.title }}
+                        </div>
+                      </span>
+                    {%- endfor -%}
+                    </td>
+                  </tr>
+                  {%- endif -%}
+                  <!-- Final cart total -->
+                  {%- if settings.shipping_calculator -%}
+                  {% comment %}<tr class="summary-shipping get__shipping" style="display: none;">
+                    <td colspan="2">{{'cart.summary_box.shipping_title'|t}}:</td>
+                    <td colspan="2" class="content__shipping-price"></td>
+                  </tr>{% endcomment %}
+                  {%- capture currAddress -%}{{cart.attributes.theme_shipping}}{%- endcapture -%}
+                  {%- assign currAddress = currAddress | replace:'&quot;','"' |split:','-%}
+                  {%- assign zipcode = currAddress[0]| split: '{"zip":"'|last|remove:'"' -%}
+                  {%- assign country = currAddress[1]| split: '"country":"'|last|remove:'"' -%}
+                  {%- assign province = currAddress[2]| split: '"province":"'|last|remove:'"}' -%}
+                  <tr class="summary-shipping">
+                    <td colspan="2">
+                      <span>{{'cart.summary_box.shipping_title'|t}}:</span>
+                    </td>
+                  </tr>
+                  <tr class="summary-shipping-row content__shipping" style="display: none"></tr>
+                  <tr class="summary-shipping-estimate">
+                    <td colspan="2">
+                      {{'cart.summary_box.estimate_title'|t}}<br>
+                      <div class="address address__shipping">
+                        {%- if cart.attributes.theme_shipping -%}
+                          {{zipcode}}, {%if province != country %}{{province}}, {%endif%} {{country}}
+                        {%- endif -%}
+                      </div>
+                      <a href="javarscript:void(0)" onclick="$('.wrapper__shipping').toggle()">{{'cart.summary_box.change_address'|t}}</a>
+                    </td>
+                  </tr>
+                  <tr class="wrapper__shipping"{% if cart.attributes.theme_shipping %} style="display: none" {%endif%}>
+                    <td colspan="2">
+                      <div class="get__shipping"{%if currAddress.size == 3 %} data-curr-address='{{cart.attributes.theme_shipping | replace:'&quot;','"'}}'{%endif%}>
+                        <div class="form-row">
+                          <div class="form-group col-12">
+                            <label for="address_country" class="d-none">Country name</label>
+                            <select class="form-control" id="address_country" name="address[country]"{%if currAddress.size == 3%} data-default="{{country}}"{%endif%}>{{ country_option_tags }}</select>
+                          </div>
+                          <div class="form-group col-12"{%unless currAddress.size == 3 and zipcode != '1'%} style="display: none"{%endunless%}>
+                            <label for="address_province" class="d-none">Province name</label>
+                            <select class="form-control" id="address_province" name="address[province]"{%if currAddress.size == 3%} data-default="{{province}}"{%endif%}></select>
+                          </div>
+                          <div class="form-group col-8">
+                            <label for="address_zip" class="d-none">Zip code</label>
+                            <input type="text" class="form-control" id="address_zip" name="address[zip]" value="{{zipcode}}" placeholder="Zip/Postal Code" required="">
+                          </div>
+                          <div class="form-group col-4">
+                            <div class="calculate__shipping btn btn-outline-primary-2 btn-minwidth-auto w-100 text-uppercase btn-onclick" data-toggle="tooltip" data-placement="top" title="Click on Calculate shipping"><i class="fkt-truck" style="margin: 0;font-size: 1.8rem;line-height: 1.2;"></i></div>
+                          </div>
+                        </div>
+                        {% comment %}<div class="get__shipping mt-3" style="display:none;">
+                          <div class="content__shipping"></div>
+                        </div>{% endcomment %}
+                        {% comment %}<div class="hidden_select">
+                          <div class="btn btn-primary w-100 text-uppercase btn-onclick">{{'cart.shipping_box.button'|t}}</div>
+                        </div>{% endcomment %}
+                      </div>
+                    </td>
+                  </tr>
+                  {%- endif -%}
+                  <tr class="summary-total afterShip">
+                    <td class="text-primary">{{'cart.general.cart_totals'|t}}: </td>
+                    <td><span class="text-primary cartCostPlusShipping">{{ cart.total_price | money }}</span></td>
+                  </tr>
+                </tbody>
+              </table>
+              {%- if settings.use_threshold_in_page -%}
+              <div class="spendFreeShip">
+                <div class="progress mt-0i">
+                  {% assign shipping_above = settings.free_shipping_above|remove:'.' | plus: 0 %}
+                  {% assign percent = cart.total_price | times: 1.0 | divided_by: shipping_above | times: 100.0 %}
+                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{percent}}%;" aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="{{shipping_above}}"></div>
+                </div>
+                <div class="text_progress">
+                  {% assign shipping_above_html = shipping_above | money %}
+                  <span>{{'products.shipping_threshold.spend_text_in_cart_drawer_html' | t: shipping_above: shipping_above_html}}</span>
+                  <span>{{'products.shipping_threshold.congratulations' | t }}</span>
+                </div>
+              </div>
+              {%- endif -%}
+              <form action="/checkout" method="post" novalidate>
+                <input type="hidden" name="discount" class="form-control" id="coupon_code" value="" placeholder="{{ 'cart.discount_box.input_placeholder' | t }}">
+                {%- if settings.terms_conditions -%}
+                <div class="agree_checkbox has-item"{%unless cart.item_count > 0%} style="display:none"{%endunless%}>
+                  <label class="label-for-checkbox" style="font-size: 1.3rem;">
+                    <input type="checkbox" name="checkbox" class="input-checkbox kt_agree">
+                    {{settings.terms_and_privacy_conditions|replace: '<p>','<p class="m-0" style="display: inline;">'|html}}
+                  </label>
+                </div>
+                {%- endif -%}
+                <div class="clearfix kt_agree_swich"{% if settings.terms_conditions %} style="opacity: 0.7;pointer-events: none"{% endif %}>
+                  <button type="submit" class="btn btn-primary btn-order btn-block">{{ 'cart.general.checkout' | t }}</button>
+                  {% if additional_checkout_buttons %}
+                  <div class="additional-checkout-buttons">{{ content_for_additional_checkout_buttons }}</div>
+                  {% endif %}
+                </div>
+                {%-if settings.trust_image_-%}
+                <div class="w-100 text-center mt-2">
+                  <img class="lazyload" alt="{{settings.trust_image_.alt}}" src="data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAQAICRAEAOw==" data-src="{{settings.trust_image_| img_url: 'master'}}">
+                </div>
+                {%-endif-%}
+              </form>
+            </div>
+            <a href="{{routes.all_products_collection_url}}" class="btn btn-outline-dark-2 btn-block mb-3"><span>{{ 'cart.general.continue_shopping' | t }}</span><i class="fkt-refresh"></i></a>
+          </aside>
+          {% else %}
+          <div class="col-12 text-center">
+            <div class="imgKT"><img class="mx-auto my-5" src="{{'cart_1.svg'| asset_url}}" alt="" style="max-width: 200px"></div>
+            <p class="cart-empty">{{ 'cart.general.empty_page' | t }}</p>
+            <div class="empty-cart-text mb-3">{{ 'cart.general.guest_note_html' | t }}</div>
+            <p class="return-to-shop"><a href="collections/all" class="btn btn-outline-primary wc-backward mb-3">{{ 'cart.general.continue_shopping' | t }}</a></p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Cart page",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Space settings"
+      },
+      {
+        "type": "select",
+        "id": "width_section",
+        "label": "Max width section",
+        "options": [
+          { "value": "container", "label": "1200px" },
+          { "value": "container-fluid wide", "label": "Wide" },
+          { "value": "w-100", "label": "Full width" }
+        ],
+        "default": "container"
+      },
+      {
+        "type":"checkbox",
+        "id": "width_content",
+        "label": "Max width content?"
+      },
+      {
+        "type": "header",
+        "content": "Content settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_notes_enable",
+        "label": "Enable cart notes",
+        "default": false
+      }
+    ]
+  }
+{% endschema %}

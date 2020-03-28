@@ -1,0 +1,48 @@
+{%- assign template_id = template | split: '.' | first -%}
+{%- assign st = 'display_' | append: template_id -%}
+{%- if settings[st] -%}
+  {%- assign collection_opj = collections[settings.collection_suggest] -%}
+  {%- if collection_opj.handle != "" or collection_opj.handle != empty -%}
+    {%- assign colections = collection_opj.products -%}
+    {%- capture index -%}{{ 'now' | date: '%S' | times: shop.collections_count | divided_by: 60 }}{%- endcapture -%}
+    {%- assign index_number = index | plus:0 -%}
+    {%- if index_number <= collection_opj.all_products_count and index_number < 50 -%}
+      {%- for product in colections offset:index -%}
+          {%- assign ps = product -%}
+          {%- break -%}
+      {%- endfor -%}
+    {%- else -%}
+     {%- assign ps = colections | first -%}
+    {%- endif -%}
+    <div class="kt-products-suggest hidden-xs" style="display: none">
+      <div class="product-suggest">
+        {%- if settings.show_close_suggest -%}<a href="javascript:void(0)" class="suggest-close" onclick="$(this).parent().parent().remove()">×</a>{%- endif -%}
+        <div class="table_suggest">
+          <div class="table-cell-top img">
+            <a href="{{ ps.url | within: collection_opj }}">
+              <img src="{{ps.featured_image | img_url: '85x108', crop: 'center' | split:'?' | first }}" class="attachment-shop_thumbnail" alt="{{ps.title}}"> 
+            </a>
+          </div>
+          <div class="table-cell-top">
+            <span style="font-size: 12px">{{'general.suggest.title' | t}}</span>
+            <a href="{{ ps.url | within: collection_opj }}" class="product-title">{{ps.title}}</a>
+            {%- if settings.use_suggest -%}
+            {%- assign ago_suggest = 'now' | date: '%S' | plus:0 -%}
+            <div class="minutes-ago">
+              <span class="minute-number">{%- if ago_suggest == 0 -%}1{%- else -%}{{ago_suggest}}{%- endif -%}</span> <span>{{'general.suggest.minutes_ago' | t}}</span>
+            </div>
+            {%- endif -%}
+            {%- if settings.use_fake_location and settings.fake_location != blank -%}
+            {%- assign arr_fake_location = settings.fake_location | replace: ' | ', '|' | replace: ' |', '|' | replace: '| ', '|' | split: '|' -%}
+            {%- assign ago_index = 'now' | date: '%S' | plus:0 -%}
+            <div class="from-ago">{{'general.suggest.from' | t}} <span class="from">{%- if ago_index > arr_fake_location.size -%}{%- assign ago_index = 0 -%}{%- endif -%}{{arr_fake_location[ago_index]}}</span></div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      theme.suggestArray = {{ colections | map:'handle' | json }};
+    </script>
+  {%- endif -%}
+{%- endif -%}

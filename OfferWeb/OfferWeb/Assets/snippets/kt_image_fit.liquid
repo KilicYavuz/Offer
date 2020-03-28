@@ -1,0 +1,33 @@
+{%- liquid
+  assign aspect_ratioW = width
+  assign aspect_ratioH = height
+  assign aspect_cs = aspect_ratioW | divided_by:aspect_ratioH | round: 5
+  assign aspect_image = image_item.width | times:1.00 | divided_by:image_item.height | round: 5
+  if aspect_ratioW < aspect_ratioH
+    if image_item.width == image_item.height
+      echo 'nonheight_ nonwidth'
+    else
+    if aspect_cs >= aspect_image
+      echo 'nonheight'
+    else
+      echo 'nonwidth'
+    endif
+  endif
+elsif aspect_ratioW > aspect_ratioH
+  if image_item.width == image_item.height
+    echo 'nonheight nonwidth_'
+  else
+    if aspect_cs <= aspect_image
+      echo 'nonwidth'
+    else
+      echo 'nonheight'
+    endif
+  endif
+else
+  if aspect_cs <= aspect_image
+    echo 'nonwidth'
+  else
+    echo 'nonheight'
+  endif
+endif
+-%}

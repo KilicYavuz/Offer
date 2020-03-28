@@ -1,0 +1,35 @@
+{%- unless style_btn -%}
+  {%-assign style_btn = ''-%}
+{%- endunless -%}
+{%- unless position_btn -%}
+  {%-assign position_btn = ''-%}
+{%- endunless -%}
+
+{%-assign has_variants = false-%}
+{%- if product.variants.size >= 1 -%}
+  {%-assign has_variants = true-%}
+{%- endif -%}
+{%- if has_variants and product.options.size == 1 and settings.qs_show_vars_list -%}
+  {%-assign has_variants = false-%}
+{%- endif -%}
+
+{%- if has_variants and product.options.size > 1 and settings.qs_show_vars_list and settings.qs_show_first_opt == false -%}
+  {%-assign has_variants = false-%}
+{%- endif -%}
+{%- capture onclick -%}
+  {%- if settings.use_am_popup -%}
+    addMoreItemAjax
+  {%- elsif has_variants and action != 'compare' and position_btn == ''-%}
+    kt__quick-shop
+  {%- else -%}
+    addItemAjax
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- if preOrder -%}
+  <button type="submit" class="{{style_btn}} btn-onclick product_type_variable add_to_cart_button {{onclick}}" data-view="{{ product.url }}" data-vrid="{{product.selected_or_first_available_variant.id}}" data-pid="{{product.id}}" aria-label="{{'products.product.pre_order'|t}}"><span class="text-nowrap addItemAjax-text">{{'products.product.pre_order'|t}}</span></button>
+{%- elsif sold_out == false -%}
+  <button type="submit" class="{{style_btn}} btn-onclick product_type_variable add_to_cart_button {{onclick}}" data-view="{{ product.url }}" data-vrid="{{product.selected_or_first_available_variant.id}}" data-pid="{{product.id}}" aria-label="{{'products.product.add_to_cart'|t}}"><span class="text-nowrap addItemAjax-text">{{'products.product.add_to_cart'|t}}</span></button>
+{%- else -%}
+  <a href="{{product.url| within: collection}}" class="{{style_btn}} btn-onclick product_type_variable add_to_cart_button {{onclick}} sold_out disabled" aria-label="{{'products.product.sold_out'|t}}"><span class="text-nowrap">{{'products.product.sold_out'|t}}</span></a>
+{%- endif -%}

@@ -1,0 +1,328 @@
+<!-- md_portfolio.liquid -->
+{%- liquid
+  assign width_section = section.settings.width_section
+  assign width_content = section.settings.width_content
+  capture width_section_
+    if width_section == 'container-fluid wide' and width_content == false
+      echo 'w-100'
+    else
+      echo width_section
+    endif
+  endcapture
+  capture width_content_
+    if width_content and width_section == 'w-100'
+      echo 'container'
+    elsif width_section == 'container-fluid wide' and width_content == false
+      echo 'container-fluid wide'
+    else
+      echo 'w-100'
+    endif   
+  endcapture
+  assign dir_body = settings.dir_body
+  assign cssAlign = 'left'
+  assign cssAlign_rev = 'right'
+  if dir_body == 'rtl'
+    assign cssAlign = 'right'
+    assign cssAlign_rev = 'left'
+  endif
+-%}
+
+{%- if section.blocks.size > 0 -%}
+{%- unless cart.attributes.theme_mobile == 'true' and section.settings.off_mobile or cart.attributes.theme_mobile == 'false' and section.settings.off_desktop -%}
+{%- assign mapType = section.blocks | map: 'type' -%}
+
+<div data-section-id="{{ section.id }}" id="md_portfolio--{{ section.id }}" data-section-type="banner-masonry" data-container=".portfolio-container--{{section.id}}" data-filter=".portfolio-filter--{{section.id}}" data-items=".portfolio-item--{{section.id}}" class="{{width_section_}}{%if section.settings.off_mobile%} d-none d-lg-block{%endif%}{%if section.settings.off_desktop%} d-lg-none{%endif%}">
+  <div class="content_{{section.id}}{%if section.settings.image%} bg-image lazyload{%endif%}" style="padding:{{section.settings.section_padding|default:'0' |split:'|' |first | replace : '-',' '}};margin-top: {{section.settings.section_margin_top|default:'0'|split:'|'|first}};margin-bottom: {{section.settings.section_margin_bottom|default:'0'|split:'|'|first}};{%-if section.settings.section_bg != blank -%}background-color:{{section.settings.section_bg | color_modify: 'alpha', section.settings.section_bg_op}};{%-endif-%}"{%if section.settings.image%} data-bgset="{{section.settings.image | img_url: 'master'}}" data-sizes="auto" data-parent-fit="contain"{%endif%} data-mt-respon="{{section.settings.section_margin_top}}" data-mb-respon="{{section.settings.section_margin_bottom}}" data-p-respon="{{section.settings.section_padding}}" data-el=".content_{{section.id}}" data-el-p=".content_{{section.id}}">
+    <div class="section-width {{width_content_}}{%if section.settings.dark_mode%} dark-mode{%endif%}">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'item_title' -%}
+        <div class="heading row no-gutters align-items-center justify-content-between{%if block.settings.title_align == 'text-right'%} flex-row-reverse{%endif%}">
+          <div class="col-{%if block.settings.name_link != blank%}auto{%else%}12{%endif%}">
+            <div class="section-title {{block.settings.title_align}} w-100">                
+              {%- if block.settings.reverse -%}
+              <p class="sub-title">{{block.settings.stitle_section}}</p>
+              {%- endif -%}
+              <h3 class="title">{{block.settings.title_section}}</h3>
+              {%- unless block.settings.reverse -%}
+              <p class="sub-title">{{block.settings.stitle_section}}</p>
+              {%- endunless -%}
+            </div>
+          </div>
+          {%- if block.settings.name_link != blank -%}
+          <div class="col-auto">
+            {%- if block.settings.link_to != blank -%}              
+              <a href="{{block.settings.link_to}}" class="title-link {{block.settings.style_link}}" >{{block.settings.name_link}}</a>
+            {%- else -%}
+              <p class="sub-title">{{block.settings.name_link}}</p>
+            {%- endif -%}
+          </div>
+          {%- endif -%}
+        </div>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- assign list_tags = section.settings.tags | split: ',' -%}
+      {%- case section.settings.coll_grid -%}
+        {%- when 2 -%}
+          {%- assign grid_item_width = ' col-lg-6 col-md-6 col-sm-6 col-xs-6' -%}
+        {%- when 3 -%}
+          {%- assign grid_item_width = ' col-lg-4 col-md-4 col-sm-4 col-xs-6' -%}
+        {%- when 4 -%}
+          {%- assign grid_item_width = ' col-lg-3 col-md-3 col-sm-4 col-xs-6' -%}
+        {%- when 5 -%}
+          {%- assign grid_item_width = ' col-xl-2-10 col-lg-2-10 col-sm-4 col-xs-6' -%}
+        {%- when 6 -%}
+          {%- assign grid_item_width = ' col-lg-2 col-md-2 col-sm-2 col-xs-6' -%}
+      {%- endcase -%}
+			<ul class="nav-filter portfolio-filter portfolio-filter--{{section.id}} justify-content-center">
+        {%- for tag in list_tags -%}
+        {% assign tag = tag | lstrip | rstrip %}
+        <li{%if forloop.first%} class="active"{%endif%}><a href="#" data-filter="{{tag | split: '|' | last}}">{{tag | split: '|' | first}}</a></li>
+        {%- endfor -%}
+			</ul>
+			<div class="row{%if section.settings.no_space%} no-gutters{%endif%} portfolio-container portfolio-container--{{section.id}} show-items">
+        {%- for block in section.blocks -%}
+        {%- if block.type == 'item' -%}
+        {%- assign alt_class = block.settings.image.alt | split: ' ' -%}
+        {%- assign tags_class = block.settings.tags | split: ' ' -%}
+			  <div class="portfolio-item portfolio-item--{{section.id}} portfolio-{{section.settings.item_effect}} {{tags_class}} {{alt_class}} {{grid_item_width}}">
+			    <figure class="portfolio-media">
+			      <a href="{{block.settings.url|default: '#'}}">
+              {%- assign image_item = block.settings.image -%}
+              {%-assign width = image_item.width | default : 100 | plus: 0.00 -%}{%-assign height = image_item.height | default : 100 | plus: 0.00-%}
+              <div class="img__banner_template lazyload" style="padding-bottom: {{height|divided_by: width | times: 100.00000000}}%;" data-bgset="{%- render 'bgset', image: image_item -%}" data-sizes="auto"></div>
+			      </a>
+			    </figure>
+			    <div class="portfolio-content{%if block.settings.content_center%} portfolio-content-center{%endif%}">
+			      <h3 class="portfolio-title">
+              <a href="{{block.settings.url|default: '#'}}">{{block.settings.title}}</a>
+            </h3>
+			      <div class="portfolio-tags">
+			        <a href="{{block.settings.url|default: '#'}}">{{block.settings.tags}}</a>
+			      </div>
+			    </div>
+			  </div>
+        {% endif %}
+        {%- endfor -%}
+			</div>
+    </div>
+  </div>
+</div>
+{%-endunless-%}
+{%- endif -%}
+{% schema %}
+  {
+    "name": "Portfolio",
+    "class": "md_portfolio",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Portfolio",
+        "info": "Name section (in editor bar)"
+      },
+      {
+        "type":"checkbox",
+        "id": "off_mobile",
+        "label": "Turn off on mobile?"
+      },
+      {
+        "type":"checkbox",
+        "id": "off_desktop",
+        "label": "Turn off on desktop?"
+      },
+      {
+        "type": "header",
+        "content": "Space settings"
+      },
+      {
+        "type":"checkbox",
+        "id": "width_section",
+        "label": "Max width section?"
+      },
+      {
+        "type":"checkbox",
+        "id": "width_content",
+        "label": "Max width content?",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "section_margin_top",
+        "label": "Margin top",
+        "info": "2.5rem|3rem|3.5rem|4rem|4.5rem|5rem"
+      },
+      {
+        "type": "text",
+        "id": "section_margin_bottom",
+        "label": "Margin bottom",
+        "info": "2.5rem|3rem|3.5rem|4rem|4.5rem|5rem"
+      },
+      {
+        "type": "text",
+        "id": "section_padding",
+        "label": "Paddings (top right bottom left)",
+        "info": "6rem 6rem 0 6rem"
+      },
+      {
+        "type": "header",
+        "content": "Background settings"
+      },
+      {
+        "type": "color",
+        "id": "section_bg",
+        "label": "Background color"
+      },
+      {
+        "type": "range",
+        "id": "section_bg_op",
+        "min": 0,
+        "max": 1,
+        "step": 0.1,
+        "label": "Opacity background color",
+        "default": 0.5
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Background image",
+        "info": "Size suggestion: 1920 x 497 pixels"
+      },
+      {
+        "type": "header",
+        "content": "Content settings"
+      },
+      {
+        "type": "radio",
+        "id": "item_effect",
+        "label": "Item effect",
+        "options": [
+          {"value": "simple", "label": "Simple"},
+          {"value": "overlay", "label": "Overlay"}
+        ],
+        "default": "simple"
+      },
+      {
+        "type": "textarea",
+        "id": "tags",
+        "label": "List tags filter",
+        "default": "All|*, Women|.women, Men|.men, Accessories|.ccessories"
+      },
+      {
+        "type": "range",
+        "id": "coll_grid",
+        "min": 2,
+        "max": 6,
+        "step": 1,
+        "label": "Item per row",
+        "default": 3
+      },
+      {
+        "type":"checkbox",
+        "id": "no_space",
+        "label": "No space item"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "item_title",
+        "name": "Item Title section",
+        "settings": [
+          {
+            "type": "html",
+            "id": "title_section",
+            "label": "Title",
+            "default": "Titles"
+          },
+          {
+            "type": "html",
+            "id": "stitle_section",
+            "label": "Subtitle",
+            "default": "Quisque a lectus."
+          },
+          {
+            "type":"checkbox",
+            "id": "reverse",
+            "label": "Reverse title and subtitle?"
+          },
+          {
+            "type": "select",
+            "id": "title_align",
+            "options": [
+              {
+                "value": "",
+                "label": "Auto"
+              },
+              {
+                "value": "text-center",
+                "label": "Center"
+              }
+            ],
+            "label": "Align title",
+            "default": ""
+          },
+          {
+            "type": "url",
+            "id": "link_to",
+            "label": "Link to"
+          },
+          {
+            "type": "text",
+            "id": "name_link",
+            "label": "Name link",
+            "default": "Click here to view <\i class=\"fkt-long-arrow-right\"><\/i>"
+          },
+          {
+            "type": "radio",
+            "id": "style_link",
+            "label": "Style link",
+            "options": [
+              { "value": "", "label": "Default" },
+              { "value": "link-underline", "label": "Underline" }
+            ],
+            "default": ""
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "name": "Item",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type":"checkbox",
+            "id": "content_center",
+            "label": "Content center"
+          },
+          {
+            "type": "html",
+            "id": "title",
+            "label": "Title",
+            "default": "Vestibulum auctor dapibus"
+          },
+          {
+            "type": "text",
+            "id": "tags",
+            "label": "Tags",
+            "info": "You can add other tags in the alt tag of the image."
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "Url action"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Portfolio",
+        "category": "5. Element"
+      }
+    ]
+  }
+{% endschema %}

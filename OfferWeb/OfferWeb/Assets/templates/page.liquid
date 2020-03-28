@@ -1,0 +1,18 @@
+{%-assign url_check = canonical_url | split: '?q=' | last-%}
+{%- if url_check == 'ly_none' -%}
+{%-layout none-%}
+{{page.content}}
+{%- else -%}
+<div class="page-container">
+  <div class="container">
+    <div class="border-bottom mb-4">
+      {%-render 'kt_breadcrumb'-%}
+    </div>
+  	<div class="row mt-5 mb-7i">
+  		<div class="col-12">
+	  		{{ page.content }}
+  		</div>
+  	</div>
+  </div>
+</div>
+{%- endif -%}

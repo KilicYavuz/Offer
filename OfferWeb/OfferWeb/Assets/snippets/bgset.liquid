@@ -1,0 +1,49 @@
+{%- capture return -%} 
+{%- if image != blank -%}
+{%- assign aspect_ratioW = image.width | plus: 0.00 -%}
+{%- assign aspect_ratioH = image.height | plus: 0.00 -%}
+{%- assign as_r = aspect_ratioW | divided_by: aspect_ratioH -%}
+{%- if prioritize == 'height' -%}
+    {%- if image.height > 180 %}{{ image | img_url: 'x360' }} 180h {{ 180 | times: as_r | round }}w,{%- endif -%}
+    {%- if image.height > 360 %}{{ image | img_url: 'x400' }} 360h {{ 360 | times: as_r | round }}w,{%- endif -%}
+    {%- if image.height > 540 %}{{ image | img_url: 'x580' }} 540h {{ 540 | times: as_r | round }}w,{%- endif -%}
+    {%- if image.height > 720 %}{{ image | img_url: 'x760' }} 720h {{ 720 | times: as_r | round }}w,{%- endif -%}
+    {%- if image.height > 900 %}{{ image | img_url: 'x940' }} 900h {{ 900 | times: as_r | round }}w,{%- endif -%}
+    {%- if image.height > 1080 %}{{ image | img_url: 'x1080' }} 1080h {{ 1080 | times: as_r | round }}w,{%- endif -%}
+    {%- if image.height > 1296 %}{{ image | img_url: 'x1296' }} 1296h {{ 1296 | times: as_r | round }}w,{%- endif -%}
+    {%- if image.height > 1512 %}{{ image | img_url: 'x1512' }} 1512h {{ 1512 | times: as_r | round }}w,{%- endif -%}
+    {%- if image.height > 1728 %}{{ image | img_url: 'x1728' }} 1728h {{ 1728 | times: as_r | round }}w,{%- endif -%}
+    {%- if image.height > 1950 %}{{ image | img_url: 'x1950' }} 1950h {{ 1950 | times: as_r | round }}w,{%- endif -%}
+    {%- if image.height > 2100 %}{{ image | img_url: 'x2100' }} 2100h {{ 2100 | times: as_r | round }}w,{%- endif -%}
+    {%- if image.height > 2260 %}{{ image | img_url: 'x2260' }} 2260h {{ 2260 | times: as_r | round }}w,{%- endif -%}
+    {%- if image.height > 2450 %}{{ image | img_url: 'x2450' }} 2450h {{ 2450 | times: as_r | round }}w,{%- endif -%}
+    {%- if image.height > 2700 %}{{ image | img_url: 'x2700' }} 2700h {{ 2700 | times: as_r | round }}w,{%- endif -%}
+    {%- if image.height > 3000 %}{{ image | img_url: 'x3000' }} 3000h {{ 3000 | times: as_r | round }}w,{%- endif -%}
+    {%- if image.height > 3350 %}{{ image | img_url: 'x3350' }} 3350h {{ 3350 | times: as_r | round }}w,{%- endif -%}
+    {%- if image.height > 3750 %}{{ image | img_url: 'x3750' }} 3750h {{ 3750 | times: as_r | round }}w,{%- endif -%}
+    {%- if image.height > 4100 %}{{ image | img_url: 'x4100' }} 4100h {{ 4100 | times: as_r | round }}w,{%- endif -%}
+    {{ image | img_url: 'master' }} {{ image.height }}h {{ image.width }}w
+{%- else  -%}
+    {%- if image.width > 180 %}{{ image | img_url: '180x' }} 180w {{ 180 | divided_by: as_r | round }}h,{%- endif -%}
+    {%- if image.width > 360 %}{{ image | img_url: '360x' }} 360w {{ 360 | divided_by: as_r | round }}h,{%- endif -%}
+    {%- if image.width > 540 %}{{ image | img_url: '540x' }} 540w {{ 540 | divided_by: as_r | round }}h,{%- endif -%}
+    {%- if image.width > 720 %}{{ image | img_url: '720x' }} 720w {{ 720 | divided_by: as_r | round }}h,{%- endif -%}
+    {%- if image.width > 900 %}{{ image | img_url: '900x' }} 900w {{ 900 | divided_by: as_r | round }}h,{%- endif -%}
+    {%- if image.width > 1080 %}{{ image | img_url: '1080x' }} 1080w {{ 1080 | divided_by: as_r | round }}h,{%- endif -%}
+    {%- if image.width > 1296 %}{{ image | img_url: '1296x' }} 1296w {{ 1296 | divided_by: as_r | round }}h,{%- endif -%}
+    {%- if image.width > 1512 %}{{ image | img_url: '1512x' }} 1512w {{ 1512 | divided_by: as_r | round }}h,{%- endif -%}
+    {%- if image.width > 1728 %}{{ image | img_url: '1728x' }} 1728w {{ 1728 | divided_by: as_r | round }}h,{%- endif -%}
+    {%- if image.width > 1950 %}{{ image | img_url: '1950x' }} 1950w {{ 1950 | divided_by: as_r | round }}h,{%- endif -%}
+    {%- if image.width > 2100 %}{{ image | img_url: '2100x' }} 2100w {{ 2100 | divided_by: as_r | round }}h,{%- endif -%}
+    {%- if image.width > 2260 %}{{ image | img_url: '2260x' }} 2260w {{ 2260 | divided_by: as_r | round }}h,{%- endif -%}
+    {%- if image.width > 2450 %}{{ image | img_url: '2450x' }} 2450w {{ 2450 | divided_by: as_r | round }}h,{%- endif -%}
+    {%- if image.width > 2700 %}{{ image | img_url: '2700x' }} 2700w {{ 2700 | divided_by: as_r | round }}h,{%- endif -%}
+    {%- if image.width > 3000 %}{{ image | img_url: '3000x' }} 3000w {{ 3000 | divided_by: as_r | round }}h,{%- endif -%}
+    {%- if image.width > 3350 %}{{ image | img_url: '3350x' }} 3350w {{ 3350 | divided_by: as_r | round }}h,{%- endif -%}
+    {%- if image.width > 3750 %}{{ image | img_url: '3750x' }} 3750w {{ 3750 | divided_by: as_r | round }}h,{%- endif -%}
+    {%- if image.width > 4100 %}{{ image | img_url: '4100x' }} 4100w {{ 4100 | divided_by: as_r | round }}h,{%- endif -%}
+    {{ image | img_url: 'master' }} {{ image.width }}w {{ image.height }}h
+{%- endif -%}
+{%- endif -%}
+{%- endcapture -%} 
+{{return | strip_newlines| replace: '  ',' '}}

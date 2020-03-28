@@ -1,0 +1,12 @@
+{%- unless style_btn -%}
+  {%-assign style_btn = ''-%}
+{%- endunless -%}
+
+<input type="hidden" name="id" value="{{product.selected_or_first_available_variant.id}}"><input type="hidden" name="quantity" value="1">
+{%- if preOrder -%}
+  <button type="submit" class="{{style_btn}} btn-onclick product_type_simple add_to_cart_button addItemAjax" data-pid="{{product.id}}" aria-label="{{'products.product.pre_order'|t}}"><span class="text-nowrap addItemAjax-text">{{'products.product.pre_order'|t}}</span></button>
+{%- elsif sold_out == false -%}
+  <button type="submit" class="{{style_btn}} btn-onclick product_type_simple add_to_cart_button addItemAjax" data-pid="{{product.id}}" aria-label="{{'products.product.add_to_cart'|t}}"><span class="text-nowrap addItemAjax-text">{{'products.product.add_to_cart'|t}}</span></button>
+{%- else -%}
+  <a href="{{product.url| within: collection}}" class="{{style_btn}} product_type_simple add_to_cart_button addItemAjax sold_out disabled" aria-label="{{'products.product.sold_out'|t}}"><span class="text-nowrap">{{'products.product.sold_out'|t}}</span></a>
+{%- endif -%}

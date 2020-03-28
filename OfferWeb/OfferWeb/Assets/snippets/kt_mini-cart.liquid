@@ -1,0 +1,62 @@
+{%- capture contentDrop -%}
+  {%- assign style_0 = '' -%}
+  {%- if cart.item_count == 0 -%}{%- assign style_0 = 'style="display:none"' -%}{%- endif -%}
+  {%- assign style_1 = '' -%}
+  {%- if cart.item_count > 0 -%}{%- assign style_1 = 'style="display:none"' -%}{%- endif -%}
+  <div class="show-shopping-cart kiti--DropInner">
+    {%- comment -%}<h3 class="title has-item border-bottom clearfix"{% if cart.item_count == 0 %} style="display:none"{% endif %}>{{ 'cart.general.items_with_count_html' | t: count: cart.item_count }}</h3>{%- endcomment -%}
+    <ul class="items__cart-drop ajax__list-cart has-item kt_scroll" {{style_0}}></ul>
+    <div class="sub-total mb-2 has-item clearfix" {{style_0}}>
+      {{ 'cart.general.subtotal' | t }}: <span class="cartCost" data-price="{{ cart.total_price }}">{{ cart.total_price | money }}</span>
+    </div>
+    {%- if settings.use_threshold_in_drop -%}
+    <div class="spendFreeShip has-item" {{style_0}}>
+      <div class="progress">
+        {% assign shipping_above = settings.free_shipping_above|remove:'.' | plus: 0 %}
+        {% assign percent = cart.total_price | times: 1.0 | divided_by: shipping_above | times: 100.0 %}
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{percent}}%;" aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="{{shipping_above}}"></div>
+      </div>
+      <div class="text_progress mb-1i">
+        {% assign shipping_above_html = shipping_above | money %}
+        <span>{{'products.shipping_threshold.spend_text_in_cart_drawer_html' | t: shipping_above: shipping_above_html}}</span>
+        <span>{{'products.shipping_threshold.congratulations' | t }}</span>
+      </div>
+    </div>
+    {%- endif -%}
+    {%- if settings.terms_conditions -%}
+    <div class="agree_checkbox has-item" {{style_0}}>
+      <label class="label-for-checkbox">
+        <input type="checkbox" name="checkbox" class="input-checkbox kt_agree">
+        {{settings.terms_and_privacy_conditions|replace: '<p>','<p class="m-0" style="display: inline;">'|html}}
+      </label>
+    </div>
+    {%- endif -%}
+    <div class="group-button has-item clearfix" {{style_0}}>
+      <a href="{{routes.cart_url}}" class="btn btn-primary">{{ 'cart.general.view' | t }}</a>
+      <a href="/checkout" class="check-out btn btn-outline-primary-2 kt_agree_swich"{% if settings.terms_conditions %} style="opacity: 0.2;pointer-events: none"{% endif %}><span>{{ 'cart.general.checkout_small' | t }}</span><i class="fkt-long-arrow-right"></i></a>
+    </div>
+    {%- if additional_checkout_buttons -%}
+      <div class="additional-checkout-buttons has-item clearfix" {{style_0}}>
+        {{ content_for_additional_checkout_buttons }}
+      </div>
+    {%- endif -%}
+    <h3 class="title no-item border-bottom clearfix" {{style_1}}>{{ 'cart.general.empty' | t }}</h3>
+    <div class="group-button mt-5 no-item clearfix" {{style_1}}>
+      <a href="{{routes.all_products_collection_url}}" class="btn btn-primary w-100">{{ 'cart.general.continue_shopping' | t }}</a>
+    </div>
+  </div>
+{%- endcapture -%}
+
+{% if position =="menu" %}
+  <div class="mini-cart{%if settings.type_ajax_cart != 'none' and cart.item_count > 0 %} load{%endif%} style-01{%if settings.type_ajax_cart == 'drop'%} kiti--DropItem{%endif%}"{%if settings.type_ajax_cart == 'drawer'%} onclick="KT.drawOpen()"{%elsif settings.type_ajax_cart == 'popup'%} onclick="KT.popupOpen()"{%endif%}>
+    <a href="{%if settings.type_ajax_cart == 'none'%}{{routes.cart_url}}{%else%}javascript:void(0){%endif%}" class="icon-link text-nowrap">
+      <div class="icon-count kt-button">
+        <i class="fkt-icon fkt-shopping-cart"></i>
+        <span class="count cartCount">{{ cart.item_count }}</span>
+      </div>
+      <span class="total title cartCost" data-price="{{ cart.total_price }}">{{ cart.total_price | default: 0 | money }}</span>
+      <span>{{'cart.general.title'|t}}</span>
+    </a>
+  {%-if settings.type_ajax_cart == 'drop'-%}{{contentDrop}}{%-endif-%}
+  </div>
+{% endif %}

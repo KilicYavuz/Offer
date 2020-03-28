@@ -1,0 +1,212 @@
+{%- liquid
+  capture st_card
+    echo settings.label_style
+    echo '|'
+    echo settings.use_new_label
+    echo '|'
+    echo settings.new_day
+    echo '|'
+    echo settings.use_sale_label
+    echo '|'
+    echo settings.product_grid_layout
+    echo '|'
+    echo settings.aspect_ratio
+    echo '|'
+    echo settings.aspect_ratio_default
+    echo '|'
+    echo settings.img_type
+    echo '|'
+    echo settings.use_first_avai_img
+    echo '|'
+    echo settings.use_second_img
+    echo '|'
+    echo settings.pr_grid_talg
+    echo '|'
+    echo settings.qs_hide_only_1_opt
+    echo '|'
+    echo settings.qs_show_vars_list
+    echo '|'
+    echo settings.qs_use_name_opt
+    echo '|'
+    echo settings.use_quickview
+    echo '|'
+    echo settings.use_wishlist
+    echo '|'
+    if settings.use_wishlist
+      assign metafields = customer.metafields.nitro_wishlist.products | strip | default: '' | split: '|'
+      assign wishlist_hanlde = metafields | last | split: ' '
+      assign wishlist_count =  metafields | first | split: ' ' | size
+      assign wishlist =  metafields | first
+    endif
+    echo settings.use_compare
+    echo '|'
+    echo settings.use_countdown_grid
+    echo '|'
+    echo settings.countdown_grid_style
+    echo '|'
+    echo settings.use_vendor_grid
+    echo '|'
+    echo settings.use_review_grid
+    echo '|'
+    echo settings.use_add_to_cart_btn
+    echo '|'
+    echo settings.qs_show_first_opt
+  endcapture
+  assign st_card = st_card | split: '|'
+-%}
+
+{%- liquid
+  assign compare_at_price = product.compare_at_price 
+  assign price = product.price 
+  assign price_varies = product.price_varies 
+  assign available = product.available 
+  if st_card[1] == "true"
+    unless product.tags contains 'notnew'
+      assign on_new = false
+      assign now_date_int = "now" | date: "%j" | plus: 0
+      assign now_year_int = "now" | date: '%Y' | plus: 0
+      assign pub_date_int = product.published_at | date: "%j" | plus: 0
+      assign pub_year_int = product.published_at | date: '%Y' | plus: 0
+      if now_year_int == pub_year_int
+        assign new_day_int = st_card[2] | default: 30 | plus: 0
+        assign check_new = now_date_int | minus: pub_date_int
+        if check_new >= 0 and check_new <= new_day_int
+          assign on_new = true
+        endif
+      else
+        assign new_day_int = st_card[2] | default: 30 | plus: 366
+        assign check_new = now_date_int | plus: 366
+        if check_new <= new_day_int
+          assign on_new = true
+        endif
+      endif
+    endunless
+  endif
+  assign on_sale = false
+  if compare_at_price > price 
+    assign on_sale = true
+  endif
+  assign sold_out = true
+  assign preOrder = false
+  unless available == false
+    assign sold_out = false
+  endunless
+  if product.selected_or_first_available_variant.incoming
+    assign preOrder = true 
+  endif
+  unless grid_layout
+    assign grid_layout = st_card[4]
+  endunless
+  unless masonry
+    assign masonry = false
+    if st_card[7] == 'normal'
+      assign masonry = 'none'
+    endif
+  endunless
+  unless block_id
+    assign block_id = block.id
+  endunless
+  unless section_id
+    assign section_id = section.id
+  endunless
+-%}
+
+<div class="kt-stickyAddCart product-inner {{settings.sticky_style}}{%unless settings.show_sticky_add_mobile%} d-none d-md-block{%endunless%}{% unless product.has_only_default_variant or settings.qs_hide_only_1_opt and product.variants.size == 1 or settings.qs_show_vars_list == false %} ktlz{%endunless%}" data-href="{{product.handle}}"{%unless product.has_only_default_variant%} data-show-name="{{ settings.qs_use_name_opt }}" {%if product.options.size >= 1%} data-show-only-first-option="{{settings.qs_show_first_opt}}"{%endif%}{%endunless%} data-ktlz="onLoad">
+  <form method="post" action="{{routes.cart_add_url}}" id="ProductSection-{{product.id}}-{{section_id}}" class="ktlz-form-pid-{{product.id}}" data-p-id="{{product.id}}" data-section-id="-{{product.id}}-{{section_id}}" data-options="{{product.options.size}}" data-pr-vrs="">
+    <div class="position-fixed {{settings.sticky_position}}">
+      <button class="close" aria-label="Close" type="button" onclick="$('#form_variants').slideToggle();$('body').toggleClass('show-stickyAddCart');"></button>
+      <div class="container position-relative">
+        {%- unless product.has_only_default_variant -%}
+        <div id="form_variants" class="row align-items-center justify-content-between" style="display: none">
+          {%-if product.has_only_default_variant == false-%}
+            {%-unless settings.qs_hide_only_1_opt and product.variants.size == 1-%}
+            <div class="product-variants-wrapper">
+              <div class="prd-variants">
+                {%- for i in (1..product.options.size) -%}
+                  <div class="prd--option{{i}} animated-background"></div>
+                {%- endfor -%}
+              </div>
+            </div>
+            {%-endunless-%}
+          {%-endif-%}
+        </div>
+        {%-endunless-%}
+        <div class="row align-items-center justify-content-between">
+          <div class="col-12 col-md-7 infor">
+            <div class="row align-items-center">
+              {%- if settings.show_sticky_img -%}
+              {%- assign current_img_sticky = product.first_available_variant -%}
+              {%- if current_variant_sticky.featured_image == null -%}
+              {%- assign current_img_sticky = product -%}
+              {%- endif -%}
+              <div class="col-auto">
+                <div class="img_sticky product-thumb">
+                  {%- render 'image-grid-item', product: product, st_card: st_card, masonry: false, second_thumb: false, as_r: '1/1' -%}
+                </div>
+              </div>
+              {%- endif -%}
+              <div class="col">
+                <div class="title_sticky{% if settings.show_sticky_img %} mt-2 mb-2{%else%} mt-2 mb-2 mt-md-1 mb-md-1{% endif %}">
+                  <p class="m-0">{{product.title}}</p>
+                  <div class="entry-price price mb-0">
+                    <ins class="ProductPrice-{{section.id}}">
+                      {{ product.price | money }}
+                    </ins>
+                    <del class="ComparePrice-{{section.id}}{%if product.compare_at_price <= product.price or product.compare_at_price == null%} d-none{%endif%}">
+                      {{ product.compare_at_price | default: 0 | money }}
+                    </del>
+                    {%- assign current_variant = product.selected_or_first_available_variant -%}
+                    {%- capture unit_price_base_unit -%}
+                      <span class="base_unit">
+                        {%- if current_variant.unit_price_measurement -%}
+                          {%- if current_variant.unit_price_measurement.reference_value != 1 -%}
+                            {{- current_variant.unit_price_measurement.reference_value -}}
+                          {%- endif -%}
+                          {{ current_variant.unit_price_measurement.reference_unit }}
+                        {%- endif -%}
+                      </span>
+                    {%- endcapture -%}
+                    <span class="UnitPrice-{{product.id}} text-nowrap{%unless current_variant.unit_price %} d-none{%endunless%}" style="margin-top: .9rem;">
+                      {{current_variant.unit_price_measurement.quantity_value | append: current_variant.unit_price_measurement.quantity_unit}}
+                      (<span class="unit_price">{{current_variant.unit_price | money }}</span> / {{unit_price_base_unit}})
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-5 text-right btns-group{%if settings.show_sticky_quantiny%}{%unless product.metafields.purchase.on_link != blank %} hasqty{%endunless%}{%endif%}">
+            <div class="row flex-nowrap justify-content-end">
+              {%- unless product.metafields.purchase.on_link != blank %}
+              <div class="quantity js-product-form__item--quantity{% if preOrder == false and sold_out or settings.show_sticky_quantiny == false %} d-none{% endif %} col-auto">
+                <div class="control">
+                  <a class="btn-number qtyminus quantity-minus" href="#"></a>
+                  <input type="text" data-step="1" name="quantity" data-min="1"{% if current_variant.inventory_management != null %} data-max="{{current_variant.inventory_quantity}}"{% endif %} value="1" title="Qty" class="input-qty input-text qty text" size="4" pattern="[0-9]*">
+                  <input type="hidden" name="id" value="{{product.selected_or_first_available_variant.id}}">
+                  <a class="btn-number qtyplus quantity-plus" href="#"></a>
+                </div>
+              </div> 
+              {%- endunless -%}
+              <div class="col-auto btns-wrapper position-relative{% unless preOrder == false and sold_out or settings.show_sticky_quantiny == false %} pl-0{% endunless %} pl-md-1">
+                {%- assign btn_style = 'btn btn-outline-primary-2 fkt-cart-plus text-uppercase' -%}
+                {%- if settings.sticky_style == 'darken' -%}
+                {%- assign btn_style = 'btn btn-outline-white fkt-cart-plus text-uppercase' -%}
+                {%- endif -%}
+              {%- if product.metafields.purchase.on_link != blank %}
+                <a href="{{product.metafields.purchase.on_link | split: ']' | last }}" class="btn btn-primary single_add_to_cart_button out_site">
+                  <span>{{product.metafields.purchase.on_link | split: "]" | first | remove: "["}}</span>
+                </a>
+              {%- elsif product.has_only_default_variant or product.variants.size == 1 -%}
+                {% render 'kt_button_no_variant', product: product, preOrder: preOrder, sold_out: sold_out, style_btn: btn_style %}
+              {%- else -%}
+                {% render 'kt_button_has_variant', product: product, preOrder: preOrder, sold_out: sold_out, style_btn: btn_style, position_btn: 'sticky_add_cart' %}
+                <button type="button" class="btn {{settings.atc_btn}} {{settings.atc_btn_rounded}}{% if settings.atc_btn_shadow%} btn-shadow{%endif%} position-absolute toggle" onclick="$('#form_variants').slideToggle();$('body').toggleClass('show-stickyAddCart');"></button>
+              {%- endif -%}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

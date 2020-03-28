@@ -1,0 +1,78 @@
+(function() {
+  var kt_select_ = 'select[id$="__kt_select"]';
+  $(kt_select_).on('change',function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    Shopify.Flash.notice("Please wait....");
+    let $section = $(this).parents('[data-panel-id]');
+    let home_css = $(this).val();
+    if (Shopify.SettingsPreset !== undefined) {
+      changeStyleForHome($section, home_css, Shopify.SettingsPreset);
+    } else {
+      $.ajax({
+        type: "GET",
+        url: "{{'settings_preset.json'|asset_url}}",
+        dataType: 'json',
+        success: function(data) {
+          Shopify.SettingsPreset = data;
+          changeStyleForHome($section, home_css, data);
+        },
+        error: function(data) {
+          Shopify.Flash.error("Error.");
+        }
+      })
+    }
+  })
+  function changeStyleForHome($section, home_css, dataPreset) {
+    let typeCheck = "kt_slideshow";
+    if (home_css.indexOf(' ') > 0) {
+      typeCheck = home_css.split(' ')[1];
+      home_css = home_css.split(' ')[0]
+      var section = dataPreset.presets[home_css].sections[typeCheck];
+    }
+    else {
+      var section = _.filter(dataPreset.presets[home_css].sections, { 'type': typeCheck })[0];
+    }
+    if (section === undefined) {Shopify.Flash.notice("Done.");return false}
+    let section_css = section.settings.css_section;
+    let block_css_heading = section.blocks[section.block_order[0]].settings.responsive_css;
+    let block_css_subheading = section.blocks[section.block_order[0]].settings.responsive_css_subheading;
+    let block_css_description = section.blocks[section.block_order[0]].settings.responsive_css_description;
+    
+    let textarea_section_css = $section.find('textarea[id$="-css_section"]');
+    if (section_css !== undefined) {
+      $.each(textarea_section_css, function(idx, el) {
+        $(this).html(section_css).val(section_css);
+      });
+    }
+    
+    let textarea_block_css_heading = $section.find('textarea[id$="-responsive_css"]');
+    if (block_css_heading !== undefined) {
+      $.each(textarea_block_css_heading, function(idx, el) {
+        $(this).html(block_css_heading).val(block_css_heading);
+      });
+    }
+    
+    let textarea_block_css_subheading = $section.find('textarea[id$="-responsive_css_subheading"]');
+    if (block_css_subheading !== undefined) {
+      $.each(textarea_block_css_subheading, function(idx, el) {
+        $(this).html(block_css_subheading).val(block_css_subheading);
+      });
+    }
+    
+    let textarea_block_css_description = $section.find('textarea[id$="-responsive_css_description"]');
+    if (block_css_description !== undefined) {
+      $.each(textarea_block_css_description, function(idx, el) {
+        $(this).html(block_css_description).val(block_css_description);
+      });
+    }
+
+    setTimeout(function() {
+      textarea_section_css.trigger('change');
+      textarea_block_css_heading.trigger('change');
+      textarea_block_css_subheading.trigger('change');
+      textarea_block_css_description.trigger('change');
+      Shopify.Flash.notice("Done.");
+    }, 1000);
+  }
+})();

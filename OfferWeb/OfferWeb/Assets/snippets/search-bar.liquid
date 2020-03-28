@@ -1,0 +1,165 @@
+{%- liquid
+  assign searchTerms = search.terms
+  for coll_search in collections
+    if search.terms contains coll_search.id
+      assign isCollection = coll_search.id | append:' '
+      assign searchTerms = search.terms | remove:isCollection
+      break
+    endif
+  endfor
+-%}
+{%-capture searchDrop-%}
+<div class="searchDrop select-custom" data-use="{{settings.use_search_by_collection}}" data-collections-size="{{collections.size}}">  
+  <select class="searchCat">
+    <option value="">{{'general.search_dropdown.all'|t}}</option>    
+    {%- assign isColleFilter = false -%}
+    {%- if shop.collections_count > 0 -%}
+    {%- if linklists['list-collections-search'].links.size > 0 -%}
+      {%- for link in linklists['list-collections-search'].links -%}
+        {%- if link.type == "collection_link" -%}
+        {%- assign coll_search_lv1 = link.object -%}
+        <option value="{{coll_search_lv1.id}} "{%if search.terms contains coll_search_lv1.id %}{%-assign isCollection = coll_search_lv1.id | append:'+' -%} selected="selected" {% assign isColleFilter = true %}{% endif %}>{{link.title}}</option>
+        {%- if link.links.size > 0 -%}
+          {%- for sub_link in link.links -%}
+            {%- if sub_link.type == "collection_link" -%}
+            {%- assign coll_search_lv2 = sub_link.object -%}
+            <option value="{{coll_search_lv2.id}} "{%if search.terms contains coll_search_lv2.id %}{%-assign isCollection = coll_search_lv2.id | append:'+' -%} selected="selected" {% assign isColleFilter = true %}{% endif %}>- {{sub_link.title}}</option>        
+            {%- if sub_link.links.size > 0 -%}
+              {%- for sub_sub_link in sub_link.links -%}
+                {%- if sub_sub_link.type == "collection_link" -%}
+                {%- assign coll_search_lv3 = sub_sub_link.object -%}
+                <option value="{{coll_search_lv3.id}} "{%if search.terms contains coll_search_lv3.id %}{%-assign isCollection = coll_search_lv3.id | append:'+' -%} selected="selected" {% assign isColleFilter = true %}{% endif %}>-- {{sub_sub_link.title}}</option>
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- else -%}
+      {%- for collection in collections -%}
+      <option {%if search.terms contains collection.id %}{%-assign isCollection = collection.id | append:'+' -%} selected="selected" {% assign isColleFilter = true %}{% endif %} value="{{collection.id}} ">{{collection.title}}</option>
+      {%- endfor -%}
+    {%- endif -%}
+    {%- endif -%}
+  </select>
+</div>
+{%- unless settings.use_search_ajax -%}
+<input type="hidden" name="type" value="product{%-if settings.search_type_page-%},page{%-endif-%}{%-if settings.search_type_article-%},article{%-endif-%}">
+{%- endunless -%}
+{%-endcapture-%}
+
+{%- if search_style == "input-cat-right" %}
+<form class="box-search input-cat-right d-flex{% if settings.use_search_by_collection %} has_categories_drop{%endif%}" action="{{routes.search_url}}" method="get" autocomplete="off">
+  <input type="text" name="q" value="{{ searchTerms | escape }}" class="search" placeholder="{{ 'general.search.placeholder' | t }}" required>
+  {%- if settings.use_search_by_collection -%}
+    {{searchDrop}}
+  {%- elsif settings.use_search_ajax == false -%}
+    <input type="hidden" name="type" value="product{%-if settings.search_type_page-%},page{%-endif-%}{%-if settings.search_type_article-%},article{%-endif-%}">
+  {%- endif -%}
+  <button type="submit" class="button-search btn btn-primary">
+    <i class="fkt-search m-0i"></i>
+  </button>
+  <div class="livesearchDrop kiti--DropInner">
+    <ul class="livesearch kt_scroll row mb-0"></ul>
+  </div>
+</form>
+{% endif -%}
+{%- if search_style == "input-cat-left" %}
+<form class="box-search input-cat-left d-flex{% if settings.use_search_by_collection %} has_categories_drop{%endif%}" action="{{routes.search_url}}" method="get" autocomplete="off">
+  {%- if settings.use_search_by_collection -%}
+    {{searchDrop}}
+  {%- elsif settings.use_search_ajax == false -%}
+    <input type="hidden" name="type" value="product{%-if settings.search_type_page-%},page{%-endif-%}{%-if settings.search_type_article-%},article{%-endif-%}">
+  {%- endif -%}
+  <input type="text" name="q" value="{{ searchTerms | escape }}" class="search" placeholder="{{ 'general.search.placeholder' | t }}" required>
+  <button type="submit" class="button-search btn btn-primary">
+    <i class="fkt-search m-0i"></i>
+  </button>
+  <div class="livesearchDrop kiti--DropInner">
+    <ul class="livesearch kt_scroll row mb-0"></ul>
+  </div>
+</form>
+{% endif -%}
+{%- if search_style == "icon" %}
+<form class="box-search show-icon kiti--DropItem" action="{{routes.search_url}}" method="get" autocomplete="off">  
+  <a href="javascript:void(0)" class="icon-link livesearch_mb fkt-search" aria-label="Search"></a>
+  <div class="inner kiti--DropInner not_onhover inline">
+    <div style="position: relative;">
+      <div class="control d-flex flex-nowrap align-items-center">
+        <input type="text" name="q" value="{{ searchTerms | escape }}" class="search" placeholder="{{ 'general.search.placeholder' | t }}" required>
+        {%- if settings.use_search_ajax == false -%}
+          <input type="hidden" name="type" value="product{%-if settings.search_type_page-%},page{%-endif-%}{%-if settings.search_type_article-%},article{%-endif-%}">
+        {%- endif -%}
+        <button type="submit" class="button-search btn">
+          <i class="fkt-search m-0i"></i>
+        </button>
+      </div>
+      <div class="livesearchDrop">
+        <ul class="livesearch kt_scroll row mb-0"></ul>
+      </div>
+    </div>
+  </div>
+</form>
+{% endif -%}
+{%- if search_style == "show-input" %}
+<form class="box-search show-input" action="{{routes.search_url}}" method="get" autocomplete="off">
+  <div class="inner">
+    <div style="position: relative;">
+      <div class="control d-flex flex-nowrap align-items-center">
+        <input type="text" name="q" value="{{ searchTerms | escape }}" class="search" placeholder="{{ 'general.search.placeholder' | t }}" required>
+        {%- if settings.use_search_ajax == false -%}
+          <input type="hidden" name="type" value="product{%-if settings.search_type_page-%},page{%-endif-%}{%-if settings.search_type_article-%},article{%-endif-%}">
+        {%- endif -%}
+        <button type="submit" class="button-search btn">
+          <i class="fkt-search m-0i"></i>
+        </button>
+      </div>
+      <div class="livesearchDrop">
+        <ul class="livesearch kt_scroll row mb-0"></ul>
+      </div>
+    </div>
+  </div>
+</form>
+{% endif -%}
+{%- if search_style == "show-input-line" %}
+<form class="box-search show-input-line" action="{{routes.search_url}}" method="get" autocomplete="off">
+  <div class="inner">
+    <div style="position: relative;">
+      <div class="control d-flex flex-nowrap align-items-center">
+        <input type="text" name="q" value="{{ searchTerms | escape }}" class="search" placeholder="{{ 'general.search.placeholder' | t }}" required>
+        {%- if settings.use_search_ajax == false -%}
+          <input type="hidden" name="type" value="product{%-if settings.search_type_page-%},page{%-endif-%}{%-if settings.search_type_article-%},article{%-endif-%}">
+        {%- endif -%}
+        <button type="submit" class="button-search btn">
+          <i class="fkt-search m-0i"></i>
+        </button>
+      </div>
+      <div class="livesearchDrop">
+        <ul class="livesearch kt_scroll row mb-0"></ul>
+      </div>
+    </div>
+  </div>
+</form>
+{% endif -%}
+{%- if search_style == "mobile" %}
+<form class="box-search mobile-search" action="{{routes.search_url}}" method="get" autocomplete="off">
+  <div class="inner w-100">
+    <div style="position: relative;">
+      <div class="control d-flex flex-nowrap align-items-center">
+        <input type="search" class="form-control search" name="q" value="{{ searchTerms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" required>
+        {%- if settings.use_search_ajax == false -%}
+          <input type="hidden" name="type" value="product{%-if settings.search_type_page-%},page{%-endif-%}{%-if settings.search_type_article-%},article{%-endif-%}">
+        {%- endif -%}
+        <button type="submit" class="btn btn-primary button-search">
+          <i class="fkt-search m-0i"></i>
+        </button>
+      </div>
+      <div class="livesearchDrop">
+        <ul class="livesearch kt_scroll row mb-0"></ul>
+      </div>
+    </div>
+  </div>
+</form>
+{% endif -%}

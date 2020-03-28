@@ -1,0 +1,76 @@
+<script>
+  document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+  const themeAlign = "{{settings.dir_body | default: 'ltr'}}";
+{%- if template contains 'collection' -%}
+  var collection = {Crr : {{collection.handle|json}} || null};
+  var page = {Han : {%- if template.name == 'collection' -%}{{collection.handle|json}}
+          {%- elsif template.name == 'product' -%}{{product.handle|json}}
+          {%- elsif template.name == 'page' -%}{{page.handle|json}}
+          {%- elsif template.name == 'blog' -%}{{blog.handle|json}}
+          {%- elsif template.name == 'article' -%}{{article.handle|json}}
+          {%- elsif template.name == 'cart' -%}'cart'
+          {%- else -%}"no_banner"
+          {%- endif -%}};
+{%- endif %}
+	var localStorageCurrency = null,
+    goto = !0,
+    optionValue = '',
+    optionIndex = '',
+    shopLocale = {{shop.locale|json}},
+    groupsFilter = brands_icon = colorGroupFilter = currTags = currTags_handleize = collectionTags = iscollectionTags = new Array,
+    currPage = 0,
+    canonical_url = "{{canonical_url}}",
+    lazy_firstLoad = true;
+	const product_id = {{product.id | json}};
+	const product_handle = {{product.handle | json}};
+	const shopURL = "https://{{shop.permanent_domain}}";
+	const createPagesByTheme = {% if pages['recently-viewed'].handle == blank %}true{%else%}false{% endif %};
+	const themeAjaxCart = {{settings.ajax_cart}};	
+	const templateName = {{template.name|json}};
+  const firstPrd = "{{collections['all'].products.first.url}}";
+	var theme = {
+	  moneyFormat: {{shop.money_format | json}},
+	  money_with_currency_format: {{ shop.money_with_currency_format | strip_html | json }},
+	  money_format: {{ shop.money_format | strip_html | json }},
+	  attrTheme: {{cart.attributes.theme_mobile | default: false}},
+	  deliveryFormatDate: {{settings.delivery_format_date | json}},
+	  cartAttributes: {{cart.attributes|json}},
+    role: {{shop.metafields.t4pcc.molla | default: '"the4"'}}
+	};
+  {% if settings.popup_ageVerification %}
+  var ageVerification = localStorage.getItem('ageVerification') || sessionStorage.getItem('ageVerification');
+  if (ageVerification === 'hide') {    
+    document.documentElement.className = document.documentElement.className.replace('ageVerificationModal', '');
+  }
+  {% endif %}
+	if (typeof Currency === 'undefined') {
+	  var Kt_currency = {};
+	}
+	Kt_currency.format = "{{ settings.currency_format | default: 'money_format' }}";
+	const shopCurrency = "{{ shop.currency }}";
+	{%-if settings.disable_right_click-%}
+	document.addEventListener('contextmenu', event => event.preventDefault());
+	{%-endif-%}
+  window.setCookie = function(cname, cvalue, exdays, exhours, exminute) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * exhours * exminute * 60 * 1000));
+    var expires = (exminute == 0 ? 1 : "expires="+d.toUTCString());
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  }
+
+  window.getCookie = function(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+  "undefined" == typeof window.Shopify && (window.Shopify = {})
+</script>

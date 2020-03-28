@@ -1,0 +1,77 @@
+{%- for link in linklists['group-products'].links -%}
+  {%- if link.links.size > 0 -%}
+    {%- assign handle_check = link.links | map: 'handle' -%}
+    {%- assign product_handle_check = product.handle -%}
+    {%- if handle_check contains product_handle_check -%}
+      {%- assign prds_group = link.links -%}
+      {%-break-%}
+    {%- else -%}
+      {%-continue-%}
+    {%- endif -%}
+  {%- else -%}
+  {%-continue-%}
+  {%- endif -%}
+{%- endfor -%}
+{%- if prds_group -%}
+<table class="group-product table">
+  <tbody>
+    <tr>
+      <th>{{'products.products_group.name'|t}}</th>
+      <th class="th-price">{{'products.products_group.price'|t}}</th>
+      <th class="th-qty">{{'products.products_group.quantity'|t}}</th>
+    </tr>
+    {%- for link in prds_group -%}
+    {%- if link.type == 'product_link' -%}
+      {%- assign pr = link.object -%}
+      {%- unless pr.handle == product.handle -%}            
+      {%- assign pr_current_variant = pr.selected_or_first_available_variant -%}
+      {%- if pr.available -%}
+      <tr class="itemGroupProducts">
+        <td>
+          <div class="item-wrap">
+            <div class="item-thumb">
+              <a href="{{pr.url}}" class="thumb-img">
+                <img class="lazyload" alt="{{ pr.featured_image.alt | escape |strip_html }}" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ pr.featured_image.src| img_url: '104x120', crop:'top' }}">
+              </a>
+            </div>
+            <div class="item-name">
+              <a href="{{pr.url}}">{{pr.title}}</a>
+              {%- unless pr.has_only_default_variant -%}
+              <select id="ProductSelect-{{ pr.id }}" data-section="{{ pr.id }}" class="product-form__variants pr-group" style="border-top: none;border-bottom: none;border-radius: 5px;outline: none !important;">
+                {%- for variant in pr.variants -%}
+                  {%- if variant.available -%}
+                    <option {% if variant == pr.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}" {% if value contains '"' %} data-value='{{ variant.title }}'{% else %} data-value="{{ variant.title }}"{% endif %}>
+                      {{ variant.title }}
+                    </option>
+                  {%- else -%}
+                    <option disabled="disabled">{{ variant.title }} - {{ 'products.product.sold_out' | t }}</option>
+                  {%- endif -%}
+                {%- endfor -%}
+              </select>
+            </div>
+          </div>
+          {%-endunless-%}
+        </td>
+        <td class="text-center">
+          <span class="price">
+            <ins>{{pr.price | money}}</ins>
+            <del>{{pr.compare_at_price | money}}</del>
+          </span>
+        </td>
+        <td class="quantity-inner">
+          <div class="quantity{% if preOrder == false and sold_out %} d-none{% endif %}">
+            <div class="control">
+              <a class="btn-number qtyminus quantity-minus" href="#"></a>
+              <input type="text" data-step="1" name="qty_group" min="0" value="0" title="{{products.product.quantity|t}}" class="input-qty input-text qty text" size="4" data-id="{{pr_current_variant.id}}" pattern="[0-9]*">
+              <a class="btn-number qtyplus quantity-plus" href="#"></a>
+            </div>
+          </div>
+        </td>
+      </tr>
+      {%- endif -%}
+      {%- endunless -%}
+    {%- endif -%}
+    {%- endfor -%}
+  </tbody>
+</table>
+{%- endif -%}

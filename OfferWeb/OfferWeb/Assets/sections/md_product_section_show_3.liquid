@@ -1,0 +1,182 @@
+<!-- md_product_section_show_3.liquid -->
+{%-if section.blocks.size != 0-%}
+{%- unless cart.attributes.theme_mobile == 'true' and section.settings.off_mobile or cart.attributes.theme_mobile == 'false' and section.settings.off_desktop -%}
+{%- assign typeBlocks = section.blocks | map: 'type' -%}
+<div class="{{width_section_}}{%if section.settings.off_mobile%} d-none d-lg-block{%endif%}{%if section.settings.off_desktop%} d-lg-none{%endif%}">
+  <div class="content_{{section.id}}{%if section.settings.image%} bg-image lazyload{%endif%} swiper-fixed-fshadow" style="padding:{{section.settings.section_padding|default:'0' |split:'|' |first | replace : '-',' '}};margin-top: {{section.settings.section_margin_top|default:'0'|split:'|'|first}};margin-bottom: {{section.settings.section_margin_bottom|default:'0'|split:'|'|first}};{%-if section.settings.section_bg != blank -%}background-color:{{section.settings.section_bg | color_modify: 'alpha', section.settings.section_bg_op}};{%-endif-%}"{%if section.settings.image%} data-bgset="{{section.settings.image | img_url: 'master'}}" data-sizes="auto" data-parent-fit="contain"{%endif%} data-mt-respon="{{section.settings.section_margin_top}}" data-mb-respon="{{section.settings.section_margin_bottom}}" data-p-respon="{{section.settings.section_padding}}" data-el=".content_{{section.id}}" data-el-p=".content_{{section.id}}">      
+    <div class="section-width {{width_content_}}">
+      {%-for block in section.blocks-%}
+      <div class="row{%unless forloop.first%}{%if section.blocks.size > 1%} mt-3{%endif%}{%endunless%}">
+        <div class="col-12" {{ block.shopify_attributes }}>
+          <div class="heading mb-0">
+            <div class="section-title w-100">
+              <h3 class="title">{{block.settings.title_section}}</h3>
+            </div>
+          </div>
+          <div class="clearfix" style="margin-bottom:1rem"></div>
+        </div>
+        <div class="col-12" {{ block.shopify_attributes }}>
+          <div class="product-list-grid row"> 
+            {%-for i in (1..5)-%}
+              {%- assign product_ = 'product_' | append: i -%}
+              {%- if all_products[block.settings[product_]].title != blank -%}
+                {%- assign product = all_products[block.settings[product_]] -%}
+                <div class="grid-item p-style-09 p-style-22 col-md-6 col-xl-12" style="margin-bottom: 2rem">
+                  {%- render "product-grid-item", product: product, grid_layout: '09 p-style-22', wishlist: wishlist, st_card: st_card -%}
+                </div>
+              {%- endif -%}
+            {%-endfor-%}
+          </div>
+        </div>
+      </div>
+      {%- endfor-%}
+    </div>
+  </div>
+</div>
+{%- endunless-%}
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "Products Show",
+    "class": "md_products_section md_products_section_show_3",
+    "settings": [
+      {
+        "type":"checkbox",
+        "id": "off_mobile",
+        "label": "Turn off on mobile?"
+      },
+      {
+        "type":"checkbox",
+        "id": "off_desktop",
+        "label": "Turn off on desktop?"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Products Show(Special Offer)",
+        "info": "Name section (in editor bar)"
+      },
+      {
+        "type": "header",
+        "content": "Space settings"
+      },
+      {
+        "type": "select",
+        "id": "width_section",
+        "label": "Max width section",
+        "options": [
+          { "value": "container", "label": "1200px" },
+          { "value": "container-fluid wide", "label": "Wide" },
+          { "value": "w-100", "label": "Full width" }
+        ],
+        "default": "container"
+      },
+      {
+        "type":"checkbox",
+        "id": "width_content",
+        "label": "Max width content?"
+      },
+      {
+        "type": "text",
+        "id": "section_margin_top",
+        "label": "Margin top",
+        "info": "2.5rem|3rem|3.5rem|4rem|4.5rem|5rem"
+      },
+      {
+        "type": "text",
+        "id": "section_margin_bottom",
+        "label": "Margin bottom",
+        "info": "2.5rem|3rem|3.5rem|4rem|4.5rem|5rem"
+      },
+      {
+        "type": "text",
+        "id": "section_padding",
+        "label": "Paddings (top right bottom left)",
+        "info": "6rem 6rem 0 6rem"
+      },
+      {
+        "type": "header",
+        "content": "Background settings"
+      },
+      {
+        "type": "color",
+        "id": "section_bg",
+        "label": "Background color"
+      },
+      {
+        "type": "range",
+        "id": "section_bg_op",
+        "min": 0,
+        "max": 1,
+        "step": 0.1,
+        "label": "Opacity background color",
+        "default": 0.5
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Background image",
+        "info": "Size suggestion: 1920 x 497 pixels"
+      },
+      {
+        "type": "header",
+        "content": "Content settings"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "item",
+        "name": "Item",
+        "settings": [
+          {
+            "type": "header",
+            "content": "========================= Section title"
+          },
+          {
+            "type": "text",
+            "id": "title_section",
+            "label": "Title",
+            "default": "Special Offer"
+          },
+          {
+            "type": "header",
+            "content": "========================= Products setting"
+          },
+          {
+            "type": "product",
+            "id": "product_1",
+            "label": "Choose product 1"
+          },
+          {
+            "type": "product",
+            "id": "product_2",
+            "label": "Choose product 2"
+          },
+          {
+            "type": "product",
+            "id": "product_3",
+            "label": "Choose product 3"
+          },
+          {
+            "type": "product",
+            "id": "product_4",
+            "label": "Choose product 4"
+          },
+          {
+            "type": "product",
+            "id": "product_5",
+            "label": "Choose product 5"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Products Show(Special Offer)",
+        "category": "6. Sidebar homepage"
+      }
+    ]
+  }
+{% endschema %}
