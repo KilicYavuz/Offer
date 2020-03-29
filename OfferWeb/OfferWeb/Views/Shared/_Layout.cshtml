@@ -40,7 +40,7 @@
             <div class="header-top">
                 <div class="container">
                     <div class="header-left">
-                        <a href="~/Assets/tel:#"><i class="icon-phone"></i>Call: +0123 456 789</a>
+                        <a href="~/Assets/tel:#"><i class="icon-phone"></i>Tel: +0123 456 789</a>
                     </div><!-- End .header-left -->
 
                     <div class="header-right">
@@ -54,13 +54,14 @@
                                             <a href="#">USD</a>
                                             <div class="header-menu">
                                                 <ul>
-                                                    <li><a href="#">Eur</a></li>
-                                                    <li><a href="#">Usd</a></li>
+                                                    <li><a href="#">EURO</a></li>
+                                                    <li><a href="#">USD</a></li>
+                                                    <li><a href="#">TL</a></li>
                                                 </ul>
-                                            </div><!-- End .header-menu -->
-                                        </div><!-- End .header-dropdown -->
+                                            </div>
+                                        </div>
                                     </li>
-                                    <li>
+                                    @*<li>
                                         <div class="header-dropdown">
                                             <a href="#">Engligh</a>
                                             <div class="header-menu">
@@ -69,11 +70,11 @@
                                                     <li><a href="#">French</a></li>
                                                     <li><a href="#">Spanish</a></li>
                                                 </ul>
-                                            </div><!-- End .header-menu -->
-                                        </div><!-- End .header-dropdown -->
-                                    </li>
+                                            </div>
+                                        </div>
+                                    </li>*@
                                     <li class="login">
-                                        <a href="~/Assets/#signin-modal" data-toggle="modal">Sign in / Sign up</a>
+                                        <a href="#signin-modal" data-toggle="modal">Giriş Yap / Kaydol</a>
                                     </li>
                                 </ul>
                             </li>
@@ -102,25 +103,25 @@
                                 <div class="header-search-wrapper search-wrapper-wide">
                                     <div class="select-custom">
                                         <select id="cat" name="cat">
-                                            <option value="">All Departments</option>
-                                            <option value="1">Fashion</option>
-                                            <option value="2">- Women</option>
-                                            <option value="3">- Men</option>
-                                            <option value="4">- Jewellery</option>
-                                            <option value="5">- Kids Fashion</option>
-                                            <option value="6">Electronics</option>
-                                            <option value="7">- Smart TVs</option>
-                                            <option value="8">- Cameras</option>
-                                            <option value="9">- Games</option>
-                                            <option value="10">Home &amp; Garden</option>
-                                            <option value="11">Motors</option>
+                                            <option value="">Kategoriler</option>
+                                            <option value="1">Anestesi &amp; Enjeksiyon</option>
+                                            <option value="2">Besleme, Protez &amp; Tamir</option>
+                                            <option value="3">Beyazlatma &amp; Kozmetik</option>
+                                            <option value="4">Bitirme &amp; Cilalama</option>
+                                            <option value="5">Bonding &amp; Asit Sistemleri</option>
+                                            <option value="6">Dental Cad Cam</option>
+                                            <option value="7">Dental Eğitim Araçları</option>
+                                            <option value="8">Dental El Aletleri</option>
+                                            <option value="9">Dental Frezler</option>
+                                            <option value="10">Dental Laboratuar Ürünler</option>
+                                            <option value="11">Dentkonsept Görsel &amp; Web</option>
                                             <option value="12">- Cars and Trucks</option>
                                             <option value="15">- Boats</option>
                                             <option value="16">- Auto Tools &amp; Supplies</option>
                                         </select>
                                     </div><!-- End .select-custom -->
                                     <label for="q" class="sr-only">Search</label>
-                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search product ..." required>
+                                    <input type="search" class="form-control" name="q" id="q" placeholder="Ürün ara ..." required>
                                     <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                                 </div><!-- End .header-search-wrapper -->
                             </form>
@@ -129,7 +130,7 @@
 
                     <div class="header-right">
                         <div class="header-dropdown-link">
-                            <div class="dropdown compare-dropdown">
+                            @*<div class="dropdown compare-dropdown">
                                 <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" title="Compare Products" aria-label="Compare Products">
                                     <i class="icon-random"></i>
                                     <span class="compare-txt">Compare</span>
@@ -151,20 +152,20 @@
                                         <a href="#" class="action-link">Clear All</a>
                                         <a href="#" class="btn btn-outline-primary-2"><span>Compare</span><i class="icon-long-arrow-right"></i></a>
                                     </div>
-                                </div><!-- End .dropdown-menu -->
-                            </div><!-- End .compare-dropdown -->
+                                </div>
+                            </div>*@
 
                             <a href="~/Assets/wishlist.html" class="wishlist-link">
                                 <i class="icon-heart-o"></i>
                                 <span class="wishlist-count">3</span>
-                                <span class="wishlist-txt">Wishlist</span>
+                                <span class="wishlist-txt">Favoriler</span>
                             </a>
 
                             <div class="dropdown cart-dropdown">
                                 <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                                     <i class="icon-shopping-cart"></i>
                                     <span class="cart-count">2</span>
-                                    <span class="cart-txt">Cart</span>
+                                    <span class="cart-txt">Sepet</span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right">
@@ -539,7 +540,7 @@
                         <nav class="main-nav">
                             <ul class="menu sf-arrows">
                                 <li class="megamenu-container active">
-                                    <a href="~/Assets/index.html" class="sf-with-ul">Home</a>
+                                    <a href="~/Assets/index.html" class="sf-with-ul">Anasayfa</a>
 
                                     <div class="megamenu demo">
                                         <div class="menu-col">
@@ -723,7 +724,7 @@
                                     </div><!-- End .megamenu -->
                                 </li>
                                 <li>
-                                    <a href="~/Assets/category.html" class="sf-with-ul">Shop</a>
+                                    <a href="~/Assets/category.html" class="sf-with-ul">Kampanyalar</a>
 
                                     <div class="megamenu megamenu-md">
                                         <div class="row no-gutters">
@@ -781,7 +782,7 @@
                                     </div><!-- End .megamenu megamenu-md -->
                                 </li>
                                 <li>
-                                    <a href="~/Assets/product.html" class="sf-with-ul">Product</a>
+                                    <a href="~/Assets/product.html" class="sf-with-ul">Outlet</a>
 
                                     <div class="megamenu megamenu-sm">
                                         <div class="row no-gutters">
@@ -816,7 +817,7 @@
                                     </div><!-- End .megamenu megamenu-sm -->
                                 </li>
                                 <li>
-                                    <a href="#" class="sf-with-ul">Pages</a>
+                                    <a href="#" class="sf-with-ul">Hakkımızda</a>
 
                                     <ul>
                                         <li>
@@ -841,7 +842,7 @@
                                         <li><a href="~/Assets/coming-soon.html">Coming Soon</a></li>
                                     </ul>
                                 </li>
-                                <li>
+                                @*<li>
                                     <a href="~/Assets/blog.html" class="sf-with-ul">Blog</a>
 
                                     <ul>
@@ -881,9 +882,9 @@
                                             </ul>
                                         </li>
                                     </ul>
-                                </li>
+                                </li>*@
                                 <li>
-                                    <a href="~/Assets/elements-list.html" class="sf-with-ul">Elements</a>
+                                    <a href="~/Assets/elements-list.html" class="sf-with-ul">İletisim</a>
 
                                     <ul>
                                         <li><a href="~/Assets/elements-products.html">Products</a></li>
@@ -906,7 +907,7 @@
                         </nav><!-- End .main-nav -->
                     </div><!-- End .col-lg-9 -->
                     <div class="header-right">
-                        <i class="la la-lightbulb-o"></i><p>Clearance Up to 30% Off</span></p>
+                        <i class="la la-lightbulb-o"></i><p>Nisan Sonuna Kadar %30 İndirim</span></p>
                     </div>
                 </div><!-- End .container -->
             </div><!-- End .header-bottom -->
@@ -923,8 +924,8 @@
                                 </span>
 
                                 <div class="icon-box-content">
-                                    <h3 class="icon-box-title">Free Shipping</h3><!-- End .icon-box-title -->
-                                    <p>Orders $50 or more</p>
+                                    <h3 class="icon-box-title">Ücretsiz Kargo</h3><!-- End .icon-box-title -->
+                                    <p>200₺ ve üzeri alışverişlerde</p>
                                 </div><!-- End .icon-box-content -->
                             </div><!-- End .icon-box -->
                         </div><!-- End .col-sm-6 col-lg-3 -->
@@ -936,8 +937,8 @@
                                 </span>
 
                                 <div class="icon-box-content">
-                                    <h3 class="icon-box-title">Free Returns</h3><!-- End .icon-box-title -->
-                                    <p>Within 30 days</p>
+                                    <h3 class="icon-box-title">İade</h3><!-- End .icon-box-title -->
+                                    <p>30 gün içinde iade imkanı</p>
                                 </div><!-- End .icon-box-content -->
                             </div><!-- End .icon-box -->
                         </div><!-- End .col-sm-6 col-lg-3 -->
@@ -949,8 +950,8 @@
                                 </span>
 
                                 <div class="icon-box-content">
-                                    <h3 class="icon-box-title">Get 20% Off 1 Item</h3><!-- End .icon-box-title -->
-                                    <p>When you sign up</p>
+                                    <h3 class="icon-box-title">1 Üründe %20 İndirim</h3><!-- End .icon-box-title -->
+                                    <p>İlk siparişe özel</p>
                                 </div><!-- End .icon-box-content -->
                             </div><!-- End .icon-box -->
                         </div><!-- End .col-sm-6 col-lg-3 -->
@@ -962,8 +963,8 @@
                                 </span>
 
                                 <div class="icon-box-content">
-                                    <h3 class="icon-box-title">We Support</h3><!-- End .icon-box-title -->
-                                    <p>24/7 amazing services</p>
+                                    <h3 class="icon-box-title">Destek</h3><!-- End .icon-box-title -->
+                                    <p>7/24 yanınızdayız </p>
                                 </div><!-- End .icon-box-content -->
                             </div><!-- End .icon-box -->
                         </div><!-- End .col-sm-6 col-lg-3 -->
