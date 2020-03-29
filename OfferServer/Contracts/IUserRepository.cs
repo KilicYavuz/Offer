@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace Contracts
 {
-    public interface IUserRepository : IRepositoryBase<User>
+    public interface IUserRepository : IRepositoryBase<Users>
     {
-        IEnumerable<User> GetAllUsers();
+        IEnumerable<Users> GetAllUsers();
     }
 }
