@@ -5,14 +5,14 @@ using System.Linq;
 
 namespace Repository
 {
-    public class UserRepository : RepositoryBase<User>, IUserRepository
+    public class UserRepository : RepositoryBase<Users>, IUserRepository
     {
         public UserRepository(OfferContext repositoryContext)
             : base(repositoryContext)
         {
         }
 
-        public IEnumerable<User> GetAllUsers()
+        public IEnumerable<Users> GetAllUsers()
         {
             var users = FindAll().OrderBy(u => u.Name).ToList();
             return users;

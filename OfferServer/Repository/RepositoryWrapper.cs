@@ -35,6 +35,8 @@ namespace Repository
             }
         }
 
+        public ICategoryRepository Category => throw new System.NotImplementedException();
+
         public RepositoryWrapper(OfferContext repositoryContext)
         {
             _repoContext = repositoryContext;
