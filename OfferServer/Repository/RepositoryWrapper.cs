@@ -8,6 +8,8 @@ namespace Repository
         private OfferContext _repoContext;
         private IUserRepository _user;
         private IAddressRepository _address;
+        private ICategoryRepository _category;
+        private IProductRepository _product;
 
         public IUserRepository User
         {
@@ -35,7 +37,31 @@ namespace Repository
             }
         }
 
-        public ICategoryRepository Category => throw new System.NotImplementedException();
+        public IProductRepository Product
+        {
+            get
+            {
+                if (_product == null)
+                {
+                    _product = new ProductRepository(_repoContext);
+                }
+
+                return _product;
+            }
+        }
+
+        public ICategoryRepository Category
+        {
+            get
+            {
+                if (_category == null)
+                {
+                    _category = new CategoryRepository(_repoContext);
+                }
+
+                return _category;
+            }
+        }
 
         public RepositoryWrapper(OfferContext repositoryContext)
         {

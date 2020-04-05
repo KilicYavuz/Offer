@@ -24,22 +24,22 @@ namespace OfferServer.Controllers
             _repoWrapper = repoWrapper;
         }
 
-        //[HttpGet("GetAllUsers")]
-        //public IActionResult GetAllUsers()
-        //{
-        //    try
-        //    {
-        //        var users = _repoWrapper.User.GetAllUsers();
+        [HttpGet("GetAll")]
+        public IActionResult GetAll()
+        {
+            try
+            {
+                var cats = _repoWrapper.Category.GetAll();
 
-        //        _logger.LogInfo($"Returned all users from database.");
-        //        var json = JsonConvert.SerializeObject(users);
-        //        return Ok(json);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError($"Something went wrong inside GetAllUsers action: {ex.Message}");
-        //        return StatusCode(500, "Internal server error");
-        //    }
-        //}
+                _logger.LogInfo($"Returned all users from database.");
+                var json = JsonConvert.SerializeObject(cats);
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetAllCategories action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
     }
 }

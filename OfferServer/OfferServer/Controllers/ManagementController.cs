@@ -24,12 +24,54 @@ namespace OfferServer.Controllers
             _repoWrapper = repoWrapper;
         }
 
+        #region Product
+
+        [HttpGet("GetAllProducts")]
+        public IActionResult GetAllProducts()
+        {
+            try
+            {
+                var products = _repoWrapper.Products.GetAll();
+
+                _logger.LogInfo($"Returned all categories from database.");
+                var json = JsonConvert.SerializeObject(products);
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetAllProducts action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet("{id}", Name = "GetProduct")]
+        public IActionResult GetProduct(Guid id)
+        {
+            try
+            {
+                var product = _repoWrapper.Products.GetById(id);
+
+                _logger.LogInfo($"Returned all categories from database.");
+                var json = JsonConvert.SerializeObject(product);
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetProduct action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        #endregion
+
+        #region Category
+
         [HttpGet("GetAllCategories")]
         public IActionResult GetAllCategories()
         {
             try
             {
-                var categories = _repoWrapper.Category.GetAllCategories();
+                var categories = _repoWrapper.Category.GetAll();
 
                 _logger.LogInfo($"Returned all categories from database.");
                 var json = JsonConvert.SerializeObject(categories);
@@ -41,5 +83,25 @@ namespace OfferServer.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+        [HttpGet("{id}", Name = "GetProduct")]
+        public IActionResult GetCategory(int id)
+        {
+            try
+            {
+                var product = _repoWrapper.Category.GetById(id);
+
+                _logger.LogInfo($"Returned all categories from database.");
+                var json = JsonConvert.SerializeObject(product);
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetProduct action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        #endregion
     }
 }
