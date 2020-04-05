@@ -31,7 +31,7 @@ namespace OfferServer.Controllers
         {
             try
             {
-                var products = _repoWrapper.Products.GetAll();
+                var products = _repoWrapper.Product.GetAll();
 
                 _logger.LogInfo($"Returned all categories from database.");
                 var json = JsonConvert.SerializeObject(products);
@@ -49,7 +49,7 @@ namespace OfferServer.Controllers
         {
             try
             {
-                var product = _repoWrapper.Products.GetById(id);
+                var product = _repoWrapper.Product.GetById(id);
 
                 _logger.LogInfo($"Returned all categories from database.");
                 var json = JsonConvert.SerializeObject(product);
