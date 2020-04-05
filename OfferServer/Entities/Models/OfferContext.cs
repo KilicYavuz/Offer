@@ -76,7 +76,7 @@ namespace Entities.Models
 
                 entity.Property(e => e.ZipCode).HasMaxLength(6);
 
-                entity.HasOne(d => d.UserO)
+                entity.HasOne(d => d.User)
                     .WithMany(p => p.Address)
                     .HasForeignKey(d => d.UserOid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -129,8 +129,8 @@ namespace Entities.Models
 
                 entity.Property(e => e.ParentOid).HasColumnName("ParentOId");
 
-                entity.HasOne(d => d.ParentO)
-                    .WithMany(p => p.InverseParentO)
+                entity.HasOne(d => d.ParentCategory)
+                    .WithMany(p => p.SubCategories)
                     .HasForeignKey(d => d.ParentOid)
                     .HasConstraintName("FK_Categories_Categories");
             });
@@ -188,19 +188,19 @@ namespace Entities.Models
 
                 entity.Property(e => e.SupplierOid).HasColumnName("SupplierOId");
 
-                entity.HasOne(d => d.OrderO)
+                entity.HasOne(d => d.Order)
                     .WithMany(p => p.OrderProducts)
                     .HasForeignKey(d => d.OrderOid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_OrderProducts_Orders");
 
-                entity.HasOne(d => d.ProductO)
+                entity.HasOne(d => d.Product)
                     .WithMany(p => p.OrderProducts)
                     .HasForeignKey(d => d.ProductOid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_OrderProducts_Products");
 
-                entity.HasOne(d => d.SupplierO)
+                entity.HasOne(d => d.Supplier)
                     .WithMany(p => p.OrderProducts)
                     .HasForeignKey(d => d.SupplierOid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -224,7 +224,7 @@ namespace Entities.Models
 
                 entity.Property(e => e.ShippingAddressOid).HasColumnName("ShippingAddressOId");
 
-                entity.HasOne(d => d.CustomerO)
+                entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.CustomerOid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -241,13 +241,13 @@ namespace Entities.Models
 
                 entity.Property(e => e.TagOid).HasColumnName("TagOId");
 
-                entity.HasOne(d => d.ProductO)
+                entity.HasOne(d => d.Product)
                     .WithMany(p => p.ProductTags)
                     .HasForeignKey(d => d.ProductOid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ProductTags_Products");
 
-                entity.HasOne(d => d.TagO)
+                entity.HasOne(d => d.Tags)
                     .WithMany(p => p.ProductTags)
                     .HasForeignKey(d => d.TagOid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -277,13 +277,13 @@ namespace Entities.Models
 
                 entity.Property(e => e.VerificationCode).HasMaxLength(20);
 
-                entity.HasOne(d => d.BrandO)
+                entity.HasOne(d => d.Brand)
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.BrandOid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Products_Brands");
 
-                entity.HasOne(d => d.CategoryO)
+                entity.HasOne(d => d.Category)
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.CategoryOid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -334,13 +334,13 @@ namespace Entities.Models
 
                 entity.Property(e => e.SupplierOid).HasColumnName("SupplierOId");
 
-                entity.HasOne(d => d.RequestO)
+                entity.HasOne(d => d.Request)
                     .WithMany(p => p.RequestOffers)
                     .HasForeignKey(d => d.RequestOid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_RequestOffers_Requests");
 
-                entity.HasOne(d => d.SupplierO)
+                entity.HasOne(d => d.Supplier)
                     .WithMany(p => p.RequestOffers)
                     .HasForeignKey(d => d.SupplierOid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -361,13 +361,13 @@ namespace Entities.Models
 
                 entity.Property(e => e.RequestOid).HasColumnName("RequestOId");
 
-                entity.HasOne(d => d.ProductO)
+                entity.HasOne(d => d.Product)
                     .WithMany(p => p.RequestProducts)
                     .HasForeignKey(d => d.ProductOid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_RequestProducts_Products");
 
-                entity.HasOne(d => d.RequestO)
+                entity.HasOne(d => d.Request)
                     .WithMany(p => p.RequestProducts)
                     .HasForeignKey(d => d.RequestOid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -389,7 +389,7 @@ namespace Entities.Models
 
                 entity.Property(e => e.SupplierOid).HasColumnName("SupplierOId");
 
-                entity.HasOne(d => d.CustomerO)
+                entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Requests)
                     .HasForeignKey(d => d.CustomerOid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -409,13 +409,13 @@ namespace Entities.Models
 
                 entity.Property(e => e.SupplierOid).HasColumnName("SupplierOId");
 
-                entity.HasOne(d => d.ProductO)
+                entity.HasOne(d => d.Product)
                     .WithMany(p => p.SupplierProducts)
                     .HasForeignKey(d => d.ProductOid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_SalesLists_Products");
 
-                entity.HasOne(d => d.SupplierO)
+                entity.HasOne(d => d.Supplier)
                     .WithMany(p => p.SupplierProducts)
                     .HasForeignKey(d => d.SupplierOid)
                     .OnDelete(DeleteBehavior.ClientSetNull)

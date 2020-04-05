@@ -16,6 +16,6 @@ namespace Entities.Models
         public string Phone { get; set; }
         public DateTime CreatedDate { get; set; }
 
-        public virtual Users UserO { get; set; }
+        public virtual Users User { get; set; }
     }
 }

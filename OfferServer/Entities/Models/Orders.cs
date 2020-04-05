@@ -20,7 +20,7 @@ namespace Entities.Models
         public int? BillingAddresOid { get; set; }
         public Guid Oid { get; set; }
 
-        public virtual Users CustomerO { get; set; }
+        public virtual Users Customer { get; set; }
         public virtual ICollection<OrderProducts> OrderProducts { get; set; }
     }
 }

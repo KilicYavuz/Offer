@@ -9,7 +9,7 @@ namespace Entities.Models
         public int TagOid { get; set; }
         public Guid ProductOid { get; set; }
 
-        public virtual Products ProductO { get; set; }
-        public virtual Tags TagO { get; set; }
+        public virtual Products Product { get; set; }
+        public virtual Tags Tags { get; set; }
     }
 }

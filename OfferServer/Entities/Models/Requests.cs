@@ -18,7 +18,7 @@ namespace Entities.Models
         public int Status { get; set; }
         public int? SupplierOid { get; set; }
 
-        public virtual Users CustomerO { get; set; }
+        public virtual Users Customer { get; set; }
         public virtual ICollection<RequestOffers> RequestOffers { get; set; }
         public virtual ICollection<RequestProducts> RequestProducts { get; set; }
     }

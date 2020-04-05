@@ -25,8 +25,8 @@ namespace Entities.Models
         public Guid Oid { get; set; }
         public byte[] Image { get; set; }
 
-        public virtual Brands BrandO { get; set; }
-        public virtual Categories CategoryO { get; set; }
+        public virtual Brands Brand { get; set; }
+        public virtual Categories Category { get; set; }
         public virtual ICollection<OrderProducts> OrderProducts { get; set; }
         public virtual ICollection<ProductTags> ProductTags { get; set; }
         public virtual ICollection<RequestProducts> RequestProducts { get; set; }

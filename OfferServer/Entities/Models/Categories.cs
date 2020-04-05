@@ -7,7 +7,7 @@ namespace Entities.Models
     {
         public Categories()
         {
-            InverseParentO = new HashSet<Categories>();
+            SubCategories = new HashSet<Categories>();
             Products = new HashSet<Products>();
         }
 
@@ -16,9 +16,10 @@ namespace Entities.Models
         public DateTime CreatedDate { get; set; }
         public int Type { get; set; }
         public int? ParentOid { get; set; }
+        public byte[] Image { get; set; }
 
-        public virtual Categories ParentO { get; set; }
-        public virtual ICollection<Categories> InverseParentO { get; set; }
+        public virtual Categories ParentCategory { get; set; }
+        public virtual ICollection<Categories> SubCategories { get; set; }
         public virtual ICollection<Products> Products { get; set; }
     }
 }

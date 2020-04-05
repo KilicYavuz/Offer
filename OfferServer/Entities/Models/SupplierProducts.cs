@@ -13,7 +13,7 @@ namespace Entities.Models
         public Guid ProductOid { get; set; }
         public string Description { get; set; }
 
-        public virtual Products ProductO { get; set; }
-        public virtual Users SupplierO { get; set; }
+        public virtual Products Product { get; set; }
+        public virtual Users Supplier { get; set; }
     }
 }

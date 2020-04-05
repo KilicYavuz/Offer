@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Entities.Models
 {
@@ -14,8 +13,8 @@ namespace Entities.Models
         public int ItemType { get; set; }
         public DateTime CreatedDate { get; set; }
 
-        public virtual Orders OrderO { get; set; }
-        public virtual Products ProductO { get; set; }
-        public virtual Users SupplierO { get; set; }
+        public virtual Orders Order { get; set; }
+        public virtual Products Product { get; set; }
+        public virtual Users Supplier { get; set; }
     }
 }

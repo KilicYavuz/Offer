@@ -18,8 +18,8 @@ namespace Entities.Models
         public int Status { get; set; }
         public Guid RequestOid { get; set; }
 
-        public virtual Requests RequestO { get; set; }
-        public virtual Users SupplierO { get; set; }
+        public virtual Requests Request { get; set; }
+        public virtual Users Supplier { get; set; }
         public virtual ICollection<RequestOfferProducts> RequestOfferProducts { get; set; }
     }
 }
