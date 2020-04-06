@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace Entities.Models
@@ -17,6 +18,8 @@ namespace Entities.Models
         public int Type { get; set; }
         public int? ParentOid { get; set; }
         public byte[] Image { get; set; }
+        public ItemState State { get; set; }
+        public DateTime? UpdatedDate { get; set; }
 
         public virtual Categories ParentCategory { get; set; }
         public virtual ICollection<Categories> SubCategories { get; set; }

@@ -158,8 +158,14 @@ namespace Entities.Migrations
                         .HasColumnName("ParentOId")
                         .HasColumnType("int");
 
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
                     b.Property<int>("Type")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid");
 
@@ -377,6 +383,9 @@ namespace Entities.Migrations
 
                     b.Property<int>("Stock")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("VerificationCode")
                         .HasColumnType("nvarchar(20)")

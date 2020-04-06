@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 
 namespace OfferServer.Controllers
 {
@@ -24,15 +25,15 @@ namespace OfferServer.Controllers
             _repoWrapper = repoWrapper;
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet("getAll")]
         public IActionResult GetAll()
         {
             try
             {
-                var cats = _repoWrapper.Category.GetAll();
+                var categories = _repoWrapper.Category.FindAll().OrderBy(u => u.ParentOid).ToList();
 
-                _logger.LogInfo($"Returned all users from database.");
-                var json = JsonConvert.SerializeObject(cats);
+                _logger.LogInfo($"Returned all categories from database.");
+                var json = JsonConvert.SerializeObject(categories);
                 return Ok(json);
             }
             catch (Exception ex)

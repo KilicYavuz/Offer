@@ -9,9 +9,11 @@ namespace Repository
 {
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
+        protected readonly ILoggerManager Logger;
+
         protected OfferContext OfferContext { get; set; }
 
-        public RepositoryBase(OfferContext offerContext)
+        protected RepositoryBase(OfferContext offerContext)
         {
             this.OfferContext = offerContext;
         }
@@ -26,7 +28,7 @@ namespace Repository
             return this.OfferContext.Set<T>().Where(expression).AsNoTracking();
         }
 
-        public void Create(T entity)
+        public void Add(T entity)
         {
             this.OfferContext.Set<T>().Add(entity);
         }
@@ -40,5 +42,11 @@ namespace Repository
         {
             this.OfferContext.Set<T>().Remove(entity);
         }
+
+        //public T GetById(object id)
+        //{
+        //    var product = FindByCondition(x => x.Oid == id).OrderBy(u => u.Name).FirstOrDefault();
+        //    return product;
+        //}
     }
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(OfferContext))]
-    [Migration("20200405152514_initial")]
-    partial class initial
+    [Migration("20200406065249_060420201")]
+    partial class _060420201
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -160,8 +160,14 @@ namespace Entities.Migrations
                         .HasColumnName("ParentOId")
                         .HasColumnType("int");
 
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
                     b.Property<int>("Type")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid");
 
@@ -379,6 +385,9 @@ namespace Entities.Migrations
 
                     b.Property<int>("Stock")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("VerificationCode")
                         .HasColumnType("nvarchar(20)")
