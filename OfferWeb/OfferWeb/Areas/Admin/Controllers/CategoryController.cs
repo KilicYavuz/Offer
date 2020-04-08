@@ -11,9 +11,16 @@ namespace OfferWeb.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         // GET: Admin/Category
-        public ActionResult AddCategory()
+        public ActionResult AddCategory(int? id)
         {
-            return View(new Categories());
+            if (id == null)
+            {
+                return View(new Categories());
+            }
+            else
+            {
+                return RedirectToAction("ListCategory");
+            }
         }
 
         public ActionResult SaveCategory(Categories category)
