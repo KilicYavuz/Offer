@@ -90,7 +90,7 @@ namespace OfferServer.Controllers
             }
         }
 
-        [HttpPut("updateProduct/{id}")]
+        [HttpPost("updateProduct/{id}")]
         public IActionResult UpdateProduct(Guid id, [FromBody]object postData)
         {
             try
@@ -120,7 +120,7 @@ namespace OfferServer.Controllers
             }
         }
 
-        [HttpDelete("deleteProduct/{id}/{permanent}")]
+        [HttpGet("deleteProduct/{id}/{permanent}")]
         public IActionResult DeleteProduct(Guid id, bool permanent)
         {
             try
@@ -212,7 +212,7 @@ namespace OfferServer.Controllers
             }
         }
 
-        [HttpPut("updateBrand/{id}")]
+        [HttpPost("updateBrand/{id}")]
         public IActionResult UpdateBrand(int id, [FromBody]object postData)
         {
             try
@@ -242,7 +242,7 @@ namespace OfferServer.Controllers
             }
         }
 
-        [HttpDelete("deleteBrand/{id}/{permanent}")]
+        [HttpGet("deleteBrand/{id}/{permanent}")]
         public IActionResult DeleteBrand(int id, bool permanent)
         {
             try
@@ -334,7 +334,7 @@ namespace OfferServer.Controllers
             }
         }
 
-        [HttpPut("updateCategory/{id}")]
+        [HttpPost("updateCategory/{id}")]
         public IActionResult UpdateCategory(int id, [FromBody]object postData)
         {
             try
@@ -364,7 +364,7 @@ namespace OfferServer.Controllers
             }
         }
 
-        [HttpDelete("deleteCategory/{id}/{permanent}")]
+        [HttpGet("deleteCategory/{id}/{permanent}")]
         public IActionResult DeleteCategory(int id, bool permanent)
         {
             try

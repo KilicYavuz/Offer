@@ -15,27 +15,19 @@ namespace OfferWeb.API
     {
         static string serviceUrl = "";
         static HttpClient client = new HttpClient();
-        static string url;
-        public ApiUtil()
-        {
-            url = ConfigurationManager.AppSettings["api_url"];
-            if (string.IsNullOrEmpty(url))
-                throw new Exception("api url not defined");
-        }
-
-
+        static string url= ConfigurationManager.AppSettings["api_url"];
 
         #region Category
 
         public static async Task<string> CreateCategory(Categories category)
         {
-            var httpResponse = await Post<Categories>("Category/addCategory", category);
+            var httpResponse = await Post<Categories>("Management/addCategory", category);
             return httpResponse;
         }
 
         public static async Task<string> GetCategoryList()
         {
-            var httpResponse = await Get("Category/getAllCategory");
+            var httpResponse = await Get("Management/getAllCategories");
             return httpResponse;
         }
         #endregion
@@ -62,7 +54,7 @@ namespace OfferWeb.API
 
         public static async Task<string> GetBrandList()
         {
-            var httpResponse = await Get("Brand/getAllBrand");
+            var httpResponse = await Get("Management/getAllBrand");
             return httpResponse;
         }
 
@@ -70,6 +62,8 @@ namespace OfferWeb.API
 
         public async static Task<string> Post<T>(string method, T instance) where T : class, new()
         {
+            if (string.IsNullOrEmpty(url))
+                throw new Exception("api url not defined");
             serviceUrl = $"{url}{method}";
 
             StringContent httpContent = new StringContent(JsonConvert.SerializeObject(instance), Encoding.UTF8, "application/json");
@@ -93,6 +87,8 @@ namespace OfferWeb.API
 
         public static async Task<string> Get(string method)
         {
+            if (string.IsNullOrEmpty(url))
+                throw new Exception("api url not defined");
             serviceUrl = $"{url}{method}";
             using (HttpResponseMessage response = await client.GetAsync(serviceUrl).ConfigureAwait(false))
             {
