@@ -10,6 +10,7 @@ namespace Repository
         private IAddressRepository _address;
         private ICategoryRepository _category;
         private IProductRepository _product;
+        private IBrandRepository _brand;
 
         public IUserRepository User
         {
@@ -60,6 +61,19 @@ namespace Repository
                 }
 
                 return _category;
+            }
+        }
+
+        public IBrandRepository Brand
+        {
+            get
+            {
+                if (_brand == null)
+                {
+                    _brand = new BrandRepository(_repoContext);
+                }
+
+                return _brand;
             }
         }
 

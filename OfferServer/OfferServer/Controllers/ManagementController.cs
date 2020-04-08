@@ -153,6 +153,128 @@ namespace OfferServer.Controllers
 
         #endregion
 
+        #region Brand
+
+        [HttpGet("getAllBrands")]
+        public IActionResult GetAllBrands()
+        {
+            try
+            {
+                var brands = _repoWrapper.Brand.FindAll().OrderBy(u => u.Name).ToList();
+
+                _logger.LogInfo($"Returned all Brands from database.");
+                var json = JsonConvert.SerializeObject(brands);
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetAllBrands action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet("getBrand/{id}")]
+        public IActionResult GetBrand(int id)
+        {
+            try
+            {
+                var data = _repoWrapper.Brand.GetById(id);
+                
+                var json = JsonConvert.SerializeObject(data);
+
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetProduct action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPost("addBrand")]
+        public IActionResult AddBrand([FromBody]object postData)
+        {
+            try
+            {
+                if (postData == null)
+                {
+                    return BadRequest();
+                }
+                var data = JsonConvert.DeserializeObject<Brands>(postData.ToString());
+
+                _repoWrapper.Brand.Add(data);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside AddBrand action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPut("updateBrand/{id}")]
+        public IActionResult UpdateBrand(int id, [FromBody]object postData)
+        {
+            try
+            {
+                if (postData == null)
+                {
+                    return BadRequest();
+                }
+
+                var data = JsonConvert.DeserializeObject<Brands>(postData.ToString());
+
+                var product = _repoWrapper.Brand.GetById(id);
+                if (product == null)
+                {
+                    return NotFound();
+                }
+
+                data.Oid = id;
+                _repoWrapper.Brand.Update(data);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside UpdateBrand action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpDelete("deleteBrand/{id}/{permanent}")]
+        public IActionResult DeleteBrand(int id, bool permanent)
+        {
+            try
+            {
+                var data = _repoWrapper.Brand.GetById(id);
+                if (data == null)
+                {
+                    return NotFound();
+                }
+
+                if (permanent)
+                {
+                    _repoWrapper.Brand.Delete(data);
+                }
+                else
+                {
+                    data.State = ItemState.Deleted; 
+                    data.UpdatedDate = DateTime.Now;
+                    _repoWrapper.Brand.Update(data);
+                }
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside DeleteBrand action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        #endregion
+
         #region Category
 
         [HttpGet("getAllCategories")]

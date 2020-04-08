@@ -6,6 +6,8 @@
         IAddressRepository Address { get; }
         ICategoryRepository Category { get; }
         IProductRepository Product { get; }
+        IBrandRepository Brand { get; }
+
         void Save();
     }
 }
