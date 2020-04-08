@@ -1,8 +1,10 @@
 ﻿using Contracts;
+using Entities;
 using Entities.Enums;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using OfferServer.Models;
 using System;
 using System.Linq;
 
@@ -43,7 +45,10 @@ namespace OfferServer.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"Something went wrong inside GetAllProducts action: {ex.Message}");
-                return StatusCode(500, "Internal server error");
+                ErrorApiModel eam = new ErrorApiModel();
+                eam.Message = $"Something went wrong inside GetAllProducts action: {ex.Message}";
+                eam.StatusCode = "500";
+                return StatusCode(500, eam);
             }
         }
 
@@ -101,7 +106,7 @@ namespace OfferServer.Controllers
                 }
 
                 var data = JsonConvert.DeserializeObject<Products>(postData.ToString());
-                
+
                 var product = _repoWrapper.Product.GetById(id);
                 if (product == null)
                 {
@@ -179,7 +184,7 @@ namespace OfferServer.Controllers
             try
             {
                 var data = _repoWrapper.Brand.GetById(id);
-                
+
                 var json = JsonConvert.SerializeObject(data);
 
                 return Ok(json);
@@ -259,7 +264,7 @@ namespace OfferServer.Controllers
                 }
                 else
                 {
-                    data.State = ItemState.Deleted; 
+                    data.State = ItemState.Deleted;
                     data.UpdatedDate = DateTime.Now;
                     _repoWrapper.Brand.Update(data);
                 }
@@ -301,7 +306,7 @@ namespace OfferServer.Controllers
             try
             {
                 var data = _repoWrapper.Category.GetById(id);
-                
+
                 var json = JsonConvert.SerializeObject(data);
 
                 return Ok(json);
@@ -381,7 +386,7 @@ namespace OfferServer.Controllers
                 }
                 else
                 {
-                    data.State = ItemState.Deleted; 
+                    data.State = ItemState.Deleted;
                     data.UpdatedDate = DateTime.Now;
                     _repoWrapper.Category.Update(data);
                 }

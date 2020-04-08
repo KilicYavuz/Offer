@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using Entities.Models;
+﻿using Entities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -15,7 +15,7 @@ namespace OfferWeb.API
     {
         static string serviceUrl = "";
         static HttpClient client = new HttpClient();
-        static string url= ConfigurationManager.AppSettings["api_url"];
+        static string url = ConfigurationManager.AppSettings["api_url"];
 
         #region Category
 
@@ -79,22 +79,16 @@ namespace OfferWeb.API
             serviceUrl = $"{url}{method}";
 
             StringContent httpContent = new StringContent(JsonConvert.SerializeObject(instance), Encoding.UTF8, "application/json");
-            httpContent.Headers.Add("3cb6b530-adda-40d3-bcf8-02f65b90e437", "6bd3e1f9-d0f6-41db-aa4a-178c2776feeb");
-            //httpContent.Headers.Add("cache-control", "no-cache");
-
             using (HttpResponseMessage response = await client.PostAsync(serviceUrl, httpContent).ConfigureAwait(false))
             {
-                //var t = new Task<string>(() => { return response.StatusCode.ToString(); });
+                string res = await response.Content.ReadAsStringAsync();
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    string res = await response.Content.ReadAsStringAsync();
-                    var definition = new { HataKodu = "", Mesaj = "" };
-                    var r = JsonConvert.DeserializeAnonymousType(res, definition);
-                    return r.Mesaj;
+                    var r = JsonConvert.DeserializeObject<ErrorApiModel>(res);
+                    return r.Message;
                 }
+                return res;
             }
-            return "";
-
         }
 
         public static async Task<string> Get(string method)
@@ -104,15 +98,14 @@ namespace OfferWeb.API
             serviceUrl = $"{url}{method}";
             using (HttpResponseMessage response = await client.GetAsync(serviceUrl).ConfigureAwait(false))
             {
+                string res = await response.Content.ReadAsStringAsync();
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    string res = await response.Content.ReadAsStringAsync();
-                    var definition = new { HataKodu = "", Mesaj = "" };
-                    var r = JsonConvert.DeserializeAnonymousType(res, definition);
-                    return r.Mesaj;
+                    var r = JsonConvert.DeserializeObject<ErrorApiModel>(res);
+                    return r.Message;
                 }
+                return res;
             }
-            return "";
         }
 
         #endregion
