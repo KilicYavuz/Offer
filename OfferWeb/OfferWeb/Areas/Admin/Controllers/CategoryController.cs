@@ -1,4 +1,6 @@
-﻿using System;
+﻿using OfferWeb.API;
+using OfferWeb.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,11 +13,18 @@ namespace OfferWeb.Areas.Admin.Controllers
         // GET: Admin/Category
         public ActionResult AddCategory()
         {
-            return View();
+            return View(new Categories());
+        }
+
+        public ActionResult SaveCategory(Categories category)
+        {
+            var res = ApiUtil.CreateCategory(category).Result;
+            return RedirectToAction("ListCategory");
         }
 
         public ActionResult ListCategory()
         {
+            var categoryList = ApiUtil.GetCategoryList();
             return View();
         }
     }
