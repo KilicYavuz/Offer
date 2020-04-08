@@ -2455,7 +2455,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\OfferServer\Entities\Entities.csproj">
-      <Project>{BDE321FD-BBC3-47F4-A6EB-213E21692A67}</Project>
+      <Project>{bde321fd-bbc3-47f4-a6eb-213e21692a67}</Project>
       <Name>Entities</Name>
     </ProjectReference>
   </ItemGroup>

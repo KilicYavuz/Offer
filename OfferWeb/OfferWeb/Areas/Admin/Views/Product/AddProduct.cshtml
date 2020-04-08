@@ -1,4 +1,4 @@
-﻿@using OfferWeb.Models
+﻿@using Entities.Models
 @model Products
 @{
     ViewBag.Title = "AddProduct";
@@ -25,13 +25,15 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Marka</label>
                             <div class="col-sm-10">
-                                @Html.TextBoxFor(x => x.BrandOid, new { @class = "form-control", name = "BrandOid", required = "required", value = Model.BrandOid })
+                                @Html.DropDownListFor(model => model.BrandOid, new SelectList(ViewBag.Data["Brands"], "Oid", "Name"),
+                                                "-- Marka Seçiniz  --", new { @class = "form-control", name = "BrandOid", required = "required" })
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Kategori</label>
                             <div class="col-sm-10">
-                                @Html.TextBoxFor(x => x.CategoryOid, new { @class = "form-control", name = "CategoryOid", required = "required", value = Model.CategoryOid })
+                                @Html.DropDownListFor(model => model.CategoryOid, new SelectList(ViewBag.Data["Categories"], "Oid", "Name"),
+                                                "-- Kategori Seçiniz  --", new { @class = "form-control", name = "CategoryOid", required = "required" })
                             </div>
                         </div>
                         <div class="form-group">
@@ -50,6 +52,18 @@
                             <label class="col-sm-2 control-label">Image</label>
                             <div class="col-sm-10">
                                 @Html.TextBoxFor(x => x.Image, new { @class = "form-control", name = "Image", required = "required", value = Model.Image })
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <span class="btn btn-default btn-file">
+                                        <span class="fileinput-new">Resim Seçiniz</span>
+                                        <span class="fileinput-exists">Düzenle</span>
+                                        <input type="file" name="Image" onchange="readURL(this);" />
+                                    </span>
+                                    <span id="myText" class="fileinput-filename"></span>
+                                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                    @*TODO:Resim base64String olayı*@
+                                    @*<img id="blah" src="@String.Format("data:image/gif;base64,{0}", Model.Base64String)" alt="your image" />*@
+                                    <p style="color:red"><i>Uyarı</i></p>
+                                </div>
                             </div>
                         </div>
 
@@ -64,4 +78,20 @@
         </div>
     </div>
 </div>
+@*TODO: küçük imaj daha sonra bakılacak*@
+@*<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
 
+            reader.onload = function (e) {
+                $('#blah')
+                    .attr('src', e.target.result)
+                    .width(64)
+                    .height(64);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>*@

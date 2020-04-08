@@ -1,5 +1,5 @@
-﻿using OfferWeb.API;
-using OfferWeb.Models;
+﻿using Entities.Models;
+using OfferWeb.API;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,30 +14,47 @@ namespace OfferWeb.Areas.Admin.Controllers
         public ActionResult AddProduct(int? id)
         {
             var objects = new Dictionary<string, dynamic>();
-            //objects.Add("Branch", branches);  gibi ekle geç
-            //Markaları getir
-            //Kategorileri getir
+            var brands = ApiUtil.GetBrandList().Result;
+            var categories = ApiUtil.GetCategoryList().Result;
+            
+            objects.Add("Brands", brands);
+            objects.Add("Categories", categories);
+            ViewBag.Data = objects;
+            // TODO: ViewData nasıl?
             if (id == null)
             {
                 return View(new Products());
             }
             else
             {
-                var product = ApiUtil.GetProduct(id);
-                return View(product);
+                var product = ApiUtil.GetProduct(id.Value);
+                return View(product.Result);
             }
         }
 
         public ActionResult SaveProduct(Products product)
         {
-            var res = ApiUtil.AddProduct(product).Result;
+            if(product.Oid != Guid.Empty)
+            {
+                var res = ApiUtil.AddProduct(product).Result;
+            }
+            else
+            {
+                var res = ApiUtil.UpdateProduct(product).Result;
+            }
             return RedirectToAction("ListProduct");
         }
 
         public ActionResult ListProduct()
         {
             var productList = ApiUtil.GetProductList();
-            return View();
+            return View(productList);
+        }
+
+        public ActionResult DeleteProduct(Guid id)
+        {
+            var res = ApiUtil.DeleteProduct(id);
+            return RedirectToAction("ListProduct");
         }
     }
 }

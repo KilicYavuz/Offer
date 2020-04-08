@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Entities.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -25,45 +26,83 @@ namespace OfferWeb.API
             return httpResponse;
         }
 
-        public static async Task<string> GetCategoryList()
+        public static async Task<List<Categories>> GetCategoryList()
         {
             var httpResponse = await Get("Management/getAllCategories");
-            return httpResponse;
+            var categories = JsonConvert.DeserializeObject<List<Categories>>(httpResponse);
+            return categories;
         }
         #endregion
 
         #region Product
 
-        internal static object GetProduct(int id)
+        public static async Task<Products> GetProduct(int id)
         {
-            var httpResponse = await Post<Categories>("Management/getProduct", id);
+            var httpResponse = await Get("Management/getProduct/"+ id);
+            //if(string.IsNullOrEmpty(httpResponse))
+            //{
+            //    return null;
+            //}
+            var product = JsonConvert.DeserializeObject<Products>(httpResponse);
+            return product;
+        }
+
+        internal static async Task<string> UpdateProduct(Products product)
+        {
+            var httpResponse = await Post<Products>("Management/updateProduct", product);
             return httpResponse;
         }
 
         public static async Task<string> AddProduct(Products product)
         {
-            var httpResponse = await Post<Products>("Product/addProduct", product);
+            var httpResponse = await Post<Products>("Management/addProduct", product);
             return httpResponse;
         }
 
         public static async Task<string> GetProductList()
         {
-            var httpResponse = await Get("Product/getAllProducts");
+            var httpResponse = await Get("Management/getAllProducts");
+            return httpResponse;
+        }
+
+        public static async Task<string> DeleteProduct(Guid id)
+        {
+            var httpResponse = await Get("Management/deleteProduct/" + id);
             return httpResponse;
         }
 
         #endregion
 
         #region Brand
-        public static async Task<string> GetBrandList()
+        public static async Task<List<Brands>> GetBrandList()
         {
             var httpResponse = await Get("Management/getAllBrands");
+            var brands = JsonConvert.DeserializeObject<List<Brands>>(httpResponse);
+            return brands;
+        }
+
+        public static async Task<Brands> GetBrand(int id)
+        {
+            var httpResponse = await Get("Management/getBrand/"+id);
+            var resp = JsonConvert.DeserializeObject<Brands>(httpResponse);
+            return resp;
+        }
+
+        public static async Task<string> AddBrand(Brands brand)
+        {
+            var httpResponse = await Post<Brands>("Management/addBrand/",brand);
             return httpResponse;
         }
 
-        public static async Task<string> GetBrandList()
+        public static async Task<string> UpdateBrand(Brands brand)
         {
-            var httpResponse = await Get("Management/getAllBrands");
+            var httpResponse = await Post<Brands>("Management/updateBrand/",brand);
+            return httpResponse;
+        }
+
+        public static async Task<string> DeleteBrand(int id)
+        {
+            var httpResponse = await Get("Management/deleteBrand/"+id);
             return httpResponse;
         }
 
@@ -102,6 +141,7 @@ namespace OfferWeb.API
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
                     var r = JsonConvert.DeserializeObject<ErrorApiModel>(res);
+                    //TODO: hata sonucu hata ayfasına yönlenecek.
                     return r.Message;
                 }
                 return res;

@@ -1,9 +1,5 @@
 ﻿using OfferWeb.API;
-using OfferWeb.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using Entities.Models;
 using System.Web.Mvc;
 
 namespace OfferWeb.Areas.Admin.Controllers
