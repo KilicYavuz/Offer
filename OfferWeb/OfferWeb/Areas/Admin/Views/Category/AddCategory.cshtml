@@ -1,47 +1,56 @@
-﻿
+﻿@using OfferWeb.Models
+@model Categories
 @{
     ViewBag.Title = "AddCategory";
 }
 
-    <div class="wrapper wrapper-content animated fadeInRight">
-       
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>Kategori Ekle</h5>
-                    </div>
-                    <div class="ibox-content">
-                        <form method="get" class="form-horizontal">
+<div class="wrapper wrapper-content animated fadeInRight">
 
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Kategori Ekle</h5>
+                </div>
+                <div class="ibox-content">
+                    @using (Html.BeginForm("SaveCategory", "Category", FormMethod.Post, new { @class = "form-horizontal", @id = "addCategoryform" }))
+                    {
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Adı</label>
+                            <div class="col-sm-10">
+                                @Html.TextBoxFor(x => x.Name, new { @class = "form-control", name = "Name", required = "required", value = Model.Name })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Tipi</label>
+                            <div class="col-sm-10">
+                                @Html.TextBoxFor(x => x.Type, new { @class = "form-control", name = "Type", required = "required", value = Model.Type })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Üst Kategorisi</label>
+                            <div class="col-sm-10">
+                                @Html.TextBoxFor(x => x.ParentOid, new { @class = "form-control", name = "ParentOid", value = Model.ParentOid })
+                            </div>
+                        </div>
 
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Adı</label>
-                                <div class="col-sm-10"><input type="text" class="form-control"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Resim</label>
+                            <div class="col-sm-10">
+                                @Html.TextBoxFor(x => x.Image, new { @class = "form-control", name = "Image", required = "required", value = Model.Image })
                             </div>
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Tipi</label>
-                                <div class="col-sm-10"><input type="text" class="form-control"></div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Üst Kategorisi</label>
-                                <div class="col-sm-10"><input type="text" class="form-control"></div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
+                        </div>
 
-
-                            <div class="form-group">
-                                <div class="col-sm-4 col-sm-offset-2">
-                                    <button class="btn btn-white" type="submit">İptal</button>
-                                    <button class="btn btn-primary" type="submit">Kaydet</button>
-                                </div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-white">İptal</button>
+                                <button class="btn btn-primary" type="submit">Kaydet</button>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
+</div>
 
