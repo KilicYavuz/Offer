@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using OfferWeb.Models;
+using Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -34,7 +34,13 @@ namespace OfferWeb.API
 
         #region Product
 
-        public static async Task<string> CreateProduct(Products product)
+        internal static object GetProduct(int id)
+        {
+            var httpResponse = await Post<Categories>("Management/getProduct", id);
+            return httpResponse;
+        }
+
+        public static async Task<string> AddProduct(Products product)
         {
             var httpResponse = await Post<Products>("Product/addProduct", product);
             return httpResponse;
@@ -42,21 +48,27 @@ namespace OfferWeb.API
 
         public static async Task<string> GetProductList()
         {
-            var httpResponse = await Get("Product/getAllProduct");
+            var httpResponse = await Get("Product/getAllProducts");
             return httpResponse;
         }
 
         #endregion
 
         #region Brand
-
-        #endregion
+        public static async Task<string> GetBrandList()
+        {
+            var httpResponse = await Get("Management/getAllBrands");
+            return httpResponse;
+        }
 
         public static async Task<string> GetBrandList()
         {
-            var httpResponse = await Get("Management/getAllBrand");
+            var httpResponse = await Get("Management/getAllBrands");
             return httpResponse;
         }
+
+
+        #endregion
 
         #region Generic Methods
 

@@ -13,25 +13,24 @@ namespace OfferWeb.Areas.Admin.Controllers
         // GET: Admin/Product
         public ActionResult AddProduct(int? id)
         {
-
             var objects = new Dictionary<string, dynamic>();
             //objects.Add("Branch", branches);  gibi ekle geç
             //Markaları getir
             //Kategorileri getir
-            if (id == 0 || id == null)
+            if (id == null)
             {
                 return View(new Products());
             }
-
             else
             {
-                return RedirectToAction("ListProduct");
+                var product = ApiUtil.GetProduct(id);
+                return View(product);
             }
         }
 
         public ActionResult SaveProduct(Products product)
         {
-            var res = ApiUtil.CreateProduct(product).Result;
+            var res = ApiUtil.AddProduct(product).Result;
             return RedirectToAction("ListProduct");
         }
 
