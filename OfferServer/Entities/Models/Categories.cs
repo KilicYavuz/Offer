@@ -17,7 +17,7 @@ namespace Entities.Models
         public DateTime CreatedDate { get; set; }
         public int Type { get; set; }
         public int? ParentOid { get; set; }
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
         public ItemState State { get; set; }
         public DateTime? UpdatedDate { get; set; }
 

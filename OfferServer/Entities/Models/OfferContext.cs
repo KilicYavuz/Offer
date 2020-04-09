@@ -91,8 +91,6 @@ namespace Entities.Models
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
-                entity.Property(e => e.Image).HasColumnType("image");
-
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50);
@@ -268,8 +266,6 @@ namespace Entities.Models
                 entity.Property(e => e.CategoryOid).HasColumnName("CategoryOId");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Image).HasColumnType("image");
 
                 entity.Property(e => e.Name)
                     .IsRequired()

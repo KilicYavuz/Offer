@@ -39,7 +39,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Resim</label>
                             <div class="col-sm-10">
-                                @Html.TextBoxFor(x => x.Image, new { @class = "form-control", name = "Image", required = "required", value = Model.Image })
+                                @*@Html.TextBoxFor(x => x.Image, new { @class = "form-control", name = "Image", required = "required", value = Model.Image })*@
                                 <div class="fileinput fileinput-new" data-provides="fileinput">
                                     <span class="btn btn-default btn-file">
                                         <span class="fileinput-new">Resim Seçiniz</span>
@@ -48,8 +48,7 @@
                                     </span>
                                     <span id="myText" class="fileinput-filename"></span>
                                     <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
-                                    @*TODO:Resim base64String olayı*@
-                                    @*<img id="blah" src="@String.Format("data:image/gif;base64,{0}", Model.Base64String)" alt="your image" />*@
+                                    <img id="blah" src="@String.Format("data:image/gif;base64,{0}", Model.Image)" alt="your image" />
                                     <p style="color:red"><i>Uyarı</i></p>
                                 </div>
                             </div>
@@ -67,4 +66,19 @@
         </div>
     </div>
 </div>
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
 
+            reader.onload = function (e) {
+                $('#blah')
+                    .attr('src', e.target.result)
+                    .width(64)
+                    .height(64);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>

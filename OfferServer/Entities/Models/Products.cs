@@ -24,7 +24,7 @@ namespace Entities.Models
         public bool Verified { get; set; }
         public string VerificationCode { get; set; }
         public Guid Oid { get; set; }
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
         public DateTime? UpdatedDate { get; set; }
 
         public virtual Brands Brand { get; set; }

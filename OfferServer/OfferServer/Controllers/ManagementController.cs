@@ -4,7 +4,6 @@ using Entities.Enums;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using OfferServer.Models;
 using System;
 using System.Linq;
 

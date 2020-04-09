@@ -13,7 +13,7 @@ namespace Entities.Models
 
         public int Oid { get; set; }
         public string Name { get; set; }
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
         public DateTime? CreatedDate { get; set; }
         public ItemState State { get; set; }
         public DateTime? UpdatedDate { get; set; }
