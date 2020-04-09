@@ -20,6 +20,17 @@ namespace OfferWeb.API
 
         #region Category
 
+        public static async Task<Categories> GetCategory(int id)
+        {
+            var httpResponse = await Get("Management/getCategory/" + id);
+            //if(string.IsNullOrEmpty(httpResponse))
+            //{
+            //    return null;
+            //}
+            var product = JsonConvert.DeserializeObject<Categories>(httpResponse);
+            return product;
+        }
+
         public static async Task<string> CreateCategory(Categories category)
         {
             var httpResponse = await Post<Categories>("Management/addCategory", category);
