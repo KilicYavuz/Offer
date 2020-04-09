@@ -17,18 +17,30 @@ namespace OfferWeb.Areas.Admin.Controllers
 
             if (id == null)
             {
+
                 return View(new Categories());
             }
             else
             {
-                return RedirectToAction("ListCategory");
+                var category = ApiUtil.GetCategory(id.Value);
+                return View(category.Result);
             }
         }
 
         public ActionResult SaveCategory(Categories category)
         {
-            var res = ApiUtil.AddCategory(category).Result;
+
+            if (category.Oid != 0)
+            {
+                var res = ApiUtil.AddCategory(category).Result;
+            }
+            else
+            {
+                var res = ApiUtil.UpdateCategory(category).Result;
+            }
+
             return RedirectToAction("ListCategory");
+
         }
 
         public ActionResult ListCategory()

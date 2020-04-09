@@ -1,7 +1,7 @@
 ﻿@using Entities.Models
-@model List<Products>
+@model List<Brands>
 @{
-    ViewBag.Title = "ListProduct";
+    ViewBag.Title = "ListBrand";
 }
 
 <div class="row">
@@ -34,24 +34,22 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Ürün Adı</th>
-                            <th>Marka</th>
-                            <th>Kategori</th>
+                            <th>Adı</th>
+                            <th>Durum</th>
                             <th>İşlem</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var product in Model)
+                        @foreach (var brand in Model)
                         {
-                        <tr>
-                            <td>@product.Name</td>
-                            <td>@product.Brand.Name</td>
-                            <td>@product.Category.Name</td>
-                            <td style="float:initial">
-                                <a href="@Url.Action("AddProduct", "Product", new { id = product.Oid })" class="btn btn-info">Düzenle</a>
-                                <a href="@Url.Action("DeleteProduct", "Product", new { id = product.Oid })" class="btn btn-danger">Sil</a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>@brand.Name</td>
+                                <td>@brand.State.ToString()</td>
+                                <td style="float:initial">
+                                    <a href="@Url.Action("AddBrand", "Brand", new { id = brand.Oid })" class="btn btn-info">Düzenle</a>
+                                    <a href="@Url.Action("DeleteBrand", "Brand", new { id = brand.Oid })" class="btn btn-danger">Sil</a>
+                                </td>
+                            </tr>
                         }
 
                     </tbody>

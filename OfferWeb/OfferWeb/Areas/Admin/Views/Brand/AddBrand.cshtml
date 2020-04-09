@@ -1,7 +1,7 @@
 ﻿@using Entities.Models
-@model Categories
+@model Brands
 @{
-    ViewBag.Title = "AddCategory";
+    ViewBag.Title = "AddBrand";
 }
 
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -10,10 +10,10 @@
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>Kategori Ekle</h5>
+                    <h5>Marka Ekle</h5>
                 </div>
                 <div class="ibox-content">
-                    @using (Html.BeginForm("SaveCategory", "Category", FormMethod.Post, new { @class = "form-horizontal", @id = "addCategoryform" }))
+                    @using (Html.BeginForm("SaveBrand", "Brand", FormMethod.Post, new { @class = "form-horizontal", @id = "addBrandform" }))
                     {
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Adı</label>
@@ -21,21 +21,6 @@
                                 @Html.TextBoxFor(x => x.Name, new { @class = "form-control", name = "Name", required = "required", value = Model.Name })
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Tipi</label>
-                            <div class="col-sm-10">
-                                @Html.TextBoxFor(x => x.Type, new { @class = "form-control", name = "Type", required = "required", value = Model.Type })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Üst Kategorisi</label>
-                            <div class="col-sm-10">
-                                @Html.TextBoxFor(x => x.ParentCategory.Oid, new { @class = "form-control", name = "ParentOid", value = Model.ParentCategory.Oid })
-                                @Html.DropDownListFor(model => model.ParentCategory, new SelectList(ViewBag.Data["Categories"], "Oid", "Name"),
-                                              "-- Kategori Seçiniz  --", new { @class = "form-control", name = "ParentOid" })
-                            </div>
-                        </div>
-
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Resim</label>
                             <div class="col-sm-10">
