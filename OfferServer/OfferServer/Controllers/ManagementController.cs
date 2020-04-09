@@ -86,7 +86,7 @@ namespace OfferServer.Controllers
                 var data = JsonConvert.DeserializeObject<Products>(postData.ToString());
 
                 _repoWrapper.Product.Add(data);
-                return Ok();
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -208,7 +208,7 @@ namespace OfferServer.Controllers
                 var data = JsonConvert.DeserializeObject<Brands>(postData.ToString());
 
                 _repoWrapper.Brand.Add(data);
-                return Ok();
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -330,7 +330,7 @@ namespace OfferServer.Controllers
                 var data = JsonConvert.DeserializeObject<Categories>(postData.ToString());
 
                 _repoWrapper.Category.Add(data);
-                return Ok();
+                return NoContent();
             }
             catch (Exception ex)
             {

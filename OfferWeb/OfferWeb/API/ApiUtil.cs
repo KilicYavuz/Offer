@@ -4,11 +4,9 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace OfferWeb.API
 {
@@ -17,10 +15,22 @@ namespace OfferWeb.API
         static string serviceUrl = "";
         static HttpClient client = new HttpClient();
         static string url = ConfigurationManager.AppSettings["api_url"];
-
         #region Category
 
-        public static async Task<string> CreateCategory(Categories category)
+        public static async Task<Categories> GetCategory(int id)
+        {
+            var httpResponse = await Get("Management/getCategory/" + id);
+            var product = JsonConvert.DeserializeObject<Categories>(httpResponse);
+            return product;
+        }
+
+        internal static async Task<string> UpdateCategory(Categories product)
+        {
+            var httpResponse = await Post<Categories>("Management/updateProduct", product);
+            return httpResponse;
+        }
+
+        public static async Task<string> AddCategory(Categories category)
         {
             var httpResponse = await Post<Categories>("Management/addCategory", category);
             return httpResponse;
@@ -32,6 +42,12 @@ namespace OfferWeb.API
             var categories = JsonConvert.DeserializeObject<List<Categories>>(httpResponse);
             return categories;
         }
+
+        public static async Task<string> DeleteCategory(int id, bool permanent = false)
+        {
+            var httpResponse = await Get("Management/deleteCategory/" + id+"/"+permanent.ToString());
+            return httpResponse;
+        }
         #endregion
 
         #region Product
@@ -39,10 +55,6 @@ namespace OfferWeb.API
         public static async Task<Products> GetProduct(int id)
         {
             var httpResponse = await Get("Management/getProduct/"+ id);
-            //if(string.IsNullOrEmpty(httpResponse))
-            //{
-            //    return null;
-            //}
             var product = JsonConvert.DeserializeObject<Products>(httpResponse);
             return product;
         }
@@ -65,9 +77,9 @@ namespace OfferWeb.API
             return httpResponse;
         }
 
-        public static async Task<string> DeleteProduct(Guid id)
+        public static async Task<string> DeleteProduct(Guid id, bool permanent = false)
         {
-            var httpResponse = await Get("Management/deleteProduct/" + id);
+            var httpResponse = await Get("Management/deleteProduct/" + id + "/" + permanent.ToString());
             return httpResponse;
         }
 
@@ -100,9 +112,9 @@ namespace OfferWeb.API
             return httpResponse;
         }
 
-        public static async Task<string> DeleteBrand(int id)
+        public static async Task<string> DeleteBrand(int id, bool permanent = false)
         {
-            var httpResponse = await Get("Management/deleteBrand/"+id);
+            var httpResponse = await Get("Management/deleteBrand/"+id + "/" + permanent.ToString());
             return httpResponse;
         }
 
@@ -138,12 +150,19 @@ namespace OfferWeb.API
             using (HttpResponseMessage response = await client.GetAsync(serviceUrl).ConfigureAwait(false))
             {
                 string res = await response.Content.ReadAsStringAsync();
-                if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                
+                if (response.StatusCode != System.Net.HttpStatusCode.OK && response.StatusCode != System.Net.HttpStatusCode.NoContent)
                 {
                     var r = JsonConvert.DeserializeObject<ErrorApiModel>(res);
                     //TODO: hata sonucu hata ayfasına yönlenecek.
-                    return r.Message;
+                    //return r.Message;
                 }
+                else if (response.StatusCode == System.Net.HttpStatusCode.NoContent && string.IsNullOrEmpty(res))
+                {
+                    var error = new ErrorApiModel() { Message = "It should not happen; response is empty.", StatusCode = "ERR404" };
+                    //return error.Message;
+                }
+
                 return res;
             }
         }

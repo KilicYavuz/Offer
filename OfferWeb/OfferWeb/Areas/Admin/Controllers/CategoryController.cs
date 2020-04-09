@@ -1,6 +1,7 @@
 ﻿using OfferWeb.API;
 using Entities.Models;
 using System.Web.Mvc;
+using System.Collections.Generic;
 
 namespace OfferWeb.Areas.Admin.Controllers
 {
@@ -9,6 +10,11 @@ namespace OfferWeb.Areas.Admin.Controllers
         // GET: Admin/Category
         public ActionResult AddCategory(int? id)
         {
+            var objects = new Dictionary<string, dynamic>();
+            var categories = ApiUtil.GetCategoryList().Result;
+            objects.Add("Categories", categories);
+            ViewBag.Data = objects;
+
             if (id == null)
             {
                 return View(new Categories());
@@ -21,7 +27,7 @@ namespace OfferWeb.Areas.Admin.Controllers
 
         public ActionResult SaveCategory(Categories category)
         {
-            var res = ApiUtil.CreateCategory(category).Result;
+            var res = ApiUtil.AddCategory(category).Result;
             return RedirectToAction("ListCategory");
         }
 
@@ -29,6 +35,12 @@ namespace OfferWeb.Areas.Admin.Controllers
         {
             var categoryList = ApiUtil.GetCategoryList();
             return View();
+        }
+
+        public ActionResult DeleteCategory(int id)
+        {
+            var res = ApiUtil.DeleteCategory(id);
+            return RedirectToAction("ListCategory");
         }
     }
 }
