@@ -31,9 +31,21 @@ namespace OfferWeb.API
             return product;
         }
 
-        public static async Task<string> CreateCategory(Categories category)
+        public static async Task<string> AddCategory(Categories category)
         {
             var httpResponse = await Post<Categories>("Management/addCategory", category);
+            return httpResponse;
+        }
+
+        public static async Task<string> UpdateCategory(Categories category)
+        {
+            var httpResponse = await Post<Categories>("Management/updateCategory", category);
+            return httpResponse;
+        }
+
+        public static async Task<string> DeleteCategory(int id)
+        {
+            var httpResponse = await Get("Management/deleteCategory/" + id);
             return httpResponse;
         }
 

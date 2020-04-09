@@ -29,14 +29,30 @@ namespace OfferWeb.Areas.Admin.Controllers
 
         public ActionResult SaveCategory(Categories category)
         {
-            var res = ApiUtil.CreateCategory(category).Result;
+
+            if (category.Oid != 0)
+            {
+                var res = ApiUtil.AddCategory(category).Result;
+            }
+            else
+            {
+                var res = ApiUtil.UpdateCategory(category).Result;
+            }
+
             return RedirectToAction("ListCategory");
+
         }
 
         public ActionResult ListCategory()
         {
             var categoryList = ApiUtil.GetCategoryList();
             return View(categoryList.Result);
+        }
+
+        public ActionResult DeleteCategory(int id)
+        {
+            var res = ApiUtil.DeleteCategory(id);
+            return RedirectToAction("ListBrand");
         }
     }
 }
