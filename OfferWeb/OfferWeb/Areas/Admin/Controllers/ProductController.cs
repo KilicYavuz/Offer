@@ -36,6 +36,7 @@ namespace OfferWeb.Areas.Admin.Controllers
         {
             if(product.Oid != Guid.Empty)
             {
+                product.State = Entities.Enums.ItemState.Active;
                 var res = ApiUtil.AddProduct(product).Result;
             }
             else
@@ -47,7 +48,7 @@ namespace OfferWeb.Areas.Admin.Controllers
 
         public ActionResult ListProduct()
         {
-            var productList = ApiUtil.GetProductList();
+            var productList = ApiUtil.GetProductList().Result;
             return View(productList);
         }
 

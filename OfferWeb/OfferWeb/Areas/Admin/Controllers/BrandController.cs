@@ -26,8 +26,9 @@ namespace OfferWeb.Areas.Admin.Controllers
 
         public ActionResult SaveBrand(Brands brand)
         {
-            if (brand.Oid != 0)
+            if (brand.Oid == 0)
             {
+                brand.State = Entities.Enums.ItemState.Active;
                 var res = ApiUtil.AddBrand(brand).Result;
             }
             else
@@ -39,7 +40,7 @@ namespace OfferWeb.Areas.Admin.Controllers
 
         public ActionResult ListBrand()
         {
-            var brandList = ApiUtil.GetBrandList();
+            var brandList = ApiUtil.GetBrandList().Result;
             return View(brandList);
         }
 

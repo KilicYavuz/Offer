@@ -17,7 +17,6 @@ namespace OfferWeb.Areas.Admin.Controllers
 
             if (id == null)
             {
-
                 return View(new Categories());
             }
             else
@@ -30,8 +29,9 @@ namespace OfferWeb.Areas.Admin.Controllers
         public ActionResult SaveCategory(Categories category)
         {
 
-            if (category.Oid != 0)
+            if (category.Oid == 0)
             {
+                category.State = Entities.Enums.ItemState.Active;
                 var res = ApiUtil.AddCategory(category).Result;
             }
             else
@@ -45,8 +45,8 @@ namespace OfferWeb.Areas.Admin.Controllers
 
         public ActionResult ListCategory()
         {
-            var categoryList = ApiUtil.GetCategoryList();
-            return View();
+            var categoryList = ApiUtil.GetCategoryList().Result;
+            return View(categoryList);
         }
 
         public ActionResult DeleteCategory(int id)

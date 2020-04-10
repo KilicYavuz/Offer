@@ -133,7 +133,7 @@ namespace OfferWeb.API
             using (HttpResponseMessage response = await client.PostAsync(serviceUrl, httpContent).ConfigureAwait(false))
             {
                 string res = await response.Content.ReadAsStringAsync();
-                if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                if (response.StatusCode != System.Net.HttpStatusCode.OK && response.StatusCode != System.Net.HttpStatusCode.NoContent)
                 {
                     var r = JsonConvert.DeserializeObject<ErrorApiModel>(res);
                     return r.Message;

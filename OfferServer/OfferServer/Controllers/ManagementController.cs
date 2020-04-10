@@ -83,8 +83,16 @@ namespace OfferServer.Controllers
                     return BadRequest();
                 }
                 var data = JsonConvert.DeserializeObject<Products>(postData.ToString());
+                
+                var found = _repoWrapper.Product.FindByCondition(x =>x.CategoryOid == data.CategoryOid && x.Name == data.Name);
+                if (found.Any())
+                {
+                    ErrorApiModel eam = new ErrorApiModel() { Message = $"Item already exsist" };
+                    return BadRequest(eam);
+                }
 
                 _repoWrapper.Product.Add(data);
+                _repoWrapper.Save();
                 return NoContent();
             }
             catch (Exception ex)
@@ -114,6 +122,7 @@ namespace OfferServer.Controllers
 
                 data.Oid = id;
                 _repoWrapper.Product.Update(data);
+                _repoWrapper.Save();
 
                 return NoContent();
             }
@@ -146,6 +155,7 @@ namespace OfferServer.Controllers
                     _repoWrapper.Product.Update(data);
                 }
 
+                _repoWrapper.Save();
                 return NoContent();
             }
             catch (Exception ex)
@@ -206,7 +216,15 @@ namespace OfferServer.Controllers
                 }
                 var data = JsonConvert.DeserializeObject<Brands>(postData.ToString());
 
+                var found = _repoWrapper.Brand.FindByCondition(x => x.Name == data.Name);
+                if (found.Any())
+                {
+                    ErrorApiModel eam = new ErrorApiModel() { Message = $"Item already exsist" };
+                    return BadRequest(eam);
+                }
+
                 _repoWrapper.Brand.Add(data);
+                _repoWrapper.Save();
                 return NoContent();
             }
             catch (Exception ex)
@@ -236,7 +254,7 @@ namespace OfferServer.Controllers
 
                 data.Oid = id;
                 _repoWrapper.Brand.Update(data);
-
+                _repoWrapper.Save();
                 return NoContent();
             }
             catch (Exception ex)
@@ -268,6 +286,7 @@ namespace OfferServer.Controllers
                     _repoWrapper.Brand.Update(data);
                 }
 
+                _repoWrapper.Save();
                 return NoContent();
             }
             catch (Exception ex)
@@ -328,7 +347,15 @@ namespace OfferServer.Controllers
                 }
                 var data = JsonConvert.DeserializeObject<Categories>(postData.ToString());
 
+                var found = _repoWrapper.Category.FindByCondition(x => x.ParentOid == data.ParentOid && x.Name == data.Name);
+                if (found.Any())
+                {
+                    ErrorApiModel eam = new ErrorApiModel() { Message = $"Item already exsist" };
+                    return BadRequest(eam);
+                }
+
                 _repoWrapper.Category.Add(data);
+                _repoWrapper.Save();
                 return NoContent();
             }
             catch (Exception ex)
@@ -358,6 +385,7 @@ namespace OfferServer.Controllers
 
                 data.Oid = id;
                 _repoWrapper.Category.Update(data);
+                _repoWrapper.Save();
 
                 return NoContent();
             }
@@ -390,6 +418,7 @@ namespace OfferServer.Controllers
                     _repoWrapper.Category.Update(data);
                 }
 
+                _repoWrapper.Save();
                 return NoContent();
             }
             catch (Exception ex)
