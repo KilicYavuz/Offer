@@ -8,6 +8,7 @@
         IProductRepository Product { get; }
         IBrandRepository Brand { get; }
         IProductTagRepository ProductTag { get; }
+        ITagRepository Tag { get; }
 
         void Save();
     }

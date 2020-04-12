@@ -166,144 +166,6 @@ namespace OfferServer.Controllers
 
         #endregion
 
-        #region ProductTag
-
-        [HttpGet("getAllProductTags")]
-        public IActionResult GetAllProductTags()
-        {
-            try
-            {
-                var productTags = _repoWrapper.ProductTag.FindAll().OrderBy(t => t.ProductOid).ToList();
-
-                var json = JsonConvert.SerializeObject(productTags);
-                return Ok(json);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Something went wrong inside GetAllProducts action: {ex.Message}");
-                ErrorApiModel eam = new ErrorApiModel();
-                eam.Message = $"Something went wrong inside GetAllProducts action: {ex.Message}";
-                eam.StatusCode = "500";
-                return StatusCode(500, eam);
-            }
-        }
-
-        //[HttpGet("getProduct/{id}")]
-        //public IActionResult GetProductTag(int id)
-        //{
-        //    try
-        //    {
-        //        var product = _repoWrapper.ProductTag.(id);
-
-        //        if (product == null)
-        //        {
-        //            return NotFound();
-        //        }
-
-        //        var json = JsonConvert.SerializeObject(product);
-        //        return Ok(json);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError($"Something went wrong inside GetProduct action: {ex.Message}");
-        //        return StatusCode(500, "Internal server error");
-        //    }
-        //}
-
-        //[HttpPost("addProduct")]
-        //public IActionResult AddProduct([FromBody]object postData)
-        //{
-        //    try
-        //    {
-        //        if (postData == null)
-        //        {
-        //            return BadRequest();
-        //        }
-        //        var data = JsonConvert.DeserializeObject<Products>(postData.ToString());
-
-        //        var found = _repoWrapper.Product.FindByCondition(x => x.CategoryOid == data.CategoryOid && x.Name == data.Name);
-        //        if (found.Any())
-        //        {
-        //            ErrorApiModel eam = new ErrorApiModel() { Message = $"Item already exsist" };
-        //            return BadRequest(eam);
-        //        }
-
-        //        _repoWrapper.Product.Add(data);
-        //        _repoWrapper.Save();
-        //        return NoContent();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError($"Something went wrong inside AddProduct action: {ex.Message}");
-        //        return StatusCode(500, "Internal server error");
-        //    }
-        //}
-
-        //[HttpPost("updateProduct/{id}")]
-        //public IActionResult UpdateProduct(Guid id, [FromBody]object postData)
-        //{
-        //    try
-        //    {
-        //        if (postData == null)
-        //        {
-        //            return BadRequest();
-        //        }
-
-        //        var data = JsonConvert.DeserializeObject<Products>(postData.ToString());
-
-        //        var product = _repoWrapper.Product.GetById(id);
-        //        if (product == null)
-        //        {
-        //            return NotFound();
-        //        }
-
-        //        data.Oid = id;
-        //        _repoWrapper.Product.Update(data);
-        //        _repoWrapper.Save();
-
-        //        return NoContent();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError($"Something went wrong inside UpdateProduct action: {ex.Message}");
-        //        return StatusCode(500, "Internal server error");
-        //    }
-        //}
-
-        //[HttpGet("deleteProduct/{id}/{permanent}")]
-        //public IActionResult DeleteProduct(Guid id, bool permanent)
-        //{
-        //    try
-        //    {
-        //        var data = _repoWrapper.Product.GetById(id);
-        //        if (data == null)
-        //        {
-        //            return NotFound();
-        //        }
-
-        //        if (permanent)
-        //        {
-        //            _repoWrapper.Product.Delete(data);
-        //        }
-        //        else
-        //        {
-        //            data.State = ItemState.Deleted;
-        //            data.UpdatedDate = DateTime.Now;
-        //            _repoWrapper.Product.Update(data);
-        //        }
-
-        //        _repoWrapper.Save();
-        //        return NoContent();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError($"Something went wrong inside DeleteProduct action: {ex.Message}");
-        //        return StatusCode(500, "Internal server error");
-        //    }
-        //}
-
-        #endregion
-
         #region Brand
 
         [HttpGet("getAllBrands")]
@@ -564,6 +426,283 @@ namespace OfferServer.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+        #endregion
+
+        #region Tag
+
+        [HttpGet("getAllTags")]
+        public IActionResult GetAllTags()
+        {
+            try
+            {
+                var productTags = _repoWrapper.Tag.FindAll().OrderBy(t => t.Name).ToList();
+
+                var json = JsonConvert.SerializeObject(productTags);
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetAllTags action: {ex.Message}");
+                ErrorApiModel eam = new ErrorApiModel();
+                eam.Message = $"Something went wrong inside GetAllTags action: {ex.Message}";
+                eam.StatusCode = "500";
+                return StatusCode(500, eam);
+            }
+        }
+
+        [HttpGet("getTag/{id}")]
+        public IActionResult GetTag(int id)
+        {
+            try
+            {
+                var tag = _repoWrapper.Tag.GetById(id);
+
+                if (tag == null)
+                {
+                    return NotFound();
+                }
+
+                var json = JsonConvert.SerializeObject(tag);
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetTag action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPost("addTag")]
+        public IActionResult AddTag([FromBody]object postData)
+        {
+            try
+            {
+                if (postData == null)
+                {
+                    return BadRequest();
+                }
+                var data = JsonConvert.DeserializeObject<Tags>(postData.ToString());
+
+                var found = _repoWrapper.Tag.FindByCondition(x => x.Name == data.Name);
+                if (found.Any())
+                {
+                    ErrorApiModel eam = new ErrorApiModel() { Message = $"Item already exsist" };
+                    return BadRequest(eam);
+                }
+
+                _repoWrapper.Tag.Add(data);
+                _repoWrapper.Save();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside AddTag action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPost("updateTag/{id}")]
+        public IActionResult UpdateTag(int id, [FromBody]object postData)
+        {
+            try
+            {
+                if (postData == null)
+                {
+                    return BadRequest();
+                }
+
+                var data = JsonConvert.DeserializeObject<Tags>(postData.ToString());
+
+                var product = _repoWrapper.Tag.GetById(id);
+                if (product == null)
+                {
+                    return NotFound();
+                }
+
+                data.Oid = id;
+                _repoWrapper.Tag.Update(data);
+                _repoWrapper.Save();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside UpdateTag action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet("deleteTag/{id}/{permanent}")]
+        public IActionResult DeleteTag(int id, bool permanent)
+        {
+            try
+            {
+                var data = _repoWrapper.Tag.GetById(id);
+                if (data == null)
+                {
+                    return NotFound();
+                }
+
+                if (permanent)
+                {
+                    _repoWrapper.Tag.Delete(data);
+                }
+                else
+                {
+                    ///TODO:Açılacak sonra
+                    //data.State = ItemState.Deleted;
+                    //data.UpdatedDate = DateTime.Now;
+                    _repoWrapper.Tag.Update(data);
+                }
+
+                _repoWrapper.Save();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside DeleteTag action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        #endregion
+
+        #region ProductTag
+
+        [HttpGet("getAllProductTags")]
+        public IActionResult GetAllProductTags()
+        {
+            try
+            {
+                var productTags = _repoWrapper.ProductTag.FindAll().OrderBy(t => t.ProductOid).ToList();
+
+                var json = JsonConvert.SerializeObject(productTags);
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetAllProducts action: {ex.Message}");
+                ErrorApiModel eam = new ErrorApiModel();
+                eam.Message = $"Something went wrong inside GetAllProducts action: {ex.Message}";
+                eam.StatusCode = "500";
+                return StatusCode(500, eam);
+            }
+        }
+
+        //[HttpGet("getProduct/{id}")]
+        //public IActionResult GetProductTag(int id)
+        //{
+        //    try
+        //    {
+        //        var product = _repoWrapper.ProductTag.(id);
+
+        //        if (product == null)
+        //        {
+        //            return NotFound();
+        //        }
+
+        //        var json = JsonConvert.SerializeObject(product);
+        //        return Ok(json);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($"Something went wrong inside GetProduct action: {ex.Message}");
+        //        return StatusCode(500, "Internal server error");
+        //    }
+        //}
+
+        //[HttpPost("addProduct")]
+        //public IActionResult AddProduct([FromBody]object postData)
+        //{
+        //    try
+        //    {
+        //        if (postData == null)
+        //        {
+        //            return BadRequest();
+        //        }
+        //        var data = JsonConvert.DeserializeObject<Products>(postData.ToString());
+
+        //        var found = _repoWrapper.Product.FindByCondition(x => x.CategoryOid == data.CategoryOid && x.Name == data.Name);
+        //        if (found.Any())
+        //        {
+        //            ErrorApiModel eam = new ErrorApiModel() { Message = $"Item already exsist" };
+        //            return BadRequest(eam);
+        //        }
+
+        //        _repoWrapper.Product.Add(data);
+        //        _repoWrapper.Save();
+        //        return NoContent();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($"Something went wrong inside AddProduct action: {ex.Message}");
+        //        return StatusCode(500, "Internal server error");
+        //    }
+        //}
+
+        //[HttpPost("updateProduct/{id}")]
+        //public IActionResult UpdateProduct(Guid id, [FromBody]object postData)
+        //{
+        //    try
+        //    {
+        //        if (postData == null)
+        //        {
+        //            return BadRequest();
+        //        }
+
+        //        var data = JsonConvert.DeserializeObject<Products>(postData.ToString());
+
+        //        var product = _repoWrapper.Product.GetById(id);
+        //        if (product == null)
+        //        {
+        //            return NotFound();
+        //        }
+
+        //        data.Oid = id;
+        //        _repoWrapper.Product.Update(data);
+        //        _repoWrapper.Save();
+
+        //        return NoContent();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($"Something went wrong inside UpdateProduct action: {ex.Message}");
+        //        return StatusCode(500, "Internal server error");
+        //    }
+        //}
+
+        //[HttpGet("deleteProduct/{id}/{permanent}")]
+        //public IActionResult DeleteProduct(Guid id, bool permanent)
+        //{
+        //    try
+        //    {
+        //        var data = _repoWrapper.Product.GetById(id);
+        //        if (data == null)
+        //        {
+        //            return NotFound();
+        //        }
+
+        //        if (permanent)
+        //        {
+        //            _repoWrapper.Product.Delete(data);
+        //        }
+        //        else
+        //        {
+        //            data.State = ItemState.Deleted;
+        //            data.UpdatedDate = DateTime.Now;
+        //            _repoWrapper.Product.Update(data);
+        //        }
+
+        //        _repoWrapper.Save();
+        //        return NoContent();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($"Something went wrong inside DeleteProduct action: {ex.Message}");
+        //        return StatusCode(500, "Internal server error");
+        //    }
+        //}
 
         #endregion
     }

@@ -12,6 +12,7 @@ namespace Repository
         private IProductRepository _product;
         private IBrandRepository _brand;
         private IProductTagRepository _productTag;
+        private ITagRepository _tag;
 
         public IUserRepository User
         {
@@ -88,6 +89,19 @@ namespace Repository
                 }
 
                 return _productTag;
+            }
+        }
+
+        public ITagRepository Tag
+        {
+            get
+            {
+                if (_tag == null)
+                {
+                    _tag = new TagRepository(_repoContext);
+                }
+
+                return _tag;
             }
         }
 
