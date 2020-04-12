@@ -25,7 +25,7 @@ namespace OfferServer.Controllers
             _repoWrapper = repoWrapper;
         }
 
-        [HttpGet("getAll")]
+        [HttpGet("getAllProducts")]
         public IActionResult GetAll()
         {
             try
