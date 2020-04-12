@@ -23,6 +23,11 @@ namespace Repository
             return this.OfferContext.Set<T>().AsNoTracking();
         }
 
+        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, params Expression<Func<T, object>>[] includes)
+        {
+            return includes.Aggregate(this.OfferContext.Set<T>().Where(expression), (current, includeProperty)=> current.Include(includeProperty));
+        }  
+        
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression)
         {
             return this.OfferContext.Set<T>().Where(expression).AsNoTracking();

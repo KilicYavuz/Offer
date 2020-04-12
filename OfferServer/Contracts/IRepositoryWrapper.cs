@@ -7,6 +7,7 @@
         ICategoryRepository Category { get; }
         IProductRepository Product { get; }
         IBrandRepository Brand { get; }
+        IProductTagRepository ProductTag { get; }
 
         void Save();
     }

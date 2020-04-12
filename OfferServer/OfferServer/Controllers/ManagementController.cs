@@ -35,9 +35,8 @@ namespace OfferServer.Controllers
         {
             try
             {
-                var products = _repoWrapper.Product.FindAll().OrderBy(u => u.CategoryOid).ToList();
+                var products = _repoWrapper.Product.FindByCondition(x => x.CreatedDate > new DateTime(2020, 4, 13), i => i.Brand, i => i.Category, i => i.ProductTags).OrderBy(u => u.CategoryOid).ToList();
 
-                _logger.LogInfo($"Returned all categories from database.");
                 var json = JsonConvert.SerializeObject(products);
                 return Ok(json);
             }
@@ -83,8 +82,8 @@ namespace OfferServer.Controllers
                     return BadRequest();
                 }
                 var data = JsonConvert.DeserializeObject<Products>(postData.ToString());
-                
-                var found = _repoWrapper.Product.FindByCondition(x =>x.CategoryOid == data.CategoryOid && x.Name == data.Name);
+
+                var found = _repoWrapper.Product.FindByCondition(x => x.CategoryOid == data.CategoryOid && x.Name == data.Name);
                 if (found.Any())
                 {
                     ErrorApiModel eam = new ErrorApiModel() { Message = $"Item already exsist" };
@@ -164,6 +163,144 @@ namespace OfferServer.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+        #endregion
+
+        #region ProductTag
+
+        [HttpGet("getAllProductTags")]
+        public IActionResult GetAllProductTags()
+        {
+            try
+            {
+                var productTags = _repoWrapper.ProductTag.FindAll().OrderBy(t => t.ProductOid).ToList();
+
+                var json = JsonConvert.SerializeObject(productTags);
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetAllProducts action: {ex.Message}");
+                ErrorApiModel eam = new ErrorApiModel();
+                eam.Message = $"Something went wrong inside GetAllProducts action: {ex.Message}";
+                eam.StatusCode = "500";
+                return StatusCode(500, eam);
+            }
+        }
+
+        //[HttpGet("getProduct/{id}")]
+        //public IActionResult GetProductTag(int id)
+        //{
+        //    try
+        //    {
+        //        var product = _repoWrapper.ProductTag.(id);
+
+        //        if (product == null)
+        //        {
+        //            return NotFound();
+        //        }
+
+        //        var json = JsonConvert.SerializeObject(product);
+        //        return Ok(json);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($"Something went wrong inside GetProduct action: {ex.Message}");
+        //        return StatusCode(500, "Internal server error");
+        //    }
+        //}
+
+        //[HttpPost("addProduct")]
+        //public IActionResult AddProduct([FromBody]object postData)
+        //{
+        //    try
+        //    {
+        //        if (postData == null)
+        //        {
+        //            return BadRequest();
+        //        }
+        //        var data = JsonConvert.DeserializeObject<Products>(postData.ToString());
+
+        //        var found = _repoWrapper.Product.FindByCondition(x => x.CategoryOid == data.CategoryOid && x.Name == data.Name);
+        //        if (found.Any())
+        //        {
+        //            ErrorApiModel eam = new ErrorApiModel() { Message = $"Item already exsist" };
+        //            return BadRequest(eam);
+        //        }
+
+        //        _repoWrapper.Product.Add(data);
+        //        _repoWrapper.Save();
+        //        return NoContent();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($"Something went wrong inside AddProduct action: {ex.Message}");
+        //        return StatusCode(500, "Internal server error");
+        //    }
+        //}
+
+        //[HttpPost("updateProduct/{id}")]
+        //public IActionResult UpdateProduct(Guid id, [FromBody]object postData)
+        //{
+        //    try
+        //    {
+        //        if (postData == null)
+        //        {
+        //            return BadRequest();
+        //        }
+
+        //        var data = JsonConvert.DeserializeObject<Products>(postData.ToString());
+
+        //        var product = _repoWrapper.Product.GetById(id);
+        //        if (product == null)
+        //        {
+        //            return NotFound();
+        //        }
+
+        //        data.Oid = id;
+        //        _repoWrapper.Product.Update(data);
+        //        _repoWrapper.Save();
+
+        //        return NoContent();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($"Something went wrong inside UpdateProduct action: {ex.Message}");
+        //        return StatusCode(500, "Internal server error");
+        //    }
+        //}
+
+        //[HttpGet("deleteProduct/{id}/{permanent}")]
+        //public IActionResult DeleteProduct(Guid id, bool permanent)
+        //{
+        //    try
+        //    {
+        //        var data = _repoWrapper.Product.GetById(id);
+        //        if (data == null)
+        //        {
+        //            return NotFound();
+        //        }
+
+        //        if (permanent)
+        //        {
+        //            _repoWrapper.Product.Delete(data);
+        //        }
+        //        else
+        //        {
+        //            data.State = ItemState.Deleted;
+        //            data.UpdatedDate = DateTime.Now;
+        //            _repoWrapper.Product.Update(data);
+        //        }
+
+        //        _repoWrapper.Save();
+        //        return NoContent();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($"Something went wrong inside DeleteProduct action: {ex.Message}");
+        //        return StatusCode(500, "Internal server error");
+        //    }
+        //}
 
         #endregion
 
@@ -305,7 +442,7 @@ namespace OfferServer.Controllers
         {
             try
             {
-                var categories = _repoWrapper.Category.FindAll().OrderBy(u => u.ParentOid).ToList();
+                var categories = _repoWrapper.Category.FindByCondition(x => x.CreatedDate > new DateTime(2020, 4, 13), i => i.ParentCategory, i => i.SubCategories).OrderBy(u => u.ParentOid).ToList();
 
                 _logger.LogInfo($"Returned all categories from database.");
                 var json = JsonConvert.SerializeObject(categories);
