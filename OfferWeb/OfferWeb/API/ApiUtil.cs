@@ -15,9 +15,7 @@ namespace OfferWeb.API
     {
         static string serviceUrl = "";
         static HttpClient client = new HttpClient();
-        static string url = Startup.StaticConfig["api_url"];
-
-
+        static string url = Startup.StaticConfig["Root:ApiUrl"];
         #region Category
 
         public static async Task<Categories> GetCategory(int id)
