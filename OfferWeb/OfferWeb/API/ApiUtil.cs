@@ -16,6 +16,8 @@ namespace OfferWeb.API
         static string serviceUrl = "";
         static HttpClient client = new HttpClient();
         static string url = Startup.StaticConfig["api_url"];
+
+
         #region Category
 
         public static async Task<Categories> GetCategory(int id)
@@ -116,8 +118,26 @@ namespace OfferWeb.API
             return products;
         }
 
+        public static async Task<List<Products>> GetMainScreenProducts()
+        {
+            var httpResponse = await Get("Management/getMainScreenProducts");
+            var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse);
+            return products;
+        }
 
 
+
+        #endregion
+
+        #region CategoryProduct
+
+        public static async Task<List<Products>> GetProductByCategory(int id)
+        {
+            var httpResponse = await Get("Management/GetProductByCategory/" + id);
+            var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse);
+            return products;
+        }
+        
         #endregion
 
         #region Brand

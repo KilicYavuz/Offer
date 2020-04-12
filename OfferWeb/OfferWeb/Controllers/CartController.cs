@@ -13,7 +13,7 @@ namespace OfferWeb.Controllers
         {
             return View();
         }
-        public ActionResult AddCart()
+        public ActionResult AddCart(Guid id)
         {
             return View();
         }

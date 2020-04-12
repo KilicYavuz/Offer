@@ -14,7 +14,7 @@ namespace OfferWeb.Controllers
             return View();
         }
 
-        public ActionResult ProductDetail()
+        public ActionResult ProductDetail(Guid Oid)
         {
             return View();
         }

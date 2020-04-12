@@ -10,16 +10,18 @@ namespace OfferWeb.Controllers
         {
             var objects = new Dictionary<string, dynamic>();
             ///TODO: Ahmet açarsın.
+            var mainScreenProducts = ApiUtil.GetMainScreenProducts().Result;
             var bestSellerProducts = ApiUtil.GetBestSellerProducts().Result;
             var opportunityProducts = ApiUtil.GetOpportunityProducts().Result;
             var newProducts = ApiUtil.GetNewProducts().Result;
             var outletProducts = ApiUtil.GetOutletProducts().Result;
+            var brands = ApiUtil.GetBrandList().Result;
+            var categories = ApiUtil.GetCategoryList().Result;
             objects.Add("BestSellerProducts", bestSellerProducts);
+            objects.Add("MainScreenProducts", mainScreenProducts);
             objects.Add("OpportunityProducts", opportunityProducts);
             objects.Add("NewProducts", newProducts);
             objects.Add("OutletProducts", outletProducts);
-            var brands = ApiUtil.GetBrandList().Result;
-            var categories = ApiUtil.GetCategoryList().Result;
             objects.Add("Categories", categories);
             objects.Add("BrandList", brands);
             ViewBag.Data = objects;

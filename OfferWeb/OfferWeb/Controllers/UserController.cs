@@ -18,5 +18,9 @@ namespace OfferWeb.Controllers
         {
             return View();
         }
+        public ActionResult AddWishlist(Guid id)
+        {
+            return View();
+        }
     }
 }

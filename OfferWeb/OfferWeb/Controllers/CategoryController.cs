@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
+using OfferWeb.API;
 
 namespace OfferWeb.Controllers
 {
@@ -14,9 +15,10 @@ namespace OfferWeb.Controllers
             return View();
         }
 
-        public ActionResult CategoryResult()
+        public ActionResult CategoryResult(int id)
         {
-            return View();
+            var productList = ApiUtil.GetProductByCategory(id);
+            return View(productList);
         }
     }
 }
