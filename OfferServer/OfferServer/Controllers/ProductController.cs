@@ -88,5 +88,22 @@ namespace OfferServer.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+        [HttpGet("getProductByBrand/{id}")]
+        public IActionResult GetProductByBrand(int id)
+        {
+            try
+            {
+                var products = _repoWrapper.Product.FindByCondition(x=>x.State == Entities.Enums.ItemState.Active && x.Verified && x.BrandOid == id, i=>i.Brand,i=>i.Category,i=>i.ProductTags).OrderBy(u => u.CategoryOid).ToList();
+
+                var json = JsonConvert.SerializeObject(products);
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetProductByCategory action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
     }
 }
