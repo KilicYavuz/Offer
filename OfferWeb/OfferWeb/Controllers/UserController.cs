@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
+using OfferWeb.API;
 
 namespace OfferWeb.Controllers
 {
@@ -20,6 +21,7 @@ namespace OfferWeb.Controllers
         }
         public ActionResult AddWishlist(Guid id)
         {
+            var result = ApiUtil.AddWishList(id);
             return View();
         }
     }

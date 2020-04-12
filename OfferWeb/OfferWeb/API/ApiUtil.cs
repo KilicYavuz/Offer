@@ -51,6 +51,14 @@ namespace OfferWeb.API
         }
         #endregion
 
+        #region Cart
+        public static async Task<string> AddCart(Guid id)
+        {
+            var httpResponse = await Get("Management/addCart/" + id);
+            return httpResponse;
+        }
+        #endregion
+
         #region Product
 
         public static async Task<Products> GetProduct(int id)
@@ -172,6 +180,14 @@ namespace OfferWeb.API
         }
 
 
+        #endregion
+
+        #region User
+        public static async Task<string> AddWishList(Guid id)
+        {
+            var httpResponse = await Get("Management/addWishList/" + id);
+            return httpResponse;
+        }
         #endregion
 
         #region Generic Methods
