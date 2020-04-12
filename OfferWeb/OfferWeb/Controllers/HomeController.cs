@@ -1,9 +1,6 @@
 ﻿using OfferWeb.API;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace OfferWeb.Controllers
 {
@@ -12,17 +9,18 @@ namespace OfferWeb.Controllers
         public ActionResult Index()
         {
             var objects = new Dictionary<string, dynamic>();
+            ///TODO: Ahmet açarsın.
             var bestSellerProducts = ApiUtil.GetBestSellerProducts().Result;
-            var categories = ApiUtil.GetCategoryList().Result;
             var opportunityProducts = ApiUtil.GetOpportunityProducts().Result;
             var newProducts = ApiUtil.GetNewProducts().Result;
             var outletProducts = ApiUtil.GetOutletProducts().Result;
-            var brands = ApiUtil.GetBrandList().Result;
-            objects.Add("Categories", categories);
             objects.Add("BestSellerProducts", bestSellerProducts);
             objects.Add("OpportunityProducts", opportunityProducts);
             objects.Add("NewProducts", newProducts);
             objects.Add("OutletProducts", outletProducts);
+            var brands = ApiUtil.GetBrandList().Result;
+            var categories = ApiUtil.GetCategoryList().Result;
+            objects.Add("Categories", categories);
             objects.Add("BrandList", brands);
             ViewBag.Data = objects;
             return View();

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace OfferWeb.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class HomeController : Controller
     {
         // GET: Admin/Home

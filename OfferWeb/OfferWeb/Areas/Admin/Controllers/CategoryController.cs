@@ -1,6 +1,6 @@
 ﻿using OfferWeb.API;
 using Entities.Models;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace OfferWeb.Areas.Admin.Controllers

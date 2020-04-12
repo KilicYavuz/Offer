@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Entities.Models;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace OfferWeb.API
     {
         static string serviceUrl = "";
         static HttpClient client = new HttpClient();
-        static string url = ConfigurationManager.AppSettings["api_url"];
+        static string url = Startup.StaticConfig["api_url"];
         #region Category
 
         public static async Task<Categories> GetCategory(int id)
