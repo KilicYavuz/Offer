@@ -13,5 +13,9 @@ namespace OfferWeb.Controllers
         {
             return View();
         }
+        public ActionResult AddCart()
+        {
+            return View();
+        }
     }
 }
