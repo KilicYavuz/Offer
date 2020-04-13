@@ -16,6 +16,77 @@ namespace OfferWeb.API
         static string serviceUrl = "";
         static HttpClient client = new HttpClient();
         static string url = Startup.StaticConfig["Root:ApiUrl"];
+        
+        #region ProductTag
+
+        public static async Task<ProductTags> GetProductTag(int id)
+        {
+            var httpResponse = await Get("Management/getProductTag/" + id);
+            var tag = JsonConvert.DeserializeObject<ProductTags>(httpResponse);
+            return tag;
+        }
+
+        public static async Task<string> AddProductTag(ProductTags tag)
+        {
+            var httpResponse = await Post<ProductTags>("Management/addProductTag", tag);
+            return httpResponse;
+        }
+
+        public static async Task<string> UpdateProductTag(ProductTags tag)
+        {
+            var httpResponse = await Post<ProductTags>("Management/updateProductTag", tag);
+            return httpResponse;
+        }
+
+        public static async Task<List<ProductTags>> GetProductTagList()
+        {
+            var httpResponse = await Get("Management/getAllCategories");
+            var categories = JsonConvert.DeserializeObject<List<ProductTags>>(httpResponse);
+            return categories;
+        }
+
+        public static async Task<string> DeleteProductTag(int id, bool permanent = false)
+        {
+            var httpResponse = await Get("Management/deleteProductTag/" + id + "/" + permanent.ToString());
+            return httpResponse;
+        }
+        #endregion
+         
+        #region Tag
+
+        public static async Task<Tags> GetTag(int id)
+        {
+            var httpResponse = await Get("Management/getTag/" + id);
+            var tag = JsonConvert.DeserializeObject<Tags>(httpResponse);
+            return tag;
+        }
+
+        public static async Task<string> AddTag(Tags tag)
+        {
+            var httpResponse = await Post<Tags>("Management/addTag", tag);
+            return httpResponse;
+        }
+
+        public static async Task<string> UpdateTag(Tags tag)
+        {
+            var httpResponse = await Post<Tags>("Management/updateTag", tag);
+            return httpResponse;
+        }
+
+        public static async Task<List<Tags>> GetTagList()
+        {
+            var httpResponse = await Get("Management/getAllCategories");
+            var categories = JsonConvert.DeserializeObject<List<Tags>>(httpResponse);
+            return categories;
+        }
+
+        public static async Task<string> DeleteTag(int id, bool permanent = false)
+        {
+            var httpResponse = await Get("Management/deleteTag/" + id + "/" + permanent.ToString());
+            return httpResponse;
+        }
+        #endregion
+         
         #region Category
 
         public static async Task<Categories> GetCategory(int id)
