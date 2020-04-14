@@ -16,9 +16,11 @@ namespace OfferWeb.Areas.Admin.Controllers
             var objects = new Dictionary<string, dynamic>();
             var brands = ApiUtil.GetBrandList().Result;
             var categories = ApiUtil.GetCategoryList().Result;
+            var tagList = ApiUtil.GetTagList().Result;
             
             objects.Add("Brands", brands);
             objects.Add("Categories", categories);
+            objects.Add("TagList", categories);
             ViewBag.Data = objects;
             // TODO: ViewData nasıl?
             if (id == null)

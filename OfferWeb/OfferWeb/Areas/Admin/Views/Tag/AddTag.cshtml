@@ -1,0 +1,36 @@
+﻿@using Entities.Models
+@model Tags
+@{
+    ViewBag.Title = "AddTag";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Tag Ekle</h5>
+                </div>
+                <div class="ibox-content">
+                    @using (Html.BeginForm("SaveTag", "Tag", FormMethod.Post, new { @class = "form-horizontal", @id = "addTagform" }))
+                    {
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Adı</label>
+                            <div class="col-sm-10">
+                                @Html.TextBoxFor(x => x.Name, new { @class = "form-control", name = "Name", required = "required", value = Model.Name })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-white">İptal</button>
+                                <button class="btn btn-primary" type="submit">Kaydet</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -24,30 +24,29 @@ namespace OfferWeb.Areas.Admin.Controllers
             }
         }
 
-        public ActionResult SaveBrand(Brands brand)
+        public ActionResult SaveTag(Tags tag)
         {
-            if (brand.Oid == 0)
+            if (tag.Oid == 0)
             {
-                brand.State = Entities.Enums.ItemState.Active;
-                var res = ApiUtil.AddBrand(brand).Result;
+                var res = ApiUtil.AddTag(tag).Result;
             }
             else
             {
-                var res = ApiUtil.UpdateBrand(brand).Result;
+                var res = ApiUtil.UpdateTag(tag).Result;
             }
-            return RedirectToAction("ListBrand");
+            return RedirectToAction("ListTag");
         }
 
-        public ActionResult ListBrand()
+        public ActionResult ListTag()
         {
-            var brandList = ApiUtil.GetBrandList().Result;
-            return View(brandList);
+            var tagList = ApiUtil.GetTagList().Result;
+            return View(tagList);
         }
 
-        public ActionResult DeleteBrand(int id)
+        public ActionResult DeleteTag(int id)
         {
-            var res = ApiUtil.DeleteBrand(id);
-            return RedirectToAction("ListBrand");
+            var res = ApiUtil.DeleteTag(id);
+            return RedirectToAction("ListTag");
         }
     }
 }
