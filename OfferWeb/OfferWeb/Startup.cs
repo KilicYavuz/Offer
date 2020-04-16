@@ -1,12 +1,15 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 
 namespace OfferWeb
@@ -20,7 +23,7 @@ namespace OfferWeb
         }
 
         public IConfiguration Configuration { get; }
-        public static IConfiguration StaticConfig { get; private set;}
+        public static IConfiguration StaticConfig { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -44,11 +47,27 @@ namespace OfferWeb
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(),"Assets")),
+                RequestPath=new PathString("/Assets")
+
+
+            });
+
+            //Bu şart mı bakalım bi
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Areas")),
+                RequestPath = new PathString("/Admin")
+            });
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                   name: "areas",
-                  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                  template: "{area:exists}/{controller=Login}/{action=Index}/{id?}"
                 );
 
                 //Default Route

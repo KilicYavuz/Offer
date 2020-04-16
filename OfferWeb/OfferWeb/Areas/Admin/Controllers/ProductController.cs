@@ -5,59 +5,96 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 
 namespace OfferWeb.Areas.Admin.Controllers
 {
-    public class ProductController : Controller
+    [Area("Admin")]
+    public class ProductController :Controller
     {
         // GET: Admin/Product
         public ActionResult AddProduct(int? id)
         {
-            var objects = new Dictionary<string, dynamic>();
-            var brands = ApiUtil.GetBrandList().Result;
-            var categories = ApiUtil.GetCategoryList().Result;
-            var tagList = ApiUtil.GetTagList().Result;
-            
-            objects.Add("Brands", brands);
-            objects.Add("Categories", categories);
-            objects.Add("TagList", categories);
-            ViewBag.Data = objects;
-            // TODO: ViewData nasıl?
-            if (id == null)
+            try
             {
-                return View(new Products());
+                var objects = new Dictionary<string, dynamic>();
+                var brands = ApiUtil.GetBrandList().Result;
+                var categories = ApiUtil.GetCategoryList().Result;
+                var tagList = ApiUtil.GetTagList().Result;
+
+                objects.Add("Brands", brands);
+                objects.Add("Categories", categories);
+                objects.Add("TagList", categories);
+                ViewBag.Data = objects;
+
+                // TODO: ViewData nasıl?
+                if (id == null)
+                {
+                    return View(new Products());
+                }
+                else
+                {
+                    var product = ApiUtil.GetProduct(id.Value);
+                    return View(product.Result);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var product = ApiUtil.GetProduct(id.Value);
-                return View(product.Result);
+                return RedirectToAction("Index", new RouteValueDictionary(new { controller = "ErrorHandler", action = "Index", data = ex.InnerException }));
             }
         }
 
         public ActionResult SaveProduct(Products product)
         {
-            if(product.Oid != Guid.Empty)
+            try
             {
-                product.State = Entities.Enums.ItemState.Active;
-                var res = ApiUtil.AddProduct(product).Result;
+                if (product.Oid == Guid.Empty)
+                {
+                    product.State = Entities.Enums.ItemState.Active;
+                    var res = ApiUtil.AddProduct(product).Result;
+                }
+                else
+                {
+                    var res = ApiUtil.UpdateProduct(product).Result;
+                }
+                return RedirectToAction("ListProduct");
             }
-            else
+            catch (Exception ex)
             {
-                var res = ApiUtil.UpdateProduct(product).Result;
+                return RedirectToAction("Index", new RouteValueDictionary(new { controller = "ErrorHandler", action = "Index", data = ex.InnerException }));
             }
-            return RedirectToAction("ListProduct");
         }
 
         public ActionResult ListProduct()
         {
-            var productList = ApiUtil.GetProductList().Result;
-            return View(productList);
+            try
+            {
+                var productList = ApiUtil.GetProductList().Result;
+                if (productList=="[]")
+                {
+                    throw new Exception("Listelenecek ürün bulunamadı");
+                }
+                return View(productList);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new RouteValueDictionary(new { controller = "ErrorHandler", action = "Index", data = ex.InnerException }));
+            }
+
         }
 
         public ActionResult DeleteProduct(Guid id)
         {
-            var res = ApiUtil.DeleteProduct(id);
-            return RedirectToAction("ListProduct");
+            try
+            {
+                var res = ApiUtil.DeleteProduct(id);
+                return RedirectToAction("ListProduct");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new RouteValueDictionary(new { controller = "ErrorHandler", action = "Index", data = ex.InnerException }));
+            }
+
         }
     }
 }

@@ -5,49 +5,80 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 
 namespace OfferWeb.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class BrandController : Controller
     {
         // GET: Admin/Brand
         public ActionResult AddBrand(int? id)
         {
-            if (id == null)
+            try
             {
-                return View(new Brands());
+                if (id == null)
+                {
+                    return View(new Brands());
+                }
+                else
+                {
+                    var brand = ApiUtil.GetBrand(id.Value);
+                    return View(brand.Result);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var brand = ApiUtil.GetBrand(id.Value);
-                return View(brand.Result);
+                return RedirectToAction("Index", new RouteValueDictionary(new { controller = "ErrorHandler", action = "Index", data = ex.InnerException }));
             }
+
         }
 
         public ActionResult SaveBrand(Brands brand)
         {
-            if (brand.Oid == 0)
+            try
             {
-                brand.State = Entities.Enums.ItemState.Active;
-                var res = ApiUtil.AddBrand(brand).Result;
+                if (brand.Oid == 0)
+                {
+                    brand.State = Entities.Enums.ItemState.Active;
+                    var res = ApiUtil.AddBrand(brand).Result;
+                }
+                else
+                {
+                    var res = ApiUtil.UpdateBrand(brand).Result;
+                }
+                return RedirectToAction("ListBrand");
             }
-            else
+            catch (Exception ex)
             {
-                var res = ApiUtil.UpdateBrand(brand).Result;
+                return RedirectToAction("Index", new RouteValueDictionary(new { controller = "ErrorHandler", action = "Index", data = ex.InnerException }));
             }
-            return RedirectToAction("ListBrand");
         }
 
         public ActionResult ListBrand()
         {
-            var brandList = ApiUtil.GetBrandList().Result;
-            return View(brandList);
+            try
+            {
+                var brandList = ApiUtil.GetBrandList().Result;
+                return View(brandList);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new RouteValueDictionary(new { controller = "ErrorHandler", action = "Index", data = ex.InnerException }));
+            }
         }
 
         public ActionResult DeleteBrand(int id)
         {
-            var res = ApiUtil.DeleteBrand(id);
-            return RedirectToAction("ListBrand");
+            try
+            {
+                var res = ApiUtil.DeleteBrand(id);
+                return RedirectToAction("ListBrand");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new RouteValueDictionary(new { controller = "ErrorHandler", action = "Index", data = ex.InnerException }));
+            }
         }
     }
 }

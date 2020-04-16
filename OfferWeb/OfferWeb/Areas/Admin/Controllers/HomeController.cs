@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 
 namespace OfferWeb.Areas.Admin.Controllers
 {
@@ -8,7 +9,14 @@ namespace OfferWeb.Areas.Admin.Controllers
         // GET: Admin/Home
         public ActionResult Index()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (System.Exception ex)
+            {
+                return RedirectToAction("Index", new RouteValueDictionary(new { controller = "ErrorHandler", action = "Index", data = ex.InnerException }));
+            }
         }
     }
 }

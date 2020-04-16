@@ -37,6 +37,7 @@
                             <th>#</th>
                             <th>Kategori Adı</th>
                             <th>Tipi</th>
+                            <th>Durum</th>
                             <th>Üst Kategori</th>
                             <th>İşlem</th>
                         </tr>
@@ -48,7 +49,17 @@
                             <td>@category.Oid</td>
                             <td>@category.Name</td>
                             <td>@category.Type</td>
-                            <td>@category.ParentCategory.Name</td>
+                            <td>@category.State</td>
+                            @if (category.ParentOid != null)
+                            {
+                                <td>@category.ParentOid</td>
+                            }
+                            else
+                            {
+                                <td>-</td>
+
+                            }
+
                             <td style="float:initial">
                                 <a href="@Url.Action("AddCategory", "Category", new { id = category.Oid })" class="btn btn-info">Düzenle</a>
                                 <a href="@Url.Action("DeleteCategory", "Category", new { id = category.Oid })" class="btn btn-danger">Sil</a>

@@ -22,6 +22,13 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-2 control-label">Durum</label>
+                            <div class="col-sm-10">
+                                @Html.DropDownListFor(model => model.State, Enum.GetNames(typeof(Entities.Enums.ItemState)).Select(e => new SelectListItem { Text = e }))
+
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-2 control-label">Tipi</label>
                             <div class="col-sm-10">
                                 @Html.TextBoxFor(x => x.Type, new { @class = "form-control", name = "Type", required = "required", value = Model.Type })
@@ -30,9 +37,9 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Üst Kategorisi</label>
                             <div class="col-sm-10">
-                                @Html.TextBoxFor(x => x.ParentCategory.Oid, new { @class = "form-control", name = "ParentOid", value = Model.ParentCategory.Oid })
-                                @Html.DropDownListFor(model => model.ParentCategory, new SelectList(ViewBag.Data["Categories"], "Oid", "Name"),
-                                              "-- Kategori Seçiniz  --", new { @class = "form-control", name = "ParentOid" })
+                                @*@Html.TextBoxFor(x => x.ParentOid, new { @class = "form-control", name = "ParentOid", value = Model.ParentOid})*@
+                                @Html.DropDownListFor(model => model.ParentOid, new SelectList(ViewBag.Data["Categories"], "Oid", "Name"),
+                                              "-- Kategori Seçiniz  --", new { @class = "form-control", name = "ParentOid", value = Model.ParentOid })
                             </div>
                         </div>
 
@@ -49,7 +56,7 @@
                                     <span id="myText" class="fileinput-filename"></span>
                                     <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
                                     <img id="blah" src="@String.Format("data:image/gif;base64,{0}", Model.Image)" alt="your image" />
-                                    <p style="display: none; color:red;" ><i>Uyarı</i></p>
+                                    <p style="display: none; color:red;"><i>Uyarı</i></p>
                                 </div>
                             </div>
                         </div>

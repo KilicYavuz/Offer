@@ -2,26 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Entities.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace OfferWeb.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class LoginController : Controller
     {
         // GET: Admin/Login
         public ActionResult Index()
         {
-            return View();
+            return View(new Users());
         }
 
-        public ActionResult Login()
+        public ActionResult Login(Users user)
         {
-            return View();
+            if (user.Username == "Admin" && user.Password == "1")
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return RedirectToAction("Index");
         }
 
         public ActionResult Logout()
         {
-            return View();
+            return RedirectToAction("Index");
         }
     }
 }

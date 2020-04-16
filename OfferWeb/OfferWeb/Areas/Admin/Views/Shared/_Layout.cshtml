@@ -74,6 +74,13 @@
                             <li><a href='@Url.Action("AddBrand", "Brand")'>Marka Ekle</a></li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">Tag</span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href='@Url.Action("ListTag", "Tag")'>Tag Listesi</a></li>
+                            <li><a href='@Url.Action("AddTag", "Tag")'>Tag Ekle</a></li>
+                        </ul>
+                    </li>
                     @*<li>
             <a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">Layouts</span></a>
         </li>
@@ -383,7 +390,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a href='@Url.Action("Index", "Home")'>
+                            <a href='@Url.Action("Logout", "Login")'>
                                 <i class="fa fa-sign-out"></i> Çıkış Yap
                             </a>
                         </li>

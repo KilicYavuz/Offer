@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewData["Title"] = "Unauthorized";
+}
+
+<div class="gray-bg">
+    <div class="text-center animated fadeInDown">
+        <img src="~/Assets/img/500Error.png" />
+    </div>
+    <div class="middle-box text-center animated fadeInDown">
+        @*<h1>500</h1>*@
+        <h3 class="font-bold">InternalServerError</h3>
+
+        <div class="error-desc">
+            500<br />
+            <br /><a href="@Url.Action("Index","ErrorLog")" class="btn btn-primary m-t">ErrorLogs</a>
+        </div>
+    </div>
+
+
