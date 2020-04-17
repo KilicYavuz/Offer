@@ -240,7 +240,7 @@ namespace OfferWeb.API
 
         public static async Task<string> UpdateBrand(Brands brand)
         {
-            var httpResponse = await Post<Brands>("Management/updateBrand/", brand);
+            var httpResponse = await Post<Brands>("Management/updateBrand/"+brand.Oid, brand);
             return httpResponse;
         }
 

@@ -90,6 +90,7 @@ namespace OfferServer.Controllers
                     return BadRequest(eam);
                 }
 
+                data.CreatedDate = DateTime.Now;
                 _repoWrapper.Product.Add(data);
                 _repoWrapper.Save();
                 return NoContent();
@@ -119,6 +120,7 @@ namespace OfferServer.Controllers
                     return NotFound();
                 }
 
+                data.UpdatedDate = DateTime.Now;
                 data.Oid = id;
                 _repoWrapper.Product.Update(data);
                 _repoWrapper.Save();
@@ -222,6 +224,7 @@ namespace OfferServer.Controllers
                     return BadRequest(eam);
                 }
 
+                data.CreatedDate = DateTime.Now;
                 _repoWrapper.Brand.Add(data);
                 _repoWrapper.Save();
                 return NoContent();
@@ -252,6 +255,7 @@ namespace OfferServer.Controllers
                 }
 
                 data.Oid = id;
+                data.UpdatedDate = DateTime.Now;
                 _repoWrapper.Brand.Update(data);
                 _repoWrapper.Save();
                 return NoContent();
@@ -352,7 +356,7 @@ namespace OfferServer.Controllers
                     ErrorApiModel eam = new ErrorApiModel() { Message = $"Item already exsist" };
                     return BadRequest(eam);
                 }
-
+                data.CreatedDate = DateTime.Now;
                 _repoWrapper.Category.Add(data);
                 _repoWrapper.Save();
                 return NoContent();
@@ -383,6 +387,7 @@ namespace OfferServer.Controllers
                 }
 
                 data.Oid = id;
+                data.UpdatedDate = DateTime.Now;
                 _repoWrapper.Category.Update(data);
                 _repoWrapper.Save();
 
@@ -491,6 +496,7 @@ namespace OfferServer.Controllers
                     return BadRequest(eam);
                 }
 
+                data.CreatedDate = DateTime.Now;
                 _repoWrapper.Tag.Add(data);
                 _repoWrapper.Save();
                 return NoContent();
