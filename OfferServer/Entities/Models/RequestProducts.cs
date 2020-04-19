@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Entities.Models
 {
-    public partial class RequestProducts
+    public partial class RequestProducts : Entity
     {
         public RequestProducts()
         {
@@ -11,10 +11,8 @@ namespace Entities.Models
         }
 
         public int Quantity { get; set; }
-        public DateTime CreatedDate { get; set; }
         public bool IsPartial { get; set; }
         public Guid ProductOid { get; set; }
-        public Guid Oid { get; set; }
         public Guid RequestOid { get; set; }
 
         public virtual Products Product { get; set; }

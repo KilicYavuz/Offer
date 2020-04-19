@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Entities.Migrations
 {
-    public partial class image : Migration
+    public partial class NweInit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,13 +11,12 @@ namespace Entities.Migrations
                 name: "Brands",
                 columns: table => new
                 {
-                    OId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OId = table.Column<Guid>(nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(nullable: true),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     Image = table.Column<string>(nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: true),
-                    State = table.Column<int>(nullable: false),
-                    UpdatedDate = table.Column<DateTime>(nullable: true)
+                    State = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,13 +28,14 @@ namespace Entities.Migrations
                 columns: table => new
                 {
                     OId = table.Column<Guid>(nullable: false),
-                    CustomerOId = table.Column<int>(nullable: false),
-                    SupplierOId = table.Column<int>(nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(nullable: true),
+                    CustomerOId = table.Column<Guid>(nullable: false),
+                    SupplierOId = table.Column<Guid>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
                     Price = table.Column<double>(nullable: false),
                     ProductOId = table.Column<Guid>(nullable: false),
-                    ItemType = table.Column<int>(nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
+                    ItemType = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -46,15 +46,14 @@ namespace Entities.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    OId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 50, nullable: false),
+                    OId = table.Column<Guid>(nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(nullable: true),
+                    Name = table.Column<string>(maxLength: 50, nullable: false),
                     Type = table.Column<int>(nullable: false),
-                    ParentOId = table.Column<int>(nullable: true),
+                    ParentOId = table.Column<Guid>(nullable: true),
                     Image = table.Column<string>(nullable: true),
-                    State = table.Column<int>(nullable: false),
-                    UpdatedDate = table.Column<DateTime>(nullable: true)
+                    State = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -72,14 +71,15 @@ namespace Entities.Migrations
                 columns: table => new
                 {
                     OId = table.Column<Guid>(nullable: false, defaultValueSql: "(newsequentialid())"),
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(nullable: true),
                     ErrorContext = table.Column<string>(maxLength: 255, nullable: true),
                     ErrorMessage = table.Column<string>(nullable: true),
                     ErrorSource = table.Column<string>(maxLength: 255, nullable: true),
                     StackTrace = table.Column<string>(nullable: true),
                     Detail = table.Column<string>(nullable: true),
                     ErrorType = table.Column<string>(maxLength: 500, nullable: true),
-                    Tag = table.Column<string>(maxLength: 20, nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
+                    Tag = table.Column<string>(maxLength: 20, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -91,9 +91,10 @@ namespace Entities.Migrations
                 columns: table => new
                 {
                     OId = table.Column<Guid>(nullable: false),
-                    UserOId = table.Column<int>(nullable: false),
+                    CreatedDate = table.Column<DateTime>(fixedLength: true, maxLength: 10, nullable: false),
+                    UpdatedDate = table.Column<DateTime>(nullable: true),
+                    UserOId = table.Column<Guid>(nullable: false),
                     Message = table.Column<string>(maxLength: 255, nullable: true),
-                    CreatedDate = table.Column<string>(fixedLength: true, maxLength: 10, nullable: true),
                     State = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -105,11 +106,11 @@ namespace Entities.Migrations
                 name: "Tags",
                 columns: table => new
                 {
-                    OId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 50, nullable: false),
+                    OId = table.Column<Guid>(nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Status = table.Column<int>(nullable: false)
+                    UpdatedDate = table.Column<DateTime>(nullable: true),
+                    Name = table.Column<string>(maxLength: 50, nullable: false),
+                    State = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -120,8 +121,9 @@ namespace Entities.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    OId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OId = table.Column<Guid>(nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(nullable: true),
                     Name = table.Column<string>(maxLength: 50, nullable: true),
                     Surname = table.Column<string>(maxLength: 50, nullable: true),
                     CompanyName = table.Column<string>(maxLength: 100, nullable: true),
@@ -131,8 +133,7 @@ namespace Entities.Migrations
                     BirthDate = table.Column<DateTime>(type: "date", nullable: true),
                     State = table.Column<int>(nullable: false, defaultValueSql: "((1))"),
                     UserType = table.Column<int>(nullable: false),
-                    PhoneNumber = table.Column<string>(maxLength: 20, nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
+                    PhoneNumber = table.Column<string>(maxLength: 20, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -144,17 +145,17 @@ namespace Entities.Migrations
                 columns: table => new
                 {
                     OId = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(maxLength: 50, nullable: false),
-                    BrandOId = table.Column<int>(nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(nullable: true),
+                    Name = table.Column<string>(maxLength: 50, nullable: false),
+                    BrandOId = table.Column<Guid>(nullable: false),
                     State = table.Column<int>(nullable: false),
-                    CategoryOId = table.Column<int>(nullable: false),
+                    CategoryOId = table.Column<Guid>(nullable: false),
                     Price = table.Column<double>(nullable: false),
                     Stock = table.Column<int>(nullable: false),
                     Verified = table.Column<bool>(nullable: false),
                     VerificationCode = table.Column<string>(maxLength: 20, nullable: true),
-                    Image = table.Column<string>(nullable: true),
-                    UpdatedDate = table.Column<DateTime>(nullable: true)
+                    Image = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -177,17 +178,17 @@ namespace Entities.Migrations
                 name: "Address",
                 columns: table => new
                 {
-                    OId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserOId = table.Column<int>(nullable: false),
+                    OId = table.Column<Guid>(nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(nullable: true),
+                    UserOId = table.Column<Guid>(nullable: false),
                     AddressName = table.Column<string>(maxLength: 50, nullable: false),
                     NameSurname = table.Column<string>(maxLength: 250, nullable: true),
                     AddressInfo = table.Column<string>(maxLength: 255, nullable: false),
                     City = table.Column<string>(maxLength: 20, nullable: false),
                     County = table.Column<string>(maxLength: 25, nullable: false),
                     ZipCode = table.Column<string>(maxLength: 6, nullable: true),
-                    Phone = table.Column<string>(maxLength: 15, nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
+                    Phone = table.Column<string>(maxLength: 15, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -205,14 +206,15 @@ namespace Entities.Migrations
                 columns: table => new
                 {
                     OId = table.Column<Guid>(nullable: false),
-                    CustomerOId = table.Column<int>(nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(nullable: true),
+                    CustomerOId = table.Column<Guid>(nullable: false),
                     State = table.Column<int>(nullable: false),
                     PaymentState = table.Column<bool>(nullable: false),
                     PaymentType = table.Column<int>(nullable: false),
                     TotalPrice = table.Column<double>(nullable: false),
-                    ShippingAddressOId = table.Column<int>(nullable: false),
-                    BillingAddresOId = table.Column<int>(nullable: true)
+                    ShippingAddressOId = table.Column<Guid>(nullable: false),
+                    BillingAddresOId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -230,11 +232,12 @@ namespace Entities.Migrations
                 columns: table => new
                 {
                     OId = table.Column<Guid>(nullable: false),
-                    CustomerOId = table.Column<int>(nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(nullable: true),
+                    CustomerOId = table.Column<Guid>(nullable: false),
                     CanPartial = table.Column<bool>(nullable: false),
                     Status = table.Column<int>(nullable: false),
-                    SupplierOId = table.Column<int>(nullable: true)
+                    SupplierOId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -251,9 +254,10 @@ namespace Entities.Migrations
                 name: "ProductTags",
                 columns: table => new
                 {
-                    OId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TagOId = table.Column<int>(nullable: false),
+                    OId = table.Column<Guid>(nullable: false),
+                    CreatedDate = table.Column<DateTime>(nullable: false),
+                    UpdatedDate = table.Column<DateTime>(nullable: true),
+                    TagOId = table.Column<Guid>(nullable: false),
                     ProductOId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
@@ -277,11 +281,11 @@ namespace Entities.Migrations
                 name: "SupplierProducts",
                 columns: table => new
                 {
-                    OId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SupplierOId = table.Column<int>(nullable: false),
+                    OId = table.Column<Guid>(nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    State = table.Column<bool>(nullable: false),
+                    UpdatedDate = table.Column<DateTime>(nullable: true),
+                    SupplierOId = table.Column<Guid>(nullable: false),
+                    State = table.Column<int>(nullable: false),
                     Price = table.Column<double>(nullable: true),
                     ProductOId = table.Column<Guid>(nullable: false),
                     Description = table.Column<string>(nullable: true)
@@ -308,8 +312,9 @@ namespace Entities.Migrations
                 columns: table => new
                 {
                     OId = table.Column<Guid>(nullable: false),
+                    UpdatedDate = table.Column<DateTime>(nullable: true),
                     OrderOId = table.Column<Guid>(nullable: false),
-                    SupplierOId = table.Column<int>(nullable: false),
+                    SupplierOId = table.Column<Guid>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
                     Price = table.Column<double>(nullable: false),
                     ProductOId = table.Column<Guid>(nullable: false),
@@ -344,9 +349,10 @@ namespace Entities.Migrations
                 columns: table => new
                 {
                     OId = table.Column<Guid>(nullable: false),
-                    SupplierOId = table.Column<int>(nullable: false),
-                    SupplierDisplayId = table.Column<int>(nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getdate())"),
+                    UpdatedDate = table.Column<DateTime>(nullable: true),
+                    SupplierOId = table.Column<Guid>(nullable: false),
+                    SupplierDisplayId = table.Column<int>(nullable: false),
                     IsPartialOffer = table.Column<bool>(nullable: false),
                     Status = table.Column<int>(nullable: false),
                     RequestOId = table.Column<Guid>(nullable: false)
@@ -373,8 +379,9 @@ namespace Entities.Migrations
                 columns: table => new
                 {
                     OId = table.Column<Guid>(nullable: false),
-                    Quantity = table.Column<int>(nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(nullable: true),
+                    Quantity = table.Column<int>(nullable: false),
                     IsPartial = table.Column<bool>(nullable: false),
                     ProductOId = table.Column<Guid>(nullable: false),
                     RequestOId = table.Column<Guid>(nullable: false)
@@ -401,11 +408,12 @@ namespace Entities.Migrations
                 columns: table => new
                 {
                     OId = table.Column<Guid>(nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(nullable: true),
                     RequestProductOId = table.Column<Guid>(nullable: false),
                     RequestOfferOId = table.Column<Guid>(nullable: false),
                     OfferedPrice = table.Column<double>(nullable: true),
-                    OfferedQuantity = table.Column<int>(nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
+                    OfferedQuantity = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {

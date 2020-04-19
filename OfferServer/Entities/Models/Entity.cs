@@ -4,16 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
-    public abstract class Entity<T>: IEntity<T>
+    public abstract class Entity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public T OId { get; set; }
-        object IEntity.OId
-        {
-            get { return OId; }
-            set { OId = (T)value; }
-        }
+        public Guid Oid { get; set; }
 
         private DateTime? createdDate;
         [DataType(DataType.DateTime)]
@@ -22,5 +17,7 @@ namespace Entities.Models
             get { return createdDate ?? DateTime.Now; }
             set { createdDate = value; }
         }
+
+        public DateTime? UpdatedDate { get; set; }
     }
 }

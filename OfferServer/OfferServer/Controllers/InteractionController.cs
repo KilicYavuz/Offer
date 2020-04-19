@@ -1,4 +1,5 @@
 ﻿using Contracts;
+using LoggerService;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -23,23 +24,31 @@ namespace OfferServer.Controllers
             _logger = logger;
             _repoWrapper = repoWrapper;
         }
+        
+        [HttpGet("addWishList/{id}")]
+        public IActionResult AddWishList(Guid id)
+        {
+            try
+            {
+                var product = _repoWrapper.Product.GetById(id);
 
-        //[HttpGet("GetAllUsers")]
-        //public IActionResult GetAllUsers()
-        //{
-        //    try
-        //    {
-        //        var users = _repoWrapper.User.GetAllUsers();
+                if (product == null)
+                {
+                    return NotFound();
+                }
 
-        //        _logger.LogInfo($"Returned all users from database.");
-        //        var json = JsonConvert.SerializeObject(users);
-        //        return Ok(json);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError($"Something went wrong inside GetAllUsers action: {ex.Message}");
-        //        return StatusCode(500, "Internal server error");
-        //    }
-        //}
+                var json = JsonConvert.SerializeObject(product);
+                
+                ///TODO:addWishList
+                
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetTag action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
     }
 }

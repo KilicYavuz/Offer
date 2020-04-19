@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\OfferServer\Entities\Entities.csproj" />
+    <ProjectReference Include="..\..\OfferServer\LoggerService\LoggerService.csproj" />
   </ItemGroup>
 
 

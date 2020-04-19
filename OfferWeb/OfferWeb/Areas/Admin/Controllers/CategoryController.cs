@@ -3,6 +3,7 @@ using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Routing;
+using System;
 
 namespace OfferWeb.Areas.Admin.Controllers
 {
@@ -10,7 +11,7 @@ namespace OfferWeb.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         // GET: Admin/Category
-        public ActionResult AddCategory(int? id)
+        public ActionResult AddCategory(Guid? id)
         {
             try
             {
@@ -40,7 +41,7 @@ namespace OfferWeb.Areas.Admin.Controllers
         {
             try
             {
-                if (category.Oid == 0)
+                if (category.Oid == Guid.Empty)
                 {
                     category.State = Entities.Enums.ItemState.Active;
                     var res = ApiUtil.AddCategory(category).Result;
@@ -71,7 +72,7 @@ namespace OfferWeb.Areas.Admin.Controllers
             }
         }
 
-        public ActionResult DeleteCategory(int id)
+        public ActionResult DeleteCategory(Guid id)
         {
             try
             {

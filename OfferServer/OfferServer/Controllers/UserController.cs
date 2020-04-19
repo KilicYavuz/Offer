@@ -1,7 +1,9 @@
 ﻿using Contracts;
+using LoggerService;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 
 namespace OfferServer.Controllers
 {
@@ -38,7 +40,7 @@ namespace OfferServer.Controllers
         {
             try
             {
-                var users = _repoWrapper.User.GetAllUsers();
+                var users = _repoWrapper.User.FindAll().OrderBy(u => u.Name);
 
                 _logger.LogInfo($"Returned all users from database.");
                 var json = JsonConvert.SerializeObject(users);

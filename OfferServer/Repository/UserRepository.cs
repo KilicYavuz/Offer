@@ -12,10 +12,10 @@ namespace Repository
         {
         }
 
-        public IEnumerable<Users> GetAllUsers()
-        {
-            var users = FindAll().OrderBy(u => u.Name).ToList();
-            return users;
-        }
+        //public IEnumerable<Users> GetAllUsers()
+        //{
+        //    var users = FindAll().OrderBy(u => u.Name).ToList();
+        //    return users;
+        //}
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using Entities;
+using LoggerService;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Linq;

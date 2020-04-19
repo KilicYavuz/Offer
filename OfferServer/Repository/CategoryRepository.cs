@@ -12,10 +12,5 @@ namespace Repository
             : base(offerContext)
         {
         }
-        public Categories GetById(int id)
-        {
-            var category = FindByCondition(x => x.Oid == id).FirstOrDefault();
-            return category;
-        }
     }
 }

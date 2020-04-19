@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(OfferContext))]
-    [Migration("20200409203931_image")]
-    partial class image
+    [Migration("20200418185312_NweInit")]
+    partial class NweInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,11 +23,10 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.Address", b =>
                 {
-                    b.Property<int>("Oid")
+                    b.Property<Guid>("Oid")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("OId")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AddressInfo")
                         .IsRequired()
@@ -60,9 +59,12 @@ namespace Entities.Migrations
                         .HasColumnType("nvarchar(15)")
                         .HasMaxLength(15);
 
-                    b.Property<int>("UserOid")
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserOid")
                         .HasColumnName("UserOId")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ZipCode")
                         .HasColumnType("nvarchar(6)")
@@ -77,13 +79,12 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.Brands", b =>
                 {
-                    b.Property<int>("Oid")
+                    b.Property<Guid>("Oid")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("OId")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime");
 
                     b.Property<string>("Image")
@@ -114,9 +115,9 @@ namespace Entities.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime");
 
-                    b.Property<int>("CustomerOid")
+                    b.Property<Guid>("CustomerOid")
                         .HasColumnName("CustomerOId")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ItemType")
                         .HasColumnType("int");
@@ -131,9 +132,12 @@ namespace Entities.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("SupplierOid")
+                    b.Property<Guid>("SupplierOid")
                         .HasColumnName("SupplierOId")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid");
 
@@ -142,11 +146,10 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.Categories", b =>
                 {
-                    b.Property<int>("Oid")
+                    b.Property<Guid>("Oid")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("OId")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime");
@@ -159,9 +162,9 @@ namespace Entities.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<int?>("ParentOid")
+                    b.Property<Guid?>("ParentOid")
                         .HasColumnName("ParentOId")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("State")
                         .HasColumnType("int");
@@ -215,6 +218,9 @@ namespace Entities.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
 
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Oid")
                         .HasName("PK_dbo.ErrorLogs");
 
@@ -227,8 +233,8 @@ namespace Entities.Migrations
                         .HasColumnName("OId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedDate")
-                        .HasColumnType("nchar(10)")
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2")
                         .IsFixedLength(true)
                         .HasMaxLength(10);
 
@@ -239,9 +245,12 @@ namespace Entities.Migrations
                     b.Property<int>("State")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserOid")
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserOid")
                         .HasColumnName("UserOId")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Oid");
 
@@ -274,9 +283,12 @@ namespace Entities.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("SupplierOid")
+                    b.Property<Guid>("SupplierOid")
                         .HasColumnName("SupplierOId")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid");
 
@@ -295,16 +307,16 @@ namespace Entities.Migrations
                         .HasColumnName("OId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("BillingAddresOid")
+                    b.Property<Guid?>("BillingAddresOid")
                         .HasColumnName("BillingAddresOId")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime");
 
-                    b.Property<int>("CustomerOid")
+                    b.Property<Guid>("CustomerOid")
                         .HasColumnName("CustomerOId")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("PaymentState")
                         .HasColumnType("bit");
@@ -312,15 +324,18 @@ namespace Entities.Migrations
                     b.Property<int>("PaymentType")
                         .HasColumnType("int");
 
-                    b.Property<int>("ShippingAddressOid")
+                    b.Property<Guid>("ShippingAddressOid")
                         .HasColumnName("ShippingAddressOId")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("State")
                         .HasColumnType("int");
 
                     b.Property<double>("TotalPrice")
                         .HasColumnType("float");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid")
                         .HasName("PK_Orders_1");
@@ -332,19 +347,24 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.ProductTags", b =>
                 {
-                    b.Property<int>("Oid")
+                    b.Property<Guid>("Oid")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("OId")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("ProductOid")
                         .HasColumnName("ProductOId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("TagOid")
+                    b.Property<Guid>("TagOid")
                         .HasColumnName("TagOId")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid");
 
@@ -361,13 +381,13 @@ namespace Entities.Migrations
                         .HasColumnName("OId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("BrandOid")
+                    b.Property<Guid>("BrandOid")
                         .HasColumnName("BrandOId")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CategoryOid")
+                    b.Property<Guid>("CategoryOid")
                         .HasColumnName("CategoryOId")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime");
@@ -432,6 +452,9 @@ namespace Entities.Migrations
                         .HasColumnName("RequestProductOId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Oid");
 
                     b.HasIndex("RequestOfferOid");
@@ -465,9 +488,12 @@ namespace Entities.Migrations
                     b.Property<int>("SupplierDisplayId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SupplierOid")
+                    b.Property<Guid>("SupplierOid")
                         .HasColumnName("SupplierOId")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid")
                         .HasName("PK_RequestOffers_1");
@@ -502,6 +528,9 @@ namespace Entities.Migrations
                         .HasColumnName("RequestOId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Oid");
 
                     b.HasIndex("ProductOid");
@@ -523,16 +552,19 @@ namespace Entities.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime");
 
-                    b.Property<int>("CustomerOid")
+                    b.Property<Guid>("CustomerOid")
                         .HasColumnName("CustomerOId")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SupplierOid")
+                    b.Property<Guid?>("SupplierOid")
                         .HasColumnName("SupplierOId")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid")
                         .HasName("PK_Requests_1");
@@ -544,11 +576,10 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.SupplierProducts", b =>
                 {
-                    b.Property<int>("Oid")
+                    b.Property<Guid>("Oid")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("OId")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime");
@@ -563,12 +594,15 @@ namespace Entities.Migrations
                         .HasColumnName("ProductOId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("State")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("SupplierOid")
-                        .HasColumnName("SupplierOId")
+                    b.Property<int>("State")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("SupplierOid")
+                        .HasColumnName("SupplierOId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid")
                         .HasName("PK_SalesList");
@@ -582,11 +616,10 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.Tags", b =>
                 {
-                    b.Property<int>("Oid")
+                    b.Property<Guid>("Oid")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("OId")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime");
@@ -596,8 +629,11 @@ namespace Entities.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<int>("Status")
+                    b.Property<int>("State")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid");
 
@@ -606,11 +642,10 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.Users", b =>
                 {
-                    b.Property<int>("Oid")
+                    b.Property<Guid>("Oid")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("OId")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("date");
@@ -647,6 +682,9 @@ namespace Entities.Migrations
                     b.Property<string>("Surname")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("UserType")
                         .HasColumnType("int");

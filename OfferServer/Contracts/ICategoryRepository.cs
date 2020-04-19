@@ -5,6 +5,5 @@ namespace Contracts
 {
     public interface ICategoryRepository : IRepositoryBase<Categories>
     {
-        Categories GetById(int id);
     }
 }

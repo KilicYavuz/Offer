@@ -3,10 +3,9 @@ using System.Collections.Generic;
 
 namespace Entities.Models
 {
-    public partial class Address
+    public partial class Address : Entity
     {
-        public int Oid { get; set; }
-        public int UserOid { get; set; }
+        public Guid UserOid { get; set; }
         public string AddressName { get; set; }
         public string NameSurname { get; set; }
         public string AddressInfo { get; set; }
@@ -14,7 +13,6 @@ namespace Entities.Models
         public string County { get; set; }
         public string ZipCode { get; set; }
         public string Phone { get; set; }
-        public DateTime CreatedDate { get; set; }
 
         public virtual Users User { get; set; }
     }

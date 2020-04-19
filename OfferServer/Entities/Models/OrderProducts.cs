@@ -1,16 +1,16 @@
-﻿using System;
+﻿using Entities.Enums;
+using System;
 
 namespace Entities.Models
 {
-    public partial class OrderProducts
+    public partial class OrderProducts : Entity
     {
-        public Guid Oid { get; set; }
         public Guid OrderOid { get; set; }
-        public int SupplierOid { get; set; }
+        public Guid SupplierOid { get; set; }
         public int Quantity { get; set; }
         public double Price { get; set; }
         public Guid ProductOid { get; set; }
-        public int ItemType { get; set; }
+        public ItemState ItemType { get; set; }
         public DateTime CreatedDate { get; set; }
 
         public virtual Orders Order { get; set; }

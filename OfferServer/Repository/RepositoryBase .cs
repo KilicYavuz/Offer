@@ -1,4 +1,5 @@
 ﻿using Contracts;
+using LoggerService;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace Repository
 {
-    public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
+    public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : Entity
     {
         protected readonly ILoggerManager Logger;
 
@@ -48,10 +49,10 @@ namespace Repository
             this.OfferContext.Set<T>().Remove(entity);
         }
 
-        //public T GetById(object id)
-        //{
-        //    var product = FindByCondition(x => x.Oid == id).OrderBy(u => u.Name).FirstOrDefault();
-        //    return product;
-        //}
+        public T GetById(Guid id)
+        {
+            var product = FindByCondition(x => x.Oid == id).OrderBy(u => u.CreatedDate).FirstOrDefault();
+            return product;
+        }
     }
 }

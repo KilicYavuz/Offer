@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace Entities.Models
 {
-    public partial class ErrorLogs
+    public partial class ErrorLogs : Entity
     {
-        public Guid Oid { get; set; }
         public string ErrorContext { get; set; }
         public string ErrorMessage { get; set; }
         public string ErrorSource { get; set; }
@@ -13,6 +12,5 @@ namespace Entities.Models
         public string Detail { get; set; }
         public string ErrorType { get; set; }
         public string Tag { get; set; }
-        public DateTime CreatedDate { get; set; }
     }
 }

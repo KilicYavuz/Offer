@@ -12,11 +12,5 @@ namespace Repository
             : base(offerContext)
         {
         }
-
-        public Brands GetById(int id)
-        {
-            var brand = FindByCondition(x => x.Oid == id).FirstOrDefault();
-            return brand;
-        }
     }
 }

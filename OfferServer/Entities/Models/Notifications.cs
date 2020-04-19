@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Entities.Enums;
+using System;
 
 namespace Entities.Models
 {
-    public partial class Notifications
+    public partial class Notifications : Entity
     {
-        public Guid Oid { get; set; }
-        public int UserOid { get; set; }
+        public Guid UserOid { get; set; }
         public string Message { get; set; }
-        public string CreatedDate { get; set; }
-        public int State { get; set; }
+        public ItemState State { get; set; }
     }
 }

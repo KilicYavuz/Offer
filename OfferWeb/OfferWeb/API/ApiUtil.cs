@@ -1,10 +1,14 @@
 ﻿using Entities;
 using Entities.Models;
+using LoggerService;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,13 +17,21 @@ namespace OfferWeb.API
 {
     public class ApiUtil
     {
+        [Inject]
+        static LoggerManager logger { get; set; }
         static string serviceUrl = "";
         static HttpClient client = new HttpClient();
         static string url = Startup.StaticConfig["Root:ApiUrl"];
-        
+        static List<Tags> Tags { get; set; }
+
+        public static async Task InitData()
+        {
+            Tags = GetTagList()?.Result;
+        }
+
         #region ProductTag
 
-        public static async Task<ProductTags> GetProductTag(int id)
+        public static async Task<ProductTags> GetProductTag(Guid id)
         {
             var httpResponse = await Get("Management/getProductTag/" + id);
             var tag = JsonConvert.DeserializeObject<ProductTags>(httpResponse);
@@ -45,16 +57,16 @@ namespace OfferWeb.API
             return categories;
         }
 
-        public static async Task<string> DeleteProductTag(int id, bool permanent = false)
+        public static async Task<string> DeleteProductTag(Guid id, bool permanent = false)
         {
             var httpResponse = await Get("Management/deleteProductTag/" + id + "/" + permanent.ToString());
             return httpResponse;
         }
         #endregion
-         
+
         #region Tag
 
-        public static async Task<Tags> GetTag(int id)
+        public static async Task<Tags> GetTag(Guid id)
         {
             var httpResponse = await Get("Management/getTag/" + id);
             var tag = JsonConvert.DeserializeObject<Tags>(httpResponse);
@@ -75,21 +87,21 @@ namespace OfferWeb.API
 
         public static async Task<List<Tags>> GetTagList()
         {
-            var httpResponse = await Get("Management/getAllCategories");
+            var httpResponse = await Get("Management/getAllTags");
             var categories = JsonConvert.DeserializeObject<List<Tags>>(httpResponse);
             return categories;
         }
 
-        public static async Task<string> DeleteTag(int id, bool permanent = false)
+        public static async Task<string> DeleteTag(Guid id, bool permanent = false)
         {
             var httpResponse = await Get("Management/deleteTag/" + id + "/" + permanent.ToString());
             return httpResponse;
         }
         #endregion
-         
+
         #region Category
 
-        public static async Task<Categories> GetCategory(int id)
+        public static async Task<Categories> GetCategory(Guid id)
         {
             var httpResponse = await Get("Management/getCategory/" + id);
             var product = JsonConvert.DeserializeObject<Categories>(httpResponse);
@@ -115,7 +127,7 @@ namespace OfferWeb.API
             return categories;
         }
 
-        public static async Task<string> DeleteCategory(int id, bool permanent = false)
+        public static async Task<string> DeleteCategory(Guid id, bool permanent = false)
         {
             var httpResponse = await Get("Management/deleteCategory/" + id + "/" + permanent.ToString());
             return httpResponse;
@@ -132,14 +144,14 @@ namespace OfferWeb.API
 
         #region Product
 
-        public static async Task<Products> GetProduct(int id)
+        public static async Task<Products> GetProduct(Guid id)
         {
             var httpResponse = await Get("Management/getProduct/" + id);
             var product = JsonConvert.DeserializeObject<Products>(httpResponse);
             return product;
         }
 
-        internal static async Task<string> UpdateProduct(Products product)
+        public static async Task<string> UpdateProduct(Products product)
         {
             var httpResponse = await Post<Products>("Management/updateProduct", product);
             return httpResponse;
@@ -169,52 +181,55 @@ namespace OfferWeb.API
 
         public static async Task<List<Products>> GetBestSellerProducts()
         {
-            var httpResponse = await Get("Management/bestSellerProducts");
+            var bestSellerTag = Tags.FirstOrDefault(x => x.Name == "BestSeller");
+            var httpResponse = await Get("Product/getAllProductsByTag/" + bestSellerTag?.Oid);
             var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse);
             return products;
         }
 
         public static async Task<List<Products>> GetOpportunityProducts()
         {
-            var httpResponse = await Get("Management/getOpportunityProducts");
+            var opprtunityTag = Tags.FirstOrDefault(x => x.Name == "Opprtunity");
+            var httpResponse = await Get("Product/getAllProductsByTag/" + opprtunityTag?.Oid);
             var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse);
             return products;
         }
 
         public static async Task<List<Products>> GetNewProducts()
         {
-            var httpResponse = await Get("Management/getNewProducts");
+            var newTag = Tags.FirstOrDefault(x => x.Name == "NewProduct");
+            var httpResponse = await Get("Product/getAllProductsByTag/" + newTag?.Oid);
             var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse);
             return products;
         }
 
         public static async Task<List<Products>> GetOutletProducts()
         {
-            var httpResponse = await Get("Management/getOutletProducts");
+            var outletTag = Tags.FirstOrDefault(x => x.Name == "OutletProduct");
+            var httpResponse = await Get("Product/getAllProductsByTag/"+ outletTag?.Oid);
             var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse);
             return products;
         }
 
         public static async Task<List<Products>> GetMainScreenProducts()
         {
-            var httpResponse = await Get("Management/getMainScreenProducts");
+            var mainScreenTag = Tags.FirstOrDefault(x => x.Name == "MainScreenProduct");
+            var httpResponse = await Get("Product/getAllProductsByTag/" + mainScreenTag?.Oid);
             var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse);
             return products;
         }
-
-
 
         #endregion
 
         #region CategoryProduct
 
-        public static async Task<List<Products>> GetProductByCategory(int id)
+        public static async Task<List<Products>> GetProductByCategory(Guid id)
         {
-            var httpResponse = await Get("Management/GetProductByCategory/" + id);
+            var httpResponse = await Get("Product/GetProductByCategory/" + id.ToString());
             var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse);
             return products;
         }
-        
+
         #endregion
 
         #region Brand
@@ -225,9 +240,9 @@ namespace OfferWeb.API
             return brands;
         }
 
-        public static async Task<Brands> GetBrand(int id)
+        public static async Task<Brands> GetBrand(Guid id)
         {
-            var httpResponse = await Get("Management/getBrand/" + id);
+            var httpResponse = await Get("Management/getBrand/" + id.ToString());
             var resp = JsonConvert.DeserializeObject<Brands>(httpResponse);
             return resp;
         }
@@ -240,13 +255,13 @@ namespace OfferWeb.API
 
         public static async Task<string> UpdateBrand(Brands brand)
         {
-            var httpResponse = await Post<Brands>("Management/updateBrand/"+brand.Oid, brand);
+            var httpResponse = await Post<Brands>("Management/updateBrand/" + brand.Oid, brand);
             return httpResponse;
         }
 
-        public static async Task<string> DeleteBrand(int id, bool permanent = false)
+        public static async Task<string> DeleteBrand(Guid id, bool permanent = false)
         {
-            var httpResponse = await Get("Management/deleteBrand/" + id + "/" + permanent.ToString());
+            var httpResponse = await Get("Management/deleteBrand/" + id.ToString() + "/" + permanent.ToString());
             return httpResponse;
         }
 
@@ -256,7 +271,7 @@ namespace OfferWeb.API
         #region User
         public static async Task<string> AddWishList(Guid id)
         {
-            var httpResponse = await Get("Management/addWishList/" + id);
+            var httpResponse = await Get("Interaction/addWishList/" + id.ToString());
             return httpResponse;
         }
         #endregion
@@ -285,7 +300,11 @@ namespace OfferWeb.API
         public static async Task<string> Get(string method)
         {
             if (string.IsNullOrEmpty(url))
-                throw new Exception("api url not defined");
+            {
+                var error = "api url not defined";
+                logger.LogError(error);
+                throw new Exception(error);
+            }
             serviceUrl = $"{url}{method}";
             using (HttpResponseMessage response = await client.GetAsync(serviceUrl).ConfigureAwait(false))
             {

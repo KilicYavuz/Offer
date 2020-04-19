@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using Entities;
+using LoggerService;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -29,12 +30,12 @@ namespace OfferServer.Controllers
         }
 
         [HttpGet("getAllProductsByTag/{tagId}")]
-        public IActionResult GetAllProductsByTag(int? tagId)
+        public IActionResult GetAllProductsByTag(Guid? tagId)
         {
             try
             {
                 List<Products> products;
-                if (!tagId.HasValue || tagId == 0)
+                if (!tagId.HasValue || Guid.Empty == tagId)
                 {
                     products = _repoWrapper.Product.FindAll().OrderBy(u => u.CategoryOid).ToList();
                 }
@@ -73,7 +74,7 @@ namespace OfferServer.Controllers
         }
 
         [HttpGet("getProductByCategory/{id}")]
-        public IActionResult GetProductByCategory(int id)
+        public IActionResult GetProductByCategory(Guid id)
         {
             try
             {
@@ -90,7 +91,7 @@ namespace OfferServer.Controllers
         }
 
         [HttpGet("getProductByBrand/{id}")]
-        public IActionResult GetProductByBrand(int id)
+        public IActionResult GetProductByBrand(Guid id)
         {
             try
             {

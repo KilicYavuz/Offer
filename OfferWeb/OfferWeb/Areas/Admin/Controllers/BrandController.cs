@@ -13,7 +13,7 @@ namespace OfferWeb.Areas.Admin.Controllers
     public class BrandController : Controller
     {
         // GET: Admin/Brand
-        public ActionResult AddBrand(int? id)
+        public ActionResult AddBrand(Guid? id)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace OfferWeb.Areas.Admin.Controllers
         {
             try
             {
-                if (brand.Oid == 0)
+                if (brand.Oid == Guid.Empty)
                 {
                     brand.State = Entities.Enums.ItemState.Active;
                     var res = ApiUtil.AddBrand(brand).Result;
@@ -68,7 +68,7 @@ namespace OfferWeb.Areas.Admin.Controllers
             }
         }
 
-        public ActionResult DeleteBrand(int id)
+        public ActionResult DeleteBrand(Guid id)
         {
             try
             {

@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using Entities;
+using LoggerService;
 using Entities.Enums;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -189,7 +190,7 @@ namespace OfferServer.Controllers
         }
 
         [HttpGet("getBrand/{id}")]
-        public IActionResult GetBrand(int id)
+        public IActionResult GetBrand(Guid id)
         {
             try
             {
@@ -224,7 +225,6 @@ namespace OfferServer.Controllers
                     return BadRequest(eam);
                 }
 
-                data.CreatedDate = DateTime.Now;
                 _repoWrapper.Brand.Add(data);
                 _repoWrapper.Save();
                 return NoContent();
@@ -237,7 +237,7 @@ namespace OfferServer.Controllers
         }
 
         [HttpPost("updateBrand/{id}")]
-        public IActionResult UpdateBrand(int id, [FromBody]object postData)
+        public IActionResult UpdateBrand(Guid id, [FromBody]object postData)
         {
             try
             {
@@ -268,7 +268,7 @@ namespace OfferServer.Controllers
         }
 
         [HttpGet("deleteBrand/{id}/{permanent}")]
-        public IActionResult DeleteBrand(int id, bool permanent)
+        public IActionResult DeleteBrand(Guid id, bool permanent)
         {
             try
             {
@@ -322,7 +322,7 @@ namespace OfferServer.Controllers
         }
 
         [HttpGet("getCategory/{id}")]
-        public IActionResult GetCategory(int id)
+        public IActionResult GetCategory(Guid id)
         {
             try
             {
@@ -369,7 +369,7 @@ namespace OfferServer.Controllers
         }
 
         [HttpPost("updateCategory/{id}")]
-        public IActionResult UpdateCategory(int id, [FromBody]object postData)
+        public IActionResult UpdateCategory(Guid id, [FromBody]object postData)
         {
             try
             {
@@ -401,7 +401,7 @@ namespace OfferServer.Controllers
         }
 
         [HttpGet("deleteCategory/{id}/{permanent}")]
-        public IActionResult DeleteCategory(int id, bool permanent)
+        public IActionResult DeleteCategory(Guid id, bool permanent)
         {
             try
             {
@@ -457,7 +457,7 @@ namespace OfferServer.Controllers
         }
 
         [HttpGet("getTag/{id}")]
-        public IActionResult GetTag(int id)
+        public IActionResult GetTag(Guid id)
         {
             try
             {
@@ -509,7 +509,7 @@ namespace OfferServer.Controllers
         }
 
         [HttpPost("updateTag/{id}")]
-        public IActionResult UpdateTag(int id, [FromBody]object postData)
+        public IActionResult UpdateTag(Guid id, [FromBody]object postData)
         {
             try
             {
@@ -540,7 +540,7 @@ namespace OfferServer.Controllers
         }
 
         [HttpGet("deleteTag/{id}/{permanent}")]
-        public IActionResult DeleteTag(int id, bool permanent)
+        public IActionResult DeleteTag(Guid id, bool permanent)
         {
             try
             {
@@ -597,7 +597,7 @@ namespace OfferServer.Controllers
         }
 
         //[HttpGet("getProduct/{id}")]
-        //public IActionResult GetProductTag(int id)
+        //public IActionResult GetProductTag(Guid id)
         //{
         //    try
         //    {

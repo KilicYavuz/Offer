@@ -3,12 +3,10 @@ using System.Collections.Generic;
 
 namespace Entities.Models
 {
-    public partial class SupplierProducts
+    public partial class SupplierProducts : Entity
     {
-        public int Oid { get; set; }
-        public int SupplierOid { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public bool State { get; set; }
+        public Guid SupplierOid { get; set; }
+        public int State { get; set; }
         public double? Price { get; set; }
         public Guid ProductOid { get; set; }
         public string Description { get; set; }

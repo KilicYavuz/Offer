@@ -20,9 +20,9 @@ namespace OfferWeb.Controllers
             //    cat.Add(a);
 
             //ViewData["kategoriler"] = cat;
-
-
+                        
             var objects = new Dictionary<string, dynamic>();
+            ApiUtil.InitData();
             var categories = ApiUtil.GetCategoryList().Result;
             objects.Add("SearchCategories", categories);
             ViewBag.Data = objects;

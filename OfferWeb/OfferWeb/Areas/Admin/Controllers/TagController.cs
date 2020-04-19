@@ -37,7 +37,7 @@ namespace OfferWeb.Areas.Admin.Controllers
         {
             try
             {
-                if (tag.Oid == 0)
+                if (tag.Oid == Guid.Empty)
                 {
                     var res = ApiUtil.AddTag(tag).Result;
                 }

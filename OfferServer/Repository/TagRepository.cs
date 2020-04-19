@@ -11,10 +11,5 @@ namespace Repository
         {
         }
 
-        public Tags GetById(int id)
-        {
-            var tag = FindByCondition(x => x.Oid == id).FirstOrDefault();
-            return tag;
-        }
     }
 }

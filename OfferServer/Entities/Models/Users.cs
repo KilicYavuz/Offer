@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Entities.Models
 {
-    public partial class Users
+    public partial class Users : Entity
     {
         public Users()
         {
@@ -15,7 +15,6 @@ namespace Entities.Models
             SupplierProducts = new HashSet<SupplierProducts>();
         }
 
-        public int Oid { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string CompanyName { get; set; }
@@ -26,7 +25,6 @@ namespace Entities.Models
         public int State { get; set; }
         public int UserType { get; set; }
         public string PhoneNumber { get; set; }
-        public DateTime CreatedDate { get; set; }
 
         public virtual ICollection<Address> Address { get; set; }
         public virtual ICollection<OrderProducts> OrderProducts { get; set; }

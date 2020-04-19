@@ -5,6 +5,6 @@ namespace Contracts
 {
     public interface IUserRepository : IRepositoryBase<Users>
     {
-        IEnumerable<Users> GetAllUsers();
+        //IEnumerable<Users> GetAllUsers();
     }
 }
