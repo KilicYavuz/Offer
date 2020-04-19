@@ -1,6 +1,8 @@
 ﻿using Entities.Enums;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
@@ -23,6 +25,8 @@ namespace Entities.Models
         public bool Verified { get; set; }
         public string VerificationCode { get; set; }
         public string Image { get; set; }
+        [NotMapped]
+        public IFormFile ImageFile { get; set; }
 
         public virtual Brands Brand { get; set; }
         public virtual Categories Category { get; set; }

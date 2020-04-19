@@ -37,7 +37,6 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Üst Kategorisi</label>
                             <div class="col-sm-10">
-                                @*@Html.TextBoxFor(x => x.ParentOid, new { @class = "form-control", name = "ParentOid", value = Model.ParentOid})*@
                                 @Html.DropDownListFor(model => model.ParentOid, new SelectList(ViewBag.Data["Categories"], "Oid", "Name"),
                                               "-- Kategori Seçiniz  --", new { @class = "form-control", name = "ParentOid", value = Model.ParentOid })
                             </div>
@@ -46,12 +45,11 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Resim</label>
                             <div class="col-sm-10">
-                                @*@Html.TextBoxFor(x => x.Image, new { @class = "form-control", name = "Image", required = "required", value = Model.Image })*@
                                 <div class="fileinput fileinput-new" data-provides="fileinput">
                                     <span class="btn btn-default btn-file">
                                         <span class="fileinput-new">Resim Seçiniz</span>
                                         <span class="fileinput-exists">Düzenle</span>
-                                        <input type="file" name="Image" onchange="readURL(this);" />
+                                        <input type="file" name="ImageFile" value="Model.ImageFile" onchange="readURL(this);" />
                                     </span>
                                     <span id="myText" class="fileinput-filename"></span>
                                     <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>

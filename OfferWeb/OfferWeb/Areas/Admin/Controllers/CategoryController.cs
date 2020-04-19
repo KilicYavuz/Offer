@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Routing;
 using System;
+using OfferWeb.Helpers;
 
 namespace OfferWeb.Areas.Admin.Controllers
 {
@@ -41,6 +42,7 @@ namespace OfferWeb.Areas.Admin.Controllers
         {
             try
             {
+                category.Image = Util.GetBase64FromImage(category.ImageFile);
                 if (category.Oid == Guid.Empty)
                 {
                     category.State = Entities.Enums.ItemState.Active;

@@ -68,8 +68,6 @@
                     .attr('src', e.target.result)
                     .width(64)
                     .height(64);
-                $('#inputFile')
-                    .attr('value', e.target.result.toString());
             };
 
             reader.readAsDataURL(input.files[0]);

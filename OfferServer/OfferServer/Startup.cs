@@ -27,7 +27,12 @@ namespace OfferServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureCors();
-            services.AddControllers();//.AddNewtonsoftJson();
+            services.AddControllers(); 
+            //services.AddMvc().AddJsonOptions(
+            // options =>
+            // {
+            //     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            // });
             services.ConfigureIISIntegration();
             services.ConfigureLoggerService();
             services.ConfigureDbContext(Configuration);

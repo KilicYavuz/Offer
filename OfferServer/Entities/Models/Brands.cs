@@ -3,6 +3,8 @@ using System.Web;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Http;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Entities.Models
 {
@@ -18,7 +20,8 @@ namespace Entities.Models
         public ItemState State { get; set; }
         [NotMapped]
         public IFormFile ImageFile { get; set; }
-
+        [JsonIgnore]
+        [IgnoreDataMember]
         public virtual ICollection<Products> Products { get; set; }
     }
 }

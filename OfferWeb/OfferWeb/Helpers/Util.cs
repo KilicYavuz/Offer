@@ -8,12 +8,16 @@ namespace OfferWeb.Helpers
     {
         public static string GetBase64FromImage(IFormFile file)
         {
-            using (var target = new MemoryStream())
+            string base64String = "";
+            if (file != null)
             {
-                file.CopyTo(target);
-                string base64String = Convert.ToBase64String(target.ToArray());
-                return base64String;
+                using (var target = new MemoryStream())
+                {
+                    file.CopyTo(target);
+                    base64String = Convert.ToBase64String(target.ToArray());
+                }
             }
+            return base64String;
         }
     }
 }
