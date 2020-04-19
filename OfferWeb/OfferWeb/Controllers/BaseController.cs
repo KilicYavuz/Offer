@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using OfferWeb.API;
 
@@ -9,6 +10,16 @@ namespace OfferWeb.Controllers
 {
     public class BaseController : Controller
     {
+        private List<Categories> categories;
+
+        protected List<Categories> Categories { get => categories ?? GetCategories(); set => categories = value; }
+
+        private List<Categories> GetCategories()
+        {
+            Categories = ApiUtil.GetCategoryList().Result;
+            return categories;
+        }
+
         public BaseController()
         {
             //TODO:Heryerde gözükecek olan dataları buradan bir defa yükleyelim. Null kontrolü yapmayı unutmayalım.
@@ -22,11 +33,10 @@ namespace OfferWeb.Controllers
             //ViewData["kategoriler"] = cat;
 
             ApiUtil.InitData();
-            var categories = ApiUtil.GetCategoryList().Result;
+            GetCategories();
             var objects = ViewBag.Data as Dictionary<string, dynamic> ?? new Dictionary<string, dynamic>();
-            objects.Add("SearchCategories", categories);
+            objects.Add("SearchCategories", Categories);
             ViewBag.Data = objects;
-
         }
     }
 }
