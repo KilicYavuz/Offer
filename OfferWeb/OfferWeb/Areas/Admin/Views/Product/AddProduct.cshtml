@@ -49,8 +49,8 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Tagler</label>
                             <div class="col-sm-10">
-                                @*@Html.ListBoxFor(m => m.ProductTags, new MultiSelectList(ViewData["TagList"] as List<Tags>, "Oid", "Name", @Model.ProductTags),
-                    new { @class = "form-control dual_select", name = "ProductTags", multiple = "multiple", tabindex = "4", id = "ProductTags" })*@
+                                @Html.ListBoxFor(m => m.ProductTags, new MultiSelectList(ViewBag.Data["TagList"] as List<Tags>, "Oid", "Name", @Model.ProductTags),
+                    new { @class = "form-control dual_select", name = "ProductTags", multiple = "multiple", tabindex = "4", id = "ProductTags" })
                             </div>
                         </div>
                         <div class="form-group">
