@@ -13,7 +13,7 @@ namespace OfferWeb.Areas.Admin.Controllers
     public class TagController : Controller
     {
         // GET: Admin/Tag
-        public ActionResult AddTag(int? id)
+        public ActionResult AddTag(Guid? id)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace OfferWeb.Areas.Admin.Controllers
 
         }
 
-        public ActionResult DeleteTag(int id)
+        public ActionResult DeleteTag(Guid id)
         {
             try
             {

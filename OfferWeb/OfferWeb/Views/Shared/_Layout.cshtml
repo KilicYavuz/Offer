@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Entities.Models;
+<!DOCTYPE html>
 <html>
 <head>
     @*@Styles.Render("~/Content/css")
@@ -104,7 +105,7 @@
                                     <div class="select-custom">
                                         <select id="cat" name="cat">
                                             <option value="">Kategoriler</option>
-                                            @foreach (var item in ViewBag.ObjectList["SearchCategories"])
+                                            @foreach (var item in ViewBag.Data["SearchCategories"] as List<Categories>)
                                             {
                                                 <option value="@item.Oid">@item.Name</option>
                                             }
@@ -243,7 +244,7 @@
                             <div class="dropdown-menu">
                                 <nav class="side-nav">
                                     <ul class="menu-vertical sf-arrows">
-                                        @foreach (var item in ViewBag.ObjectList["SearchCategories"])
+                                        @foreach (var item in ViewBag.Data["SearchCategories"] as List<Categories>)
                                         {
                                             if (item.SubCategories.Count == 0)
                                             {

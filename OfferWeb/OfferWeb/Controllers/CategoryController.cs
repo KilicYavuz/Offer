@@ -15,7 +15,7 @@ namespace OfferWeb.Controllers
             return View();
         }
 
-        public ActionResult CategoryResult(int id)
+        public ActionResult CategoryResult(Guid id)
         {
             var productList = ApiUtil.GetProductByCategory(id);
             return View(productList);

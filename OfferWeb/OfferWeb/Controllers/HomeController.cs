@@ -8,7 +8,7 @@ namespace OfferWeb.Controllers
     {
         public ActionResult Index()
         {
-            var objects = new Dictionary<string, dynamic>();
+            var objects = ViewBag.Data as Dictionary<string, dynamic> ?? new Dictionary<string, dynamic>();
             ///TODO: Ahmet açarsın.
             var mainScreenProducts = ApiUtil.GetMainScreenProducts().Result;
             var bestSellerProducts = ApiUtil.GetBestSellerProducts().Result;

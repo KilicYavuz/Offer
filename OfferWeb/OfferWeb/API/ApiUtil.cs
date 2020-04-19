@@ -163,10 +163,11 @@ namespace OfferWeb.API
             return httpResponse;
         }
 
-        public static async Task<string> GetProductList()
+        public static async Task<List<Products>> GetProductList()
         {
             var httpResponse = await Get("Management/getAllProducts");
-            return httpResponse;
+            var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse);
+            return products;
         }
 
         public static async Task<string> DeleteProduct(Guid id, bool permanent = false)
@@ -183,7 +184,7 @@ namespace OfferWeb.API
         {
             var bestSellerTag = Tags.FirstOrDefault(x => x.Name == "BestSeller");
             var httpResponse = await Get("Product/getAllProductsByTag/" + bestSellerTag?.Oid);
-            var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse);
+            var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse) ?? new List<Products>();
             return products;
         }
 
@@ -191,7 +192,7 @@ namespace OfferWeb.API
         {
             var opprtunityTag = Tags.FirstOrDefault(x => x.Name == "Opprtunity");
             var httpResponse = await Get("Product/getAllProductsByTag/" + opprtunityTag?.Oid);
-            var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse);
+            var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse) ?? new List<Products>();
             return products;
         }
 
@@ -199,7 +200,7 @@ namespace OfferWeb.API
         {
             var newTag = Tags.FirstOrDefault(x => x.Name == "NewProduct");
             var httpResponse = await Get("Product/getAllProductsByTag/" + newTag?.Oid);
-            var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse);
+            var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse) ?? new List<Products>();
             return products;
         }
 
@@ -207,7 +208,7 @@ namespace OfferWeb.API
         {
             var outletTag = Tags.FirstOrDefault(x => x.Name == "OutletProduct");
             var httpResponse = await Get("Product/getAllProductsByTag/"+ outletTag?.Oid);
-            var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse);
+            var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse) ?? new List<Products>();
             return products;
         }
 
@@ -215,7 +216,7 @@ namespace OfferWeb.API
         {
             var mainScreenTag = Tags.FirstOrDefault(x => x.Name == "MainScreenProduct");
             var httpResponse = await Get("Product/getAllProductsByTag/" + mainScreenTag?.Oid);
-            var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse);
+            var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse) ?? new List<Products>();
             return products;
         }
 

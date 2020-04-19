@@ -13,7 +13,7 @@ namespace OfferWeb.Areas.Admin.Controllers
     public class ProductController :Controller
     {
         // GET: Admin/Product
-        public ActionResult AddProduct(int? id)
+        public ActionResult AddProduct(Guid? id)
         {
             try
             {
@@ -70,7 +70,7 @@ namespace OfferWeb.Areas.Admin.Controllers
             try
             {
                 var productList = ApiUtil.GetProductList().Result;
-                if (productList=="[]")
+                if (productList == null || productList.Count == 0)
                 {
                     throw new Exception("Listelenecek ürün bulunamadı");
                 }
