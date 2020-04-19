@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using OfferWeb.Helpers;
 
 namespace OfferWeb.Areas.Admin.Controllers
 {
@@ -38,6 +39,8 @@ namespace OfferWeb.Areas.Admin.Controllers
         {
             try
             {
+                brand.Image = Util.GetBase64FromImage(brand.ImageFile);
+
                 if (brand.Oid == Guid.Empty)
                 {
                     brand.State = Entities.Enums.ItemState.Active;

@@ -70,10 +70,6 @@ namespace OfferWeb.Areas.Admin.Controllers
             try
             {
                 var productList = ApiUtil.GetProductList().Result;
-                if (productList == null || productList.Count == 0)
-                {
-                    throw new Exception("Listelenecek ürün bulunamadı");
-                }
                 return View(productList);
             }
             catch (Exception ex)

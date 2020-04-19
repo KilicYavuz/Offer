@@ -13,7 +13,7 @@
                     <h5>Marka Ekle</h5>
                 </div>
                 <div class="ibox-content">
-                    @using (Html.BeginForm("SaveBrand", "Brand", FormMethod.Post, new { @class = "form-horizontal", @id = "addBrandform" }))
+                    @using (Html.BeginForm("SaveBrand", "Brand", FormMethod.Post, new { @class = "form-horizontal", @id = "addBrandform", enctype = "multipart/form-data" }))
                     {
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Adı</label>
@@ -36,7 +36,7 @@
                                     <span class="btn btn-default btn-file">
                                         <span class="fileinput-new">Resim Seçiniz</span>
                                         <span class="fileinput-exists">Düzenle</span>
-                                        <input type="file" name="Image" onchange="readURL(this);" />
+                                        <input type="file" name="ImageFile" value="Model.ImageFile" id="inputFile" onchange="readURL(this);" />
                                     </span>
                                     <span id="myText" class="fileinput-filename"></span>
                                     <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
@@ -48,7 +48,7 @@
 
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-2">
-                                <button class="btn btn-white">İptal</button>
+                                <a class="btn btn-white" href='@Url.Action("ListBrand","Brand")' >İptal</a>
                                 <button class="btn btn-primary" type="submit">Kaydet</button>
                             </div>
                         </div>
@@ -68,9 +68,11 @@
                     .attr('src', e.target.result)
                     .width(64)
                     .height(64);
+                $('#inputFile')
+                    .attr('value', e.target.result.toString());
             };
 
-            reader.readAsArrayBuffer(input.files[0]);
+            reader.readAsDataURL(input.files[0]);
         }
     }
 </script>
