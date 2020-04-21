@@ -190,7 +190,7 @@ namespace OfferWeb.API
 
         public static async Task<List<Products>> GetOpportunityProducts()
         {
-            var opprtunityTag = Tags.FirstOrDefault(x => x.Name == "Opprtunity");
+            var opprtunityTag = Tags.FirstOrDefault(x => x.Name == "Opportunity");
             var httpResponse = await Get("Product/getAllProductsByTag/" + opprtunityTag?.Oid);
             var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse) ?? new List<Products>();
             return products;
@@ -198,7 +198,7 @@ namespace OfferWeb.API
 
         public static async Task<List<Products>> GetNewProducts()
         {
-            var newTag = Tags.FirstOrDefault(x => x.Name == "NewProduct");
+            var newTag = Tags.FirstOrDefault(x => x.Name == "Opportunity");
             var httpResponse = await Get("Product/getAllProductsByTag/" + newTag?.Oid);
             var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse) ?? new List<Products>();
             return products;
@@ -206,7 +206,7 @@ namespace OfferWeb.API
 
         public static async Task<List<Products>> GetOutletProducts()
         {
-            var outletTag = Tags.FirstOrDefault(x => x.Name == "OutletProduct");
+            var outletTag = Tags.FirstOrDefault(x => x.Name == "Outlet");
             var httpResponse = await Get("Product/getAllProductsByTag/"+ outletTag?.Oid);
             var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse) ?? new List<Products>();
             return products;
