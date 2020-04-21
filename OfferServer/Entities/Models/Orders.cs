@@ -1,9 +1,11 @@
 ﻿using Entities.Enums;
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Entities.Models
 {
+    [JsonObject(IsReference = true)]
     public partial class Orders : Entity
     {
         public Orders()

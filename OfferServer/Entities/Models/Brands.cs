@@ -5,9 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Http;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Entities.Models
 {
+    [JsonObject(IsReference = true)]
     public partial class Brands : Entity
     {
         public Brands()
@@ -20,8 +22,6 @@ namespace Entities.Models
         public ItemState State { get; set; }
         [NotMapped]
         public IFormFile ImageFile { get; set; }
-        [JsonIgnore]
-        [IgnoreDataMember]
         public virtual ICollection<Products> Products { get; set; }
     }
 }

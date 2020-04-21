@@ -101,8 +101,7 @@ namespace Entities.Models
                 entity.HasKey(e => e.Oid);
 
                 entity.Property(e => e.Oid)
-                    .HasColumnName("OId")
-                    .ValueGeneratedNever();
+                    .HasColumnName("OId");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -158,8 +157,7 @@ namespace Entities.Models
                 entity.HasKey(e => e.Oid);
 
                 entity.Property(e => e.Oid)
-                    .HasColumnName("OId")
-                    .ValueGeneratedNever();
+                    .HasColumnName("OId");
 
                 entity.Property(e => e.CreatedDate)
                     .HasMaxLength(10)
@@ -175,8 +173,7 @@ namespace Entities.Models
                 entity.HasKey(e => e.Oid);
 
                 entity.Property(e => e.Oid)
-                    .HasColumnName("OId")
-                    .ValueGeneratedNever();
+                    .HasColumnName("OId");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -211,8 +208,7 @@ namespace Entities.Models
                     .HasName("PK_Orders_1");
 
                 entity.Property(e => e.Oid)
-                    .HasColumnName("OId")
-                    .ValueGeneratedNever();
+                    .HasColumnName("OId");
 
                 entity.Property(e => e.BillingAddresOid).HasColumnName("BillingAddresOId");
 
@@ -258,8 +254,7 @@ namespace Entities.Models
                     .HasName("PK_Products_1");
 
                 entity.Property(e => e.Oid)
-                    .HasColumnName("OId")
-                    .ValueGeneratedNever();
+                    .HasColumnName("OId");
 
                 entity.Property(e => e.BrandOid).HasColumnName("BrandOId");
 
@@ -291,8 +286,7 @@ namespace Entities.Models
                 entity.HasKey(e => e.Oid);
 
                 entity.Property(e => e.Oid)
-                    .HasColumnName("OId")
-                    .ValueGeneratedNever();
+                    .HasColumnName("OId");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -319,8 +313,7 @@ namespace Entities.Models
                     .HasName("PK_RequestOffers_1");
 
                 entity.Property(e => e.Oid)
-                    .HasColumnName("OId")
-                    .ValueGeneratedNever();
+                    .HasColumnName("OId");
 
                 entity.Property(e => e.CreatedDate)
                     .HasColumnType("datetime")
@@ -348,8 +341,7 @@ namespace Entities.Models
                 entity.HasKey(e => e.Oid);
 
                 entity.Property(e => e.Oid)
-                    .HasColumnName("OId")
-                    .ValueGeneratedNever();
+                    .HasColumnName("OId");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -376,8 +368,7 @@ namespace Entities.Models
                     .HasName("PK_Requests_1");
 
                 entity.Property(e => e.Oid)
-                    .HasColumnName("OId")
-                    .ValueGeneratedNever();
+                    .HasColumnName("OId");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 

@@ -313,15 +313,14 @@ namespace OfferWeb.API
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK && response.StatusCode != System.Net.HttpStatusCode.NoContent)
                 {
-                    var r = JsonConvert.DeserializeObject<ErrorApiModel>(res);
-                    //TODO: hata sonucu hata ayfasına yönlenecek.
-                    //return r.Message;
+                    //var error = new ErrorApiModel() { Message = res, StatusCode = response.StatusCode.ToString() };
+                    //logger.LogError(res);
+                    return string.Empty;
                 }
-                else if (response.StatusCode == System.Net.HttpStatusCode.NoContent && string.IsNullOrEmpty(res))
-                {
-                    var error = new ErrorApiModel() { Message = "It should not happen; response is empty.", StatusCode = "ERR404" };
-                    //return error.Message;
-                }
+                //else if (response.StatusCode == System.Net.HttpStatusCode.NoContent && string.IsNullOrEmpty(res))
+                //{
+                //    //return error.Message;
+                //}
 
                 return res;
             }

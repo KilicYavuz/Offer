@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace Entities.Models
 {
+    [JsonObject(IsReference = true)]
     public partial class Products : Entity
     {
         public Products()

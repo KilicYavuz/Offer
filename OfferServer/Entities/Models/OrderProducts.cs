@@ -1,8 +1,10 @@
 ﻿using Entities.Enums;
+using Newtonsoft.Json;
 using System;
 
 namespace Entities.Models
 {
+    [JsonObject(IsReference = true)]
     public partial class OrderProducts : Entity
     {
         public Guid OrderOid { get; set; }

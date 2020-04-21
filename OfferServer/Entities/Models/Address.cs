@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace Entities.Models
 {
+    [JsonObject(IsReference = true)]
     public partial class Address : Entity
     {
         public Guid UserOid { get; set; }

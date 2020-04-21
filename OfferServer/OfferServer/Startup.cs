@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using NLog;
 using OfferServer.Extensions;
 using System;
 using System.IO;
+using Newtonsoft.Json.Serialization;
 
 namespace OfferServer
 {
@@ -27,12 +29,13 @@ namespace OfferServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureCors();
-            services.AddControllers(); 
-            //services.AddMvc().AddJsonOptions(
-            // options =>
-            // {
-            //     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            // });
+            services.AddControllers().AddNewtonsoftJson(
+                options =>
+                {
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                }
+            );
             services.ConfigureIISIntegration();
             services.ConfigureLoggerService();
             services.ConfigureDbContext(Configuration);

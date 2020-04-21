@@ -35,7 +35,7 @@ namespace OfferWeb.Controllers
             ApiUtil.InitData();
             GetCategories();
             var objects = ViewBag.Data as Dictionary<string, dynamic> ?? new Dictionary<string, dynamic>();
-            objects.Add("SearchCategories", Categories);
+            objects.Add("SearchCategories", Categories ?? new List<Categories>());
             ViewBag.Data = objects;
         }
     }

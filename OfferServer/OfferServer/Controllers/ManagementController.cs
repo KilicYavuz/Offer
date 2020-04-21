@@ -98,7 +98,7 @@ namespace OfferServer.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong inside AddProduct action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside AddProduct action: {ex.InnerException?.Message ?? ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }
