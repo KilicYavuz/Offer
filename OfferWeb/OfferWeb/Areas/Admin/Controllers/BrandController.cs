@@ -39,7 +39,11 @@ namespace OfferWeb.Areas.Admin.Controllers
         {
             try
             {
-                brand.Image = Util.GetBase64FromImage(brand.ImageFile);
+                var image = Util.GetBase64FromImage(brand.ImageFile);
+                if (!string.IsNullOrEmpty(image))
+                {
+                    brand.Image = Util.GetBase64FromImage(brand.ImageFile);
+                }
 
                 if (brand.Oid == Guid.Empty)
                 {

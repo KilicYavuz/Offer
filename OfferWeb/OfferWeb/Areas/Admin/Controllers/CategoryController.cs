@@ -42,7 +42,11 @@ namespace OfferWeb.Areas.Admin.Controllers
         {
             try
             {
-                category.Image = Util.GetBase64FromImage(category.ImageFile);
+                var image = Util.GetBase64FromImage(category.ImageFile);
+                if (!string.IsNullOrEmpty(image))
+                {
+                    category.Image = Util.GetBase64FromImage(category.ImageFile);
+                }
                 if (category.Oid == Guid.Empty)
                 {
                     category.State = Entities.Enums.ItemState.Active;

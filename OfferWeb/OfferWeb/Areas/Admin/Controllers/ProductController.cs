@@ -49,7 +49,11 @@ namespace OfferWeb.Areas.Admin.Controllers
         {
             try
             {
-                product.Image = Util.GetBase64FromImage(product.ImageFile);
+                var image = Util.GetBase64FromImage(product.ImageFile);
+                if (!string.IsNullOrEmpty(image))
+                {
+                    product.Image = Util.GetBase64FromImage(product.ImageFile);
+                }
                 if (product.Oid == Guid.Empty)
                 {
                     product.State = Entities.Enums.ItemState.Active;
