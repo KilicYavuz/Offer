@@ -16,6 +16,7 @@ namespace Entities.Models
             ProductTags = new HashSet<ProductTags>();
             RequestProducts = new HashSet<RequestProducts>();
             SupplierProducts = new HashSet<SupplierProducts>();
+            ProductOptions = new HashSet<ProductOptions>();
         }
 
         public string Name { get; set; }
@@ -24,6 +25,8 @@ namespace Entities.Models
         public Guid CategoryOid { get; set; }
         public double Price { get; set; }
         public int Stock { get; set; }
+        public string ShortDescription { get; set; }
+        public string Description { get; set; }
         public bool Verified { get; set; }
         public string VerificationCode { get; set; }
         public string Image { get; set; }
@@ -34,6 +37,7 @@ namespace Entities.Models
         public virtual Categories Category { get; set; }
         public virtual ICollection<OrderProducts> OrderProducts { get; set; }
         public virtual ICollection<ProductTags> ProductTags { get; set; }
+        public virtual ICollection<ProductOptions> ProductOptions { get; set; }
         public virtual ICollection<RequestProducts> RequestProducts { get; set; }
         public virtual ICollection<SupplierProducts> SupplierProducts { get; set; }
     }

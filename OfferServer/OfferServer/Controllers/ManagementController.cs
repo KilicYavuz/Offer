@@ -56,7 +56,7 @@ namespace OfferServer.Controllers
         {
             try
             {
-                var product = _repoWrapper.Product.GetById(id);
+                var product = _repoWrapper.Product.FindByCondition(x => x.Oid == id, i => i.Brand, i => i.Category, i=>i.ProductOptions, i=>i.ProductTags);
 
                 if (product == null)
                 {
