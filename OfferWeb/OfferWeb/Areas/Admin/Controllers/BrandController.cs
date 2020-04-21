@@ -44,7 +44,7 @@ namespace OfferWeb.Areas.Admin.Controllers
                 {
                     brand.Image = Util.GetBase64FromImage(brand.ImageFile);
                 }
-
+                brand.ImageFile = null;
                 if (brand.Oid == Guid.Empty)
                 {
                     brand.State = Entities.Enums.ItemState.Active;
