@@ -1,5 +1,4 @@
 ﻿@using Entities.Models
-@using Entities.Models
 @{
     ViewBag.Title = "Home Page";
 }
@@ -237,7 +236,7 @@
                                     <div class="product-cat">
                                         <a href="@Url.Action("BrandResult", "Brand", new { id = item.Oid })">@item.Brand.Name</a>
                                     </div><!-- End .product-cat -->
-                                    <h3 class="product-title"><a href="@Url.Action("ProductDetail", "Product", new { id = item.Oid })">@item.Name</a></h3><!-- End .product-title -->
+                                    <h3 class="product-title"><a href="@Url.Action("ProductDetail", "Product", new { Oid = item.Oid   })">@item.Name</a></h3><!-- End .product-title -->
                                     <div class="product-price">
                                         <span class="new-price">@item.Price</span>
                                         @*<span class="old-price">Was $290.00</span>*@
@@ -318,7 +317,7 @@
                                 <div class="product-cat">
                                     <a href="@Url.Action("BrandResult", "Brand", new { id = item.Oid })">@item.Brand.Name</a>
                                 </div><!-- End .product-cat -->
-                                <h3 class="product-title"><a href="@Url.Action("ProductDetail", "Product", new { id = item.Oid })">@item.Name</a></h3><!-- End .product-title -->
+                                <h3 class="product-title"><a href="@Url.Action("ProductDetail", "Product", new { Oid = item.Oid })">@item.Name</a></h3><!-- End .product-title -->
                                 <div class="product-price">
                                     @item.Price
                                 </div><!-- End .product-price -->
@@ -442,7 +441,7 @@
                                 <div class="product-cat">
                                     <a href="@Url.Action("BrandResult", "Brand", new { id = item.Oid })">@item.Brand.Name</a>
                                 </div><!-- End .product-cat -->
-                                <h3 class="product-title"><a href="@Url.Action("ProductDetail", "Product", new { id = item.Oid })">@item.Name</a></h3><!-- End .product-title -->
+                                <h3 class="product-title"><a href="@Url.Action("ProductDetail", "Product", new { Oid = item.Oid })">@item.Name</a></h3><!-- End .product-title -->
                                 <div class="product-price">
                                     @item.Price
                                 </div><!-- End .product-price -->
@@ -504,7 +503,7 @@
                                 <div class="product-cat">
                                     <a href="@Url.Action("BrandResult", "Brand", new { id = item.Oid })">@item.Brand.Name</a>
                                 </div>
-                                <h3 class="product-title"><a href="@Url.Action("ProductDetail", "Product", new { id = item.Oid })">@item.Name</a></h3>
+                                <h3 class="product-title"><a href="@Url.Action("ProductDetail", "Product", new { Oid = item.Oid })">@item.Name</a></h3>
                                 <div class="product-price">
                                     <span class="new-price">@item.Price</span>
 
@@ -581,7 +580,7 @@
                                 <div class="product-cat">
                                     <a href="@Url.Action("BrandResult", "Brand", new { id = item.Oid })">@item.Brand.Name</a>
                                 </div>
-                                <h3 class="product-title"><a href="@Url.Action("ProductDetail", "Product", new { id = item.Oid })">@item.Name</a></h3>
+                                <h3 class="product-title"><a href="@Url.Action("ProductDetail", "Product", new { Oid = item.Oid })">@item.Name</a></h3>
                                 <div class="product-price">
                                     @item.Price
                                 </div>

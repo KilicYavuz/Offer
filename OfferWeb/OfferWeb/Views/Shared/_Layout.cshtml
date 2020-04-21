@@ -107,6 +107,10 @@
                                             <option value="">Kategoriler</option>
                                             @foreach (var item in ViewBag.Data["SearchCategories"] as List<Categories>)
                                             {
+                                                //if(ViewBag.Data["SearchCategories"].count>15)
+                                                //15 yükle
+                                                //<a value="@item.Oid">Tüm kategoriler</a>
+                                                //
                                                 <option value="@item.Oid">@item.Name</option>
                                             }
                                             @*<option value="1">Anestesi &amp; Enjeksiyon</option>

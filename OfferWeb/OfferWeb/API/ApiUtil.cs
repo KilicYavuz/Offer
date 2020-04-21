@@ -57,7 +57,7 @@ namespace OfferWeb.API
             return categories;
         }
 
-        public static async Task<string> DeleteProductTag(Guid id, bool permanent = false)
+        public static async Task<string> DeleteProductTag(Guid id, bool permanent = true)
         {
             var httpResponse = await Get("Management/deleteProductTag/" + id + "/" + permanent.ToString());
             return httpResponse;
@@ -92,7 +92,7 @@ namespace OfferWeb.API
             return categories;
         }
 
-        public static async Task<string> DeleteTag(Guid id, bool permanent = false)
+        public static async Task<string> DeleteTag(Guid id, bool permanent = true)
         {
             var httpResponse = await Get("Management/deleteTag/" + id + "/" + permanent.ToString());
             return httpResponse;
@@ -127,7 +127,7 @@ namespace OfferWeb.API
             return categories;
         }
 
-        public static async Task<string> DeleteCategory(Guid id, bool permanent = false)
+        public static async Task<string> DeleteCategory(Guid id, bool permanent = true)
         {
             var httpResponse = await Get("Management/deleteCategory/" + id + "/" + permanent.ToString());
             return httpResponse;
@@ -170,7 +170,7 @@ namespace OfferWeb.API
             return products;
         }
 
-        public static async Task<string> DeleteProduct(Guid id, bool permanent = false)
+        public static async Task<string> DeleteProduct(Guid id, bool permanent = true)
         {
             var httpResponse = await Get("Management/deleteProduct/" + id + "/" + permanent.ToString());
             return httpResponse;
@@ -198,7 +198,7 @@ namespace OfferWeb.API
 
         public static async Task<List<Products>> GetNewProducts()
         {
-            var newTag = Tags.FirstOrDefault(x => x.Name == "Opportunity");
+            var newTag = Tags.FirstOrDefault(x => x.Name == "New");
             var httpResponse = await Get("Product/getAllProductsByTag/" + newTag?.Oid);
             var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse) ?? new List<Products>();
             return products;
@@ -260,7 +260,7 @@ namespace OfferWeb.API
             return httpResponse;
         }
 
-        public static async Task<string> DeleteBrand(Guid id, bool permanent = false)
+        public static async Task<string> DeleteBrand(Guid id, bool permanent = true)
         {
             var httpResponse = await Get("Management/deleteBrand/" + id.ToString() + "/" + permanent.ToString());
             return httpResponse;
