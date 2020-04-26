@@ -43,6 +43,7 @@ namespace OfferServer.Controllers
                     return NotFound();
                 }
 
+                product.SelectedTags = product.ProductTags.Select(x => x.TagOid).ToList();
                 var json = JsonConvert.SerializeObject(product);
                 return Ok(json);
             }
@@ -58,16 +59,16 @@ namespace OfferServer.Controllers
         {
             try
             {
-                List<Products> products;
+                List<Product> products;
                 if (!tagId.HasValue || Guid.Empty == tagId)
                 {
                     products = _repoWrapper.Product.FindAll().OrderBy(u => u.CategoryOid).ToList();
                 }
                 else
                 {
-                   products = _repoWrapper.ProductTag.FindByCondition(x=>x.Tags.Oid == tagId.Value && x.Product.Verified && x.Product.State == Entities.Enums.ItemState.Active, i=>i.Product,i=>i.Product.Brand, i => i.Product.Category, i => i.Product.ProductTags)
-                        .OrderByDescending(u=>u.CreatedDate)//.ThenBy(u =>u.Product.CategoryOid)
+                   products = _repoWrapper.ProductTag.FindByCondition(x=>x.Tag.Oid == tagId.Value && x.Product.Verified && x.Product.State == Entities.Enums.ItemState.Active, i=>i.Product,i=>i.Product.Brand, i => i.Product.Category, i => i.Product.ProductTags)
                         .Select(s=>s.Product).ToList();
+                        //.OrderByDescending(u=>u.CreatedDate).ThenBy(u =>u.Product.CategoryOid)
                 }
                 var json = JsonConvert.SerializeObject(products);
                 return Ok(json);

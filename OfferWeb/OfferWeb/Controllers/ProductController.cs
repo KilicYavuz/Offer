@@ -21,7 +21,7 @@ namespace OfferWeb.Controllers
             var objects = base.ViewBag.Data as Dictionary<string, dynamic> ?? new Dictionary<string, dynamic>();
             var product = ApiUtil.GetProduct(Oid).Result;
             var categories = ApiUtil.GetCategoryList().Result;
-            objects.Add("SearchCategories", categories ?? new List<Categories>());
+            objects.Add("SearchCategories", categories ?? new List<Category>());
             ViewBag.Data = objects;
             return View(product);
         }

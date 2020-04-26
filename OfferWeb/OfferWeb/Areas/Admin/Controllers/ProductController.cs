@@ -19,9 +19,9 @@ namespace OfferWeb.Areas.Admin.Controllers
             try
             {
                 var objects = new Dictionary<string, dynamic>();
-                var brands = ApiUtil.GetBrandList().Result ?? new List<Brands>();
-                var categories = ApiUtil.GetCategoryList().Result ?? new List<Categories>();
-                var tagList = ApiUtil.GetTagList().Result ?? new List<Tags>();
+                var brands = ApiUtil.GetBrandList().Result ?? new List<Brand>();
+                var categories = ApiUtil.GetCategoryList().Result ?? new List<Category>();
+                var tagList = ApiUtil.GetTagList().Result ?? new List<Tag>();
 
                 objects.Add("Brands", brands);
                 objects.Add("Categories", categories);
@@ -31,12 +31,13 @@ namespace OfferWeb.Areas.Admin.Controllers
                 // TODO: ViewData nasıl?
                 if (id == null)
                 {
-                    return View(new Products());
+                    return View(new Product() { TagList = tagList});
                 }
                 else
                 {
-                    var product = ApiUtil.GetProduct(id.Value);
-                    return View(product.Result);
+                    var product = ApiUtil.GetProduct(id.Value).Result;
+                    product.TagList = tagList;
+                    return View(product);
                 }
             }
             catch (Exception ex)
@@ -45,23 +46,23 @@ namespace OfferWeb.Areas.Admin.Controllers
             }
         }
 
-        public ActionResult SaveProduct(Products product)
+        public ActionResult SaveProduct(Product model)
         {
             try
             {
-                var image = Util.GetBase64FromImage(product.ImageFile);
+                var image = Util.GetBase64FromImage(model.ImageFile);
                 if (!string.IsNullOrEmpty(image))
                 {
-                    product.Image = Util.GetBase64FromImage(product.ImageFile);
+                    model.Image = Util.GetBase64FromImage(model.ImageFile);
                 }
-                if (product.Oid == Guid.Empty)
+                if (model.Oid == Guid.Empty)
                 {
-                    product.State = Entities.Enums.ItemState.Active;
-                    var res = ApiUtil.AddProduct(product).Result;
+                    model.State = Entities.Enums.ItemState.Active;
+                    var res = ApiUtil.AddProduct(model).Result;
                 }
                 else
                 {
-                    var res = ApiUtil.UpdateProduct(product).Result;
+                    var res = ApiUtil.UpdateProduct(model).Result;
                 }
                 return RedirectToAction("ListProduct");
             }

@@ -10,11 +10,11 @@ using Newtonsoft.Json;
 namespace Entities.Models
 {
     [JsonObject(IsReference = true)]
-    public partial class Brands : Entity
+    public partial class Brand : Entity
     {
-        public Brands()
+        public Brand()
         {
-            Products = new HashSet<Products>();
+            Products = new HashSet<Product>();
         }
 
         public string Name { get; set; }
@@ -22,6 +22,6 @@ namespace Entities.Models
         public ItemState State { get; set; }
         [NotMapped]
         public IFormFile ImageFile { get; set; }
-        public virtual ICollection<Products> Products { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

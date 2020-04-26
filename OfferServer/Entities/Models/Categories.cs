@@ -4,18 +4,16 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
 
 namespace Entities.Models
 {
     [JsonObject(IsReference = true)]
-    public partial class Categories : Entity
+    public partial class Category : Entity
     {
-        public Categories()
+        public Category()
         {
-            SubCategories = new HashSet<Categories>();
-            Products = new HashSet<Products>();
+            SubCategories = new HashSet<Category>();
+            Products = new HashSet<Product>();
         }
 
         public string Name { get; set; }
@@ -26,14 +24,8 @@ namespace Entities.Models
         [NotMapped]
         public IFormFile ImageFile { get; set; }
         
-        //[JsonIgnore]
-        //[IgnoreDataMember]
-        public virtual Categories ParentCategory { get; set; }
-        //[JsonIgnore]
-        //[IgnoreDataMember]
-        public virtual ICollection<Categories> SubCategories { get; set; }
-        //[JsonIgnore]
-        //[IgnoreDataMember]
-        public virtual ICollection<Products> Products { get; set; }
+        public virtual Category ParentCategory { get; set; }
+        public virtual ICollection<Category> SubCategories { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

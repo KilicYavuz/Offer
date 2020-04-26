@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace Contracts
 {
-    public interface IErrorRepository : IRepositoryBase<ErrorLogs>
+    public interface IErrorRepository : IRepositoryBase<ErrorLog>
     {
-        IEnumerable<ErrorLogs> GetAllErrors();
+        IEnumerable<ErrorLog> GetAllErrors();
     }
 }

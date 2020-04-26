@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Entities.Models
 {
     [JsonObject(IsReference = true)]
-    public partial class ErrorLogs : Entity
+    public partial class ErrorLog : Entity
     {
         public string ErrorContext { get; set; }
         public string ErrorMessage { get; set; }

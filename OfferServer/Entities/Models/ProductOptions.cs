@@ -9,6 +9,6 @@ namespace Entities.Models
         public Guid ProductOid { get; set; }
         public string Option { get; set; }
 
-        public virtual Products Product { get; set; }
+        public virtual Product Product { get; set; }
     }
 }

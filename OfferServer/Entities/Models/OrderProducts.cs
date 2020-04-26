@@ -5,7 +5,7 @@ using System;
 namespace Entities.Models
 {
     [JsonObject(IsReference = true)]
-    public partial class OrderProducts : Entity
+    public partial class OrderProduct : Entity
     {
         public Guid OrderOid { get; set; }
         public Guid SupplierOid { get; set; }
@@ -15,8 +15,8 @@ namespace Entities.Models
         public ItemState ItemType { get; set; }
         public DateTime CreatedDate { get; set; }
 
-        public virtual Orders Order { get; set; }
-        public virtual Products Product { get; set; }
-        public virtual Users Supplier { get; set; }
+        public virtual Order Order { get; set; }
+        public virtual Product Product { get; set; }
+        public virtual User Supplier { get; set; }
     }
 }

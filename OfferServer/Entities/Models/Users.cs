@@ -5,16 +5,16 @@ using Newtonsoft.Json;
 namespace Entities.Models
 {
     [JsonObject(IsReference = true)]
-    public partial class Users : Entity
+    public partial class User : Entity
     {
-        public Users()
+        public User()
         {
             Address = new HashSet<Address>();
-            OrderProducts = new HashSet<OrderProducts>();
-            Orders = new HashSet<Orders>();
-            RequestOffers = new HashSet<RequestOffers>();
-            Requests = new HashSet<Requests>();
-            SupplierProducts = new HashSet<SupplierProducts>();
+            OrderProducts = new HashSet<OrderProduct>();
+            Orders = new HashSet<Order>();
+            RequestOffers = new HashSet<RequestOffer>();
+            Requests = new HashSet<Request>();
+            SupplierProducts = new HashSet<SupplierProduct>();
         }
 
         public string Name { get; set; }
@@ -29,10 +29,10 @@ namespace Entities.Models
         public string PhoneNumber { get; set; }
 
         public virtual ICollection<Address> Address { get; set; }
-        public virtual ICollection<OrderProducts> OrderProducts { get; set; }
-        public virtual ICollection<Orders> Orders { get; set; }
-        public virtual ICollection<RequestOffers> RequestOffers { get; set; }
-        public virtual ICollection<Requests> Requests { get; set; }
-        public virtual ICollection<SupplierProducts> SupplierProducts { get; set; }
+        public virtual ICollection<OrderProduct> OrderProducts { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<RequestOffer> RequestOffers { get; set; }
+        public virtual ICollection<Request> Requests { get; set; }
+        public virtual ICollection<SupplierProduct> SupplierProducts { get; set; }
     }
 }

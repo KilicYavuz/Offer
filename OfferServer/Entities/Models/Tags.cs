@@ -6,16 +6,16 @@ using Newtonsoft.Json;
 namespace Entities.Models
 {
     [JsonObject(IsReference = true)]
-    public partial class Tags : Entity
+    public partial class Tag : Entity
     {
-        public Tags()
+        public Tag()
         {
-            ProductTags = new HashSet<ProductTags>();
+            ProductTags = new HashSet<ProductTag>();
         }
 
         public string Name { get; set; }
         public int State { get; set; }
 
-        public virtual ICollection<ProductTags> ProductTags { get; set; }
+        public virtual ICollection<ProductTag> ProductTags { get; set; }
     }
 }

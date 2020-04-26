@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Entities.Migrations
 {
-    public partial class NweInit : Migration
+    public partial class refactor : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,8 +52,8 @@ namespace Entities.Migrations
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     Type = table.Column<int>(nullable: false),
                     ParentOId = table.Column<Guid>(nullable: true),
-                    Image = table.Column<string>(nullable: true),
-                    State = table.Column<int>(nullable: false)
+                    State = table.Column<int>(nullable: false),
+                    Image = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -153,13 +153,15 @@ namespace Entities.Migrations
                     CategoryOId = table.Column<Guid>(nullable: false),
                     Price = table.Column<double>(nullable: false),
                     Stock = table.Column<int>(nullable: false),
+                    ShortDescription = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
                     Verified = table.Column<bool>(nullable: false),
                     VerificationCode = table.Column<string>(maxLength: 20, nullable: true),
                     Image = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products_1", x => x.OId);
+                    table.PrimaryKey("PK_Products", x => x.OId);
                     table.ForeignKey(
                         name: "FK_Products_Brands",
                         column: x => x.BrandOId,
@@ -218,9 +220,9 @@ namespace Entities.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orders_1", x => x.OId);
+                    table.PrimaryKey("PK_Orders", x => x.OId);
                     table.ForeignKey(
-                        name: "FK_Orders_Users1",
+                        name: "FK_Orders_Users",
                         column: x => x.CustomerOId,
                         principalTable: "Users",
                         principalColumn: "OId",
@@ -241,7 +243,7 @@ namespace Entities.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Requests_1", x => x.OId);
+                    table.PrimaryKey("PK_Requests", x => x.OId);
                     table.ForeignKey(
                         name: "FK_Requests_Users",
                         column: x => x.CustomerOId,
@@ -251,18 +253,39 @@ namespace Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductTags",
+                name: "ProductOptions",
                 columns: table => new
                 {
-                    OId = table.Column<Guid>(nullable: false),
+                    Oid = table.Column<Guid>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     UpdatedDate = table.Column<DateTime>(nullable: true),
-                    TagOId = table.Column<Guid>(nullable: false),
-                    ProductOId = table.Column<Guid>(nullable: false)
+                    ProductOid = table.Column<Guid>(nullable: false),
+                    Option = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductTags", x => x.OId);
+                    table.PrimaryKey("PK_ProductOptions", x => x.Oid);
+                    table.ForeignKey(
+                        name: "FK_ProductOptions_Products_ProductOid",
+                        column: x => x.ProductOid,
+                        principalTable: "Products",
+                        principalColumn: "OId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductTags",
+                columns: table => new
+                {
+                    TagOId = table.Column<Guid>(nullable: false),
+                    ProductOId = table.Column<Guid>(nullable: false),
+                    Oid = table.Column<Guid>(nullable: false),
+                    CreatedDate = table.Column<DateTime>(nullable: false),
+                    UpdatedDate = table.Column<DateTime>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductTags", x => new { x.ProductOId, x.TagOId });
                     table.ForeignKey(
                         name: "FK_ProductTags_Products",
                         column: x => x.ProductOId,
@@ -359,7 +382,7 @@ namespace Entities.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RequestOffers_1", x => x.OId);
+                    table.PrimaryKey("PK_RequestOffers", x => x.OId);
                     table.ForeignKey(
                         name: "FK_RequestOffers_Requests",
                         column: x => x.RequestOId,
@@ -463,6 +486,11 @@ namespace Entities.Migrations
                 column: "CustomerOId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductOptions_ProductOid",
+                table: "ProductOptions",
+                column: "ProductOid");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Products_BrandOId",
                 table: "Products",
                 column: "BrandOId");
@@ -471,11 +499,6 @@ namespace Entities.Migrations
                 name: "IX_Products_CategoryOId",
                 table: "Products",
                 column: "CategoryOId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductTags_ProductOId",
-                table: "ProductTags",
-                column: "ProductOId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductTags_TagOId",
@@ -544,6 +567,9 @@ namespace Entities.Migrations
 
             migrationBuilder.DropTable(
                 name: "OrderProducts");
+
+            migrationBuilder.DropTable(
+                name: "ProductOptions");
 
             migrationBuilder.DropTable(
                 name: "ProductTags");

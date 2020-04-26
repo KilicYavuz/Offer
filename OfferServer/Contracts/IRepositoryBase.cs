@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -13,5 +14,6 @@ namespace Contracts
         void Update(T entity);
         void Delete(T entity);
         T GetById(Guid id);
+        void TryUpdateManyToMany(IEnumerable<T> deleteItems, IEnumerable<T> newItems);
     }
 }

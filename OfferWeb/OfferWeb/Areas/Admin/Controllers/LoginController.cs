@@ -14,10 +14,10 @@ namespace OfferWeb.Areas.Admin.Controllers
         // GET: Admin/Login
         public ActionResult Index()
         {
-            return View(new Users());
+            return View(new User());
         }
 
-        public ActionResult Login(Users user)
+        public ActionResult Login(User user)
         {
             if (user.Username == "Admin" && user.Password == "1")
             {

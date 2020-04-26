@@ -2,7 +2,7 @@
 
 namespace Contracts
 {
-    public interface INotificationRepository : IRepositoryBase<Notifications>
+    public interface INotificationRepository : IRepositoryBase<Notification>
     {
     }
 }

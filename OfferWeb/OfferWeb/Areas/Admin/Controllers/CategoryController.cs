@@ -23,7 +23,7 @@ namespace OfferWeb.Areas.Admin.Controllers
 
                 if (id == null)
                 {
-                    return View(new Categories());
+                    return View(new Category());
                 }
                 else
                 {
@@ -38,7 +38,7 @@ namespace OfferWeb.Areas.Admin.Controllers
 
         }
 
-        public ActionResult SaveCategory(Categories category)
+        public ActionResult SaveCategory(Category category)
         {
             try
             {

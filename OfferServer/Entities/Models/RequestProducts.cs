@@ -5,11 +5,11 @@ using Newtonsoft.Json;
 namespace Entities.Models
 {
     [JsonObject(IsReference = true)]
-    public partial class RequestProducts : Entity
+    public partial class RequestProduct : Entity
     {
-        public RequestProducts()
+        public RequestProduct()
         {
-            RequestOfferProducts = new HashSet<RequestOfferProducts>();
+            RequestOfferProducts = new HashSet<RequestOfferProduct>();
         }
 
         public int Quantity { get; set; }
@@ -17,8 +17,8 @@ namespace Entities.Models
         public Guid ProductOid { get; set; }
         public Guid RequestOid { get; set; }
 
-        public virtual Products Product { get; set; }
-        public virtual Requests Request { get; set; }
-        public virtual ICollection<RequestOfferProducts> RequestOfferProducts { get; set; }
+        public virtual Product Product { get; set; }
+        public virtual Request Request { get; set; }
+        public virtual ICollection<RequestOfferProduct> RequestOfferProducts { get; set; }
     }
 }

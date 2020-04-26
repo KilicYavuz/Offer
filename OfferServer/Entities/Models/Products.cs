@@ -4,18 +4,19 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Entities.Models
 {
     [JsonObject(IsReference = true)]
-    public partial class Products : Entity
+    public partial class Product : Entity
     {
-        public Products()
+        public Product()
         {
-            OrderProducts = new HashSet<OrderProducts>();
-            ProductTags = new HashSet<ProductTags>();
-            RequestProducts = new HashSet<RequestProducts>();
-            SupplierProducts = new HashSet<SupplierProducts>();
+            OrderProducts = new HashSet<OrderProduct>();
+            ProductTags = new HashSet<ProductTag>();
+            RequestProducts = new HashSet<RequestProduct>();
+            SupplierProducts = new HashSet<SupplierProduct>();
             ProductOptions = new HashSet<ProductOptions>();
         }
 
@@ -33,12 +34,20 @@ namespace Entities.Models
         [NotMapped]
         public IFormFile ImageFile { get; set; }
 
-        public virtual Brands Brand { get; set; }
-        public virtual Categories Category { get; set; }
-        public virtual ICollection<OrderProducts> OrderProducts { get; set; }
-        public virtual ICollection<ProductTags> ProductTags { get; set; }
+        public virtual Brand Brand { get; set; }
+        public virtual Category Category { get; set; }
+        public virtual ICollection<OrderProduct> OrderProducts { get; set; }
+        public virtual ICollection<ProductTag> ProductTags { get; set; }
         public virtual ICollection<ProductOptions> ProductOptions { get; set; }
-        public virtual ICollection<RequestProducts> RequestProducts { get; set; }
-        public virtual ICollection<SupplierProducts> SupplierProducts { get; set; }
+        public virtual ICollection<RequestProduct> RequestProducts { get; set; }
+        public virtual ICollection<SupplierProduct> SupplierProducts { get; set; }
+        
+        [NotMapped]
+        [BindProperty]
+        public virtual ICollection<Guid> SelectedTags { get; set; }
+
+        [NotMapped]
+        [BindProperty]
+        public virtual ICollection<Tag> TagList { get; set; }
     }
 }

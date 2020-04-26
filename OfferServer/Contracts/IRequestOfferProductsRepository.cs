@@ -2,7 +2,7 @@
 
 namespace Contracts
 {
-    public interface IRequestOfferProductsRepository : IRepositoryBase<RequestOfferProducts>
+    public interface IRequestOfferProductsRepository : IRepositoryBase<RequestOfferProduct>
     {
     }
 }

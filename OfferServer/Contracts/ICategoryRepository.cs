@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Contracts
 {
-    public interface ICategoryRepository : IRepositoryBase<Categories>
+    public interface ICategoryRepository : IRepositoryBase<Category>
     {
     }
 }

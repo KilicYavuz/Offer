@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Contracts
 {
-    public interface IProductRepository : IRepositoryBase<Products>
+    public interface IProductRepository : IRepositoryBase<Product>
     {
     }
 }

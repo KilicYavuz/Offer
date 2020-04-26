@@ -56,13 +56,14 @@ namespace OfferServer.Controllers
         {
             try
             {
-                var product = _repoWrapper.Product.FindByCondition(x => x.Oid == id, i => i.Brand, i => i.Category, i=>i.ProductOptions, i=>i.ProductTags);
+                var product = _repoWrapper.Product.FindByCondition(x => x.Oid == id, i => i.Brand, i => i.Category, i=>i.ProductOptions, i=>i.ProductTags).FirstOrDefault();
 
                 if (product == null)
                 {
                     return NotFound();
                 }
 
+                product.SelectedTags = product.ProductTags.Select(x => x.TagOid).ToList();
                 var json = JsonConvert.SerializeObject(product);
                 return Ok(json);
             }
@@ -82,7 +83,7 @@ namespace OfferServer.Controllers
                 {
                     return BadRequest();
                 }
-                var data = JsonConvert.DeserializeObject<Products>(postData.ToString());
+                var data = JsonConvert.DeserializeObject<Product>(postData.ToString());
 
                 var found = _repoWrapper.Product.FindByCondition(x => x.CategoryOid == data.CategoryOid && x.Name == data.Name);
                 if (found.Any())
@@ -91,7 +92,11 @@ namespace OfferServer.Controllers
                     return BadRequest(eam);
                 }
 
-                data.CreatedDate = DateTime.Now;
+                foreach (var tagId in data.SelectedTags)
+                {
+                    data.ProductTags.Add(new ProductTag() { Oid= Guid.NewGuid(), TagOid = tagId, ProductOid = data.Oid, CreatedDate = DateTime.Now });
+                }
+
                 _repoWrapper.Product.Add(data);
                 _repoWrapper.Save();
                 return NoContent();
@@ -113,7 +118,7 @@ namespace OfferServer.Controllers
                     return BadRequest();
                 }
 
-                var data = JsonConvert.DeserializeObject<Products>(postData.ToString());
+                var data = JsonConvert.DeserializeObject<Product>(postData.ToString());
 
                 var product = _repoWrapper.Product.GetById(id);
                 if (product == null)
@@ -121,8 +126,12 @@ namespace OfferServer.Controllers
                     return NotFound();
                 }
 
+                var deleteTags = data.ProductTags.Where(x => !data.SelectedTags.Contains(x.TagOid));
+                var addTags = data.SelectedTags.Where(x => !data.ProductTags.Select(t => t.TagOid).Contains(x))?.Select(a=> new ProductTag { TagOid = a, ProductOid = data.Oid});
+
+                _repoWrapper.ProductTag.TryUpdateManyToMany(deleteTags, addTags);
+
                 data.UpdatedDate = DateTime.Now;
-                data.Oid = id;
                 _repoWrapper.Product.Update(data);
                 _repoWrapper.Save();
 
@@ -216,7 +225,7 @@ namespace OfferServer.Controllers
                 {
                     return BadRequest();
                 }
-                var data = JsonConvert.DeserializeObject<Brands>(postData.ToString());
+                var data = JsonConvert.DeserializeObject<Brand>(postData.ToString());
 
                 var found = _repoWrapper.Brand.FindByCondition(x => x.Name == data.Name);
                 if (found.Any())
@@ -246,7 +255,7 @@ namespace OfferServer.Controllers
                     return BadRequest();
                 }
 
-                var data = JsonConvert.DeserializeObject<Brands>(postData.ToString());
+                var data = JsonConvert.DeserializeObject<Brand>(postData.ToString());
 
                 var product = _repoWrapper.Brand.GetById(id);
                 if (product == null)
@@ -348,7 +357,7 @@ namespace OfferServer.Controllers
                 {
                     return BadRequest();
                 }
-                var data = JsonConvert.DeserializeObject<Categories>(postData.ToString());
+                var data = JsonConvert.DeserializeObject<Category>(postData.ToString());
 
                 var found = _repoWrapper.Category.FindByCondition(x => x.ParentOid == data.ParentOid && x.Name == data.Name);
                 if (found.Any())
@@ -378,7 +387,7 @@ namespace OfferServer.Controllers
                     return BadRequest();
                 }
 
-                var data = JsonConvert.DeserializeObject<Categories>(postData.ToString());
+                var data = JsonConvert.DeserializeObject<Category>(postData.ToString());
 
                 var product = _repoWrapper.Category.GetById(id);
                 if (product == null)
@@ -487,7 +496,7 @@ namespace OfferServer.Controllers
                 {
                     return BadRequest();
                 }
-                var data = JsonConvert.DeserializeObject<Tags>(postData.ToString());
+                var data = JsonConvert.DeserializeObject<Tag>(postData.ToString());
 
                 var found = _repoWrapper.Tag.FindByCondition(x => x.Name == data.Name);
                 if (found.Any())
@@ -518,7 +527,7 @@ namespace OfferServer.Controllers
                     return BadRequest();
                 }
 
-                var data = JsonConvert.DeserializeObject<Tags>(postData.ToString());
+                var data = JsonConvert.DeserializeObject<Tag>(postData.ToString());
 
                 var product = _repoWrapper.Tag.GetById(id);
                 if (product == null)

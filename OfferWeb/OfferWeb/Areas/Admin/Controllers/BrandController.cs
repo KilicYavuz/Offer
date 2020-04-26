@@ -20,7 +20,7 @@ namespace OfferWeb.Areas.Admin.Controllers
             {
                 if (id == null)
                 {
-                    return View(new Brands());
+                    return View(new Brand());
                 }
                 else
                 {
@@ -35,24 +35,24 @@ namespace OfferWeb.Areas.Admin.Controllers
 
         }
 
-        public ActionResult SaveBrand(Brands brand)
+        public ActionResult SaveBrand(Brand model)
         {
             try
             {
-                var image = Util.GetBase64FromImage(brand.ImageFile);
+                var image = Util.GetBase64FromImage(model.ImageFile);
                 if (!string.IsNullOrEmpty(image))
                 {
-                    brand.Image = Util.GetBase64FromImage(brand.ImageFile);
+                    model.Image = Util.GetBase64FromImage(model.ImageFile);
                 }
-                brand.ImageFile = null;
-                if (brand.Oid == Guid.Empty)
+                model.ImageFile = null;
+                if (model.Oid == Guid.Empty)
                 {
-                    brand.State = Entities.Enums.ItemState.Active;
-                    var res = ApiUtil.AddBrand(brand).Result;
+                    model.State = Entities.Enums.ItemState.Active;
+                    var res = ApiUtil.AddBrand(model).Result;
                 }
                 else
                 {
-                    var res = ApiUtil.UpdateBrand(brand).Result;
+                    var res = ApiUtil.UpdateBrand(model).Result;
                 }
                 return RedirectToAction("ListBrand");
             }

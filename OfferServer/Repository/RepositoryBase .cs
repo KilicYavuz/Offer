@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Collections.Generic;
+using Entities;
 
 namespace Repository
 {
@@ -26,12 +28,12 @@ namespace Repository
 
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, params Expression<Func<T, object>>[] includes)
         {
-            return includes.Aggregate(this.OfferContext.Set<T>().Where(expression), (current, includeProperty)=> current.Include(includeProperty));
+            return includes.Aggregate(this.OfferContext.Set<T>().Where(expression), (current, includeProperty)=> current.Include(includeProperty)).OrderByDescending(x=>x.CreatedDate);
         }  
         
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression)
         {
-            return this.OfferContext.Set<T>().Where(expression).AsNoTracking();
+            return this.OfferContext.Set<T>().Where(expression).AsNoTracking().OrderByDescending(x => x.CreatedDate);
         }
 
         public void Add(T entity)
@@ -41,6 +43,7 @@ namespace Repository
 
         public void Update(T entity)
         {
+            entity.UpdatedDate = DateTime.Now;
             this.OfferContext.Set<T>().Update(entity);
         }
 
@@ -51,8 +54,14 @@ namespace Repository
 
         public T GetById(Guid id)
         {
-            var product = FindByCondition(x => x.Oid == id).OrderBy(u => u.CreatedDate).FirstOrDefault();
+            var product = FindByCondition(x => x.Oid == id).FirstOrDefault();
             return product;
+        }
+
+        public void TryUpdateManyToMany(IEnumerable<T> deleteItems, IEnumerable<T> newItems)
+        {
+            this.OfferContext.Set<T>().RemoveRange(deleteItems);
+            this.OfferContext.Set<T>().AddRange(newItems);
         }
     }
 }

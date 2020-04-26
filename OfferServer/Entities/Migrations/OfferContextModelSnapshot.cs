@@ -75,7 +75,7 @@ namespace Entities.Migrations
                     b.ToTable("Address");
                 });
 
-            modelBuilder.Entity("Entities.Models.Brands", b =>
+            modelBuilder.Entity("Entities.Models.Brand", b =>
                 {
                     b.Property<Guid>("Oid")
                         .ValueGeneratedOnAdd()
@@ -104,9 +104,10 @@ namespace Entities.Migrations
                     b.ToTable("Brands");
                 });
 
-            modelBuilder.Entity("Entities.Models.Carts", b =>
+            modelBuilder.Entity("Entities.Models.Cart", b =>
                 {
                     b.Property<Guid>("Oid")
+                        .ValueGeneratedOnAdd()
                         .HasColumnName("OId")
                         .HasColumnType("uniqueidentifier");
 
@@ -142,7 +143,7 @@ namespace Entities.Migrations
                     b.ToTable("Carts");
                 });
 
-            modelBuilder.Entity("Entities.Models.Categories", b =>
+            modelBuilder.Entity("Entities.Models.Category", b =>
                 {
                     b.Property<Guid>("Oid")
                         .ValueGeneratedOnAdd()
@@ -180,7 +181,7 @@ namespace Entities.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Entities.Models.ErrorLogs", b =>
+            modelBuilder.Entity("Entities.Models.ErrorLog", b =>
                 {
                     b.Property<Guid>("Oid")
                         .ValueGeneratedOnAdd()
@@ -225,9 +226,10 @@ namespace Entities.Migrations
                     b.ToTable("ErrorLogs");
                 });
 
-            modelBuilder.Entity("Entities.Models.Notifications", b =>
+            modelBuilder.Entity("Entities.Models.Notification", b =>
                 {
                     b.Property<Guid>("Oid")
+                        .ValueGeneratedOnAdd()
                         .HasColumnName("OId")
                         .HasColumnType("uniqueidentifier");
 
@@ -255,9 +257,55 @@ namespace Entities.Migrations
                     b.ToTable("Notifications");
                 });
 
-            modelBuilder.Entity("Entities.Models.OrderProducts", b =>
+            modelBuilder.Entity("Entities.Models.Order", b =>
                 {
                     b.Property<Guid>("Oid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("OId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("BillingAddresOid")
+                        .HasColumnName("BillingAddresOId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<Guid>("CustomerOid")
+                        .HasColumnName("CustomerOId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("PaymentState")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PaymentType")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ShippingAddressOid")
+                        .HasColumnName("ShippingAddressOId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.Property<double>("TotalPrice")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Oid")
+                        .HasName("PK_Orders");
+
+                    b.HasIndex("CustomerOid");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Entities.Models.OrderProduct", b =>
+                {
+                    b.Property<Guid>("Oid")
+                        .ValueGeneratedOnAdd()
                         .HasColumnName("OId")
                         .HasColumnType("uniqueidentifier");
 
@@ -299,83 +347,10 @@ namespace Entities.Migrations
                     b.ToTable("OrderProducts");
                 });
 
-            modelBuilder.Entity("Entities.Models.Orders", b =>
-                {
-                    b.Property<Guid>("Oid")
-                        .HasColumnName("OId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("BillingAddresOid")
-                        .HasColumnName("BillingAddresOId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<Guid>("CustomerOid")
-                        .HasColumnName("CustomerOId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("PaymentState")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("PaymentType")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("ShippingAddressOid")
-                        .HasColumnName("ShippingAddressOId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("State")
-                        .HasColumnType("int");
-
-                    b.Property<double>("TotalPrice")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Oid")
-                        .HasName("PK_Orders_1");
-
-                    b.HasIndex("CustomerOid");
-
-                    b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("Entities.Models.ProductTags", b =>
+            modelBuilder.Entity("Entities.Models.Product", b =>
                 {
                     b.Property<Guid>("Oid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("OId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("ProductOid")
-                        .HasColumnName("ProductOId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TagOid")
-                        .HasColumnName("TagOId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Oid");
-
-                    b.HasIndex("ProductOid");
-
-                    b.HasIndex("TagOid");
-
-                    b.ToTable("ProductTags");
-                });
-
-            modelBuilder.Entity("Entities.Models.Products", b =>
-                {
-                    b.Property<Guid>("Oid")
                         .HasColumnName("OId")
                         .HasColumnType("uniqueidentifier");
 
@@ -390,6 +365,9 @@ namespace Entities.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
@@ -400,6 +378,9 @@ namespace Entities.Migrations
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
+
+                    b.Property<string>("ShortDescription")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("State")
                         .HasColumnType("int");
@@ -418,7 +399,7 @@ namespace Entities.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Oid")
-                        .HasName("PK_Products_1");
+                        .HasName("PK_Products");
 
                     b.HasIndex("BrandOid");
 
@@ -427,9 +408,139 @@ namespace Entities.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Entities.Models.RequestOfferProducts", b =>
+            modelBuilder.Entity("Entities.Models.ProductOptions", b =>
                 {
                     b.Property<Guid>("Oid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Option")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProductOid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Oid");
+
+                    b.HasIndex("ProductOid");
+
+                    b.ToTable("ProductOptions");
+                });
+
+            modelBuilder.Entity("Entities.Models.ProductTag", b =>
+                {
+                    b.Property<Guid>("ProductOid")
+                        .HasColumnName("ProductOId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TagOid")
+                        .HasColumnName("TagOId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Oid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ProductOid", "TagOid");
+
+                    b.HasIndex("TagOid");
+
+                    b.ToTable("ProductTags");
+                });
+
+            modelBuilder.Entity("Entities.Models.Request", b =>
+                {
+                    b.Property<Guid>("Oid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("OId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("CanPartial")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<Guid>("CustomerOid")
+                        .HasColumnName("CustomerOId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("SupplierOid")
+                        .HasColumnName("SupplierOId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Oid")
+                        .HasName("PK_Requests");
+
+                    b.HasIndex("CustomerOid");
+
+                    b.ToTable("Requests");
+                });
+
+            modelBuilder.Entity("Entities.Models.RequestOffer", b =>
+                {
+                    b.Property<Guid>("Oid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("OId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<bool>("IsPartialOffer")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("RequestOid")
+                        .HasColumnName("RequestOId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SupplierDisplayId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("SupplierOid")
+                        .HasColumnName("SupplierOId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Oid")
+                        .HasName("PK_RequestOffers");
+
+                    b.HasIndex("RequestOid");
+
+                    b.HasIndex("SupplierOid");
+
+                    b.ToTable("RequestOffers");
+                });
+
+            modelBuilder.Entity("Entities.Models.RequestOfferProduct", b =>
+                {
+                    b.Property<Guid>("Oid")
+                        .ValueGeneratedOnAdd()
                         .HasColumnName("OId")
                         .HasColumnType("uniqueidentifier");
 
@@ -462,50 +573,10 @@ namespace Entities.Migrations
                     b.ToTable("RequestOfferProducts");
                 });
 
-            modelBuilder.Entity("Entities.Models.RequestOffers", b =>
+            modelBuilder.Entity("Entities.Models.RequestProduct", b =>
                 {
                     b.Property<Guid>("Oid")
-                        .HasColumnName("OId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<bool>("IsPartialOffer")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("RequestOid")
-                        .HasColumnName("RequestOId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SupplierDisplayId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("SupplierOid")
-                        .HasColumnName("SupplierOId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Oid")
-                        .HasName("PK_RequestOffers_1");
-
-                    b.HasIndex("RequestOid");
-
-                    b.HasIndex("SupplierOid");
-
-                    b.ToTable("RequestOffers");
-                });
-
-            modelBuilder.Entity("Entities.Models.RequestProducts", b =>
-                {
-                    b.Property<Guid>("Oid")
                         .HasColumnName("OId")
                         .HasColumnType("uniqueidentifier");
 
@@ -538,41 +609,7 @@ namespace Entities.Migrations
                     b.ToTable("RequestProducts");
                 });
 
-            modelBuilder.Entity("Entities.Models.Requests", b =>
-                {
-                    b.Property<Guid>("Oid")
-                        .HasColumnName("OId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("CanPartial")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<Guid>("CustomerOid")
-                        .HasColumnName("CustomerOId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("SupplierOid")
-                        .HasColumnName("SupplierOId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Oid")
-                        .HasName("PK_Requests_1");
-
-                    b.HasIndex("CustomerOid");
-
-                    b.ToTable("Requests");
-                });
-
-            modelBuilder.Entity("Entities.Models.SupplierProducts", b =>
+            modelBuilder.Entity("Entities.Models.SupplierProduct", b =>
                 {
                     b.Property<Guid>("Oid")
                         .ValueGeneratedOnAdd()
@@ -612,7 +649,7 @@ namespace Entities.Migrations
                     b.ToTable("SupplierProducts");
                 });
 
-            modelBuilder.Entity("Entities.Models.Tags", b =>
+            modelBuilder.Entity("Entities.Models.Tag", b =>
                 {
                     b.Property<Guid>("Oid")
                         .ValueGeneratedOnAdd()
@@ -638,7 +675,7 @@ namespace Entities.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("Entities.Models.Users", b =>
+            modelBuilder.Entity("Entities.Models.User", b =>
                 {
                     b.Property<Guid>("Oid")
                         .ValueGeneratedOnAdd()
@@ -698,144 +735,153 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.Address", b =>
                 {
-                    b.HasOne("Entities.Models.Users", "User")
+                    b.HasOne("Entities.Models.User", "User")
                         .WithMany("Address")
                         .HasForeignKey("UserOid")
                         .HasConstraintName("FK_Address_Users")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Entities.Models.Categories", b =>
+            modelBuilder.Entity("Entities.Models.Category", b =>
                 {
-                    b.HasOne("Entities.Models.Categories", "ParentCategory")
+                    b.HasOne("Entities.Models.Category", "ParentCategory")
                         .WithMany("SubCategories")
                         .HasForeignKey("ParentOid")
                         .HasConstraintName("FK_Categories_Categories");
                 });
 
-            modelBuilder.Entity("Entities.Models.OrderProducts", b =>
+            modelBuilder.Entity("Entities.Models.Order", b =>
                 {
-                    b.HasOne("Entities.Models.Orders", "Order")
+                    b.HasOne("Entities.Models.User", "Customer")
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerOid")
+                        .HasConstraintName("FK_Orders_Users")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Models.OrderProduct", b =>
+                {
+                    b.HasOne("Entities.Models.Order", "Order")
                         .WithMany("OrderProducts")
                         .HasForeignKey("OrderOid")
                         .HasConstraintName("FK_OrderProducts_Orders")
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.Products", "Product")
+                    b.HasOne("Entities.Models.Product", "Product")
                         .WithMany("OrderProducts")
                         .HasForeignKey("ProductOid")
                         .HasConstraintName("FK_OrderProducts_Products")
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.Users", "Supplier")
+                    b.HasOne("Entities.Models.User", "Supplier")
                         .WithMany("OrderProducts")
                         .HasForeignKey("SupplierOid")
                         .HasConstraintName("FK_OrderProducts_Users")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Entities.Models.Orders", b =>
+            modelBuilder.Entity("Entities.Models.Product", b =>
                 {
-                    b.HasOne("Entities.Models.Users", "Customer")
-                        .WithMany("Orders")
-                        .HasForeignKey("CustomerOid")
-                        .HasConstraintName("FK_Orders_Users1")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Entities.Models.ProductTags", b =>
-                {
-                    b.HasOne("Entities.Models.Products", "Product")
-                        .WithMany("ProductTags")
-                        .HasForeignKey("ProductOid")
-                        .HasConstraintName("FK_ProductTags_Products")
-                        .IsRequired();
-
-                    b.HasOne("Entities.Models.Tags", "Tags")
-                        .WithMany("ProductTags")
-                        .HasForeignKey("TagOid")
-                        .HasConstraintName("FK_ProductTags_Tags")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Entities.Models.Products", b =>
-                {
-                    b.HasOne("Entities.Models.Brands", "Brand")
+                    b.HasOne("Entities.Models.Brand", "Brand")
                         .WithMany("Products")
                         .HasForeignKey("BrandOid")
                         .HasConstraintName("FK_Products_Brands")
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.Categories", "Category")
+                    b.HasOne("Entities.Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryOid")
                         .HasConstraintName("FK_Products_Categories")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Entities.Models.RequestOfferProducts", b =>
+            modelBuilder.Entity("Entities.Models.ProductOptions", b =>
                 {
-                    b.HasOne("Entities.Models.RequestOffers", "RequestOfferO")
-                        .WithMany("RequestOfferProducts")
-                        .HasForeignKey("RequestOfferOid")
-                        .HasConstraintName("FK_RequestOfferProducts_RequestOffers")
-                        .IsRequired();
-
-                    b.HasOne("Entities.Models.RequestProducts", "RequestProductO")
-                        .WithMany("RequestOfferProducts")
-                        .HasForeignKey("RequestProductOid")
-                        .HasConstraintName("FK_RequestOfferProducts_RequestProducts")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Entities.Models.RequestOffers", b =>
-                {
-                    b.HasOne("Entities.Models.Requests", "Request")
-                        .WithMany("RequestOffers")
-                        .HasForeignKey("RequestOid")
-                        .HasConstraintName("FK_RequestOffers_Requests")
-                        .IsRequired();
-
-                    b.HasOne("Entities.Models.Users", "Supplier")
-                        .WithMany("RequestOffers")
-                        .HasForeignKey("SupplierOid")
-                        .HasConstraintName("FK_RequestOffers_Users")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Entities.Models.RequestProducts", b =>
-                {
-                    b.HasOne("Entities.Models.Products", "Product")
-                        .WithMany("RequestProducts")
+                    b.HasOne("Entities.Models.Product", "Product")
+                        .WithMany("ProductOptions")
                         .HasForeignKey("ProductOid")
-                        .HasConstraintName("FK_RequestProducts_Products")
-                        .IsRequired();
-
-                    b.HasOne("Entities.Models.Requests", "Request")
-                        .WithMany("RequestProducts")
-                        .HasForeignKey("RequestOid")
-                        .HasConstraintName("FK_RequestProducts_Requests")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Entities.Models.Requests", b =>
+            modelBuilder.Entity("Entities.Models.ProductTag", b =>
                 {
-                    b.HasOne("Entities.Models.Users", "Customer")
+                    b.HasOne("Entities.Models.Product", "Product")
+                        .WithMany("ProductTags")
+                        .HasForeignKey("ProductOid")
+                        .HasConstraintName("FK_ProductTags_Products")
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.Tag", "Tags")
+                        .WithMany("ProductTags")
+                        .HasForeignKey("TagOid")
+                        .HasConstraintName("FK_ProductTags_Tags")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Models.Request", b =>
+                {
+                    b.HasOne("Entities.Models.User", "Customer")
                         .WithMany("Requests")
                         .HasForeignKey("CustomerOid")
                         .HasConstraintName("FK_Requests_Users")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Entities.Models.SupplierProducts", b =>
+            modelBuilder.Entity("Entities.Models.RequestOffer", b =>
                 {
-                    b.HasOne("Entities.Models.Products", "Product")
+                    b.HasOne("Entities.Models.Request", "Request")
+                        .WithMany("RequestOffers")
+                        .HasForeignKey("RequestOid")
+                        .HasConstraintName("FK_RequestOffers_Requests")
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.User", "Supplier")
+                        .WithMany("RequestOffers")
+                        .HasForeignKey("SupplierOid")
+                        .HasConstraintName("FK_RequestOffers_Users")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Models.RequestOfferProduct", b =>
+                {
+                    b.HasOne("Entities.Models.RequestOffer", "RequestOffer")
+                        .WithMany("RequestOfferProducts")
+                        .HasForeignKey("RequestOfferOid")
+                        .HasConstraintName("FK_RequestOfferProducts_RequestOffers")
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.RequestProduct", "RequestProduct")
+                        .WithMany("RequestOfferProducts")
+                        .HasForeignKey("RequestProductOid")
+                        .HasConstraintName("FK_RequestOfferProducts_RequestProducts")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Models.RequestProduct", b =>
+                {
+                    b.HasOne("Entities.Models.Product", "Product")
+                        .WithMany("RequestProducts")
+                        .HasForeignKey("ProductOid")
+                        .HasConstraintName("FK_RequestProducts_Products")
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.Request", "Request")
+                        .WithMany("RequestProducts")
+                        .HasForeignKey("RequestOid")
+                        .HasConstraintName("FK_RequestProducts_Requests")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Models.SupplierProduct", b =>
+                {
+                    b.HasOne("Entities.Models.Product", "Product")
                         .WithMany("SupplierProducts")
                         .HasForeignKey("ProductOid")
                         .HasConstraintName("FK_SalesLists_Products")
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.Users", "Supplier")
+                    b.HasOne("Entities.Models.User", "Supplier")
                         .WithMany("SupplierProducts")
                         .HasForeignKey("SupplierOid")
                         .HasConstraintName("FK_SalesLists_Users")

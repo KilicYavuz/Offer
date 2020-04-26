@@ -2,7 +2,7 @@
 
 namespace Contracts
 {
-    public interface IProductTagRepository : IRepositoryBase<ProductTags>
+    public interface IProductTagRepository : IRepositoryBase<ProductTag>
     {
     }
 }

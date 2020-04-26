@@ -22,7 +22,7 @@ namespace OfferWeb.API
         static string serviceUrl = "";
         static HttpClient client = new HttpClient();
         static string url = Startup.StaticConfig["Root:ApiUrl"];
-        static List<Tags> Tags { get; set; }
+        static List<Tag> Tags { get; set; }
 
         public static async Task InitData()
         {
@@ -31,29 +31,29 @@ namespace OfferWeb.API
 
         #region ProductTag
 
-        public static async Task<ProductTags> GetProductTag(Guid id)
+        public static async Task<ProductTag> GetProductTag(Guid id)
         {
             var httpResponse = await Get("Management/getProductTag/" + id);
-            var tag = JsonConvert.DeserializeObject<ProductTags>(httpResponse);
+            var tag = JsonConvert.DeserializeObject<ProductTag>(httpResponse);
             return tag;
         }
 
-        public static async Task<string> AddProductTag(ProductTags tag)
+        public static async Task<string> AddProductTag(ProductTag tag)
         {
-            var httpResponse = await Post<ProductTags>("Management/addProductTag", tag);
+            var httpResponse = await Post<ProductTag>("Management/addProductTag", tag);
             return httpResponse;
         }
 
-        public static async Task<string> UpdateProductTag(ProductTags tag)
+        public static async Task<string> UpdateProductTag(ProductTag tag)
         {
-            var httpResponse = await Post<ProductTags>("Management/updateProductTag", tag);
+            var httpResponse = await Post<ProductTag>("Management/updateProductTag", tag);
             return httpResponse;
         }
 
-        public static async Task<List<ProductTags>> GetProductTagList()
+        public static async Task<List<ProductTag>> GetProductTagList()
         {
             var httpResponse = await Get("Management/getAllCategories");
-            var categories = JsonConvert.DeserializeObject<List<ProductTags>>(httpResponse);
+            var categories = JsonConvert.DeserializeObject<List<ProductTag>>(httpResponse);
             return categories;
         }
 
@@ -66,29 +66,29 @@ namespace OfferWeb.API
 
         #region Tag
 
-        public static async Task<Tags> GetTag(Guid id)
+        public static async Task<Tag> GetTag(Guid id)
         {
             var httpResponse = await Get("Management/getTag/" + id);
-            var tag = JsonConvert.DeserializeObject<Tags>(httpResponse);
+            var tag = JsonConvert.DeserializeObject<Tag>(httpResponse);
             return tag;
         }
 
-        public static async Task<string> AddTag(Tags tag)
+        public static async Task<string> AddTag(Tag tag)
         {
-            var httpResponse = await Post<Tags>("Management/addTag", tag);
+            var httpResponse = await Post<Tag>("Management/addTag", tag);
             return httpResponse;
         }
 
-        public static async Task<string> UpdateTag(Tags tag)
+        public static async Task<string> UpdateTag(Tag tag)
         {
-            var httpResponse = await Post<Tags>("Management/updateTag", tag);
+            var httpResponse = await Post<Tag>("Management/updateTag", tag);
             return httpResponse;
         }
 
-        public static async Task<List<Tags>> GetTagList()
+        public static async Task<List<Tag>> GetTagList()
         {
             var httpResponse = await Get("Management/getAllTags");
-            var categories = JsonConvert.DeserializeObject<List<Tags>>(httpResponse);
+            var categories = JsonConvert.DeserializeObject<List<Tag>>(httpResponse);
             return categories;
         }
 
@@ -101,29 +101,29 @@ namespace OfferWeb.API
 
         #region Category
 
-        public static async Task<Categories> GetCategory(Guid id)
+        public static async Task<Category> GetCategory(Guid id)
         {
             var httpResponse = await Get("Management/getCategory/" + id);
-            var product = JsonConvert.DeserializeObject<Categories>(httpResponse);
+            var product = JsonConvert.DeserializeObject<Category>(httpResponse);
             return product;
         }
 
-        public static async Task<string> AddCategory(Categories category)
+        public static async Task<string> AddCategory(Category category)
         {
-            var httpResponse = await Post<Categories>("Management/addCategory", category);
+            var httpResponse = await Post<Category>("Management/addCategory", category);
             return httpResponse;
         }
 
-        public static async Task<string> UpdateCategory(Categories category)
+        public static async Task<string> UpdateCategory(Category category)
         {
-            var httpResponse = await Post<Categories>("Management/updateCategory", category);
+            var httpResponse = await Post<Category>("Management/updateCategory", category);
             return httpResponse;
         }
 
-        public static async Task<List<Categories>> GetCategoryList()
+        public static async Task<List<Category>> GetCategoryList()
         {
             var httpResponse = await Get("Management/getAllCategories");
-            var categories = JsonConvert.DeserializeObject<List<Categories>>(httpResponse);
+            var categories = JsonConvert.DeserializeObject<List<Category>>(httpResponse);
             return categories;
         }
 
@@ -144,29 +144,29 @@ namespace OfferWeb.API
 
         #region Product
 
-        public static async Task<Products> GetProduct(Guid id)
+        public static async Task<Product> GetProduct(Guid id)
         {
             var httpResponse = await Get("Management/getProduct/" + id);
-            var product = JsonConvert.DeserializeObject<Products>(httpResponse);
+            var product = JsonConvert.DeserializeObject<Product>(httpResponse);
             return product;
         }
 
-        public static async Task<string> UpdateProduct(Products product)
+        public static async Task<string> UpdateProduct(Product product)
         {
-            var httpResponse = await Post<Products>("Management/updateProduct", product);
+            var httpResponse = await Post<Product>("Management/updateProduct", product);
             return httpResponse;
         }
 
-        public static async Task<string> AddProduct(Products product)
+        public static async Task<string> AddProduct(Product product)
         {
-            var httpResponse = await Post<Products>("Management/addProduct", product);
+            var httpResponse = await Post<Product>("Management/addProduct", product);
             return httpResponse;
         }
 
-        public static async Task<List<Products>> GetProductList()
+        public static async Task<List<Product>> GetProductList()
         {
             var httpResponse = await Get("Management/getAllProducts");
-            var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse);
+            var products = JsonConvert.DeserializeObject<List<Product>>(httpResponse);
             return products;
         }
 
@@ -180,43 +180,43 @@ namespace OfferWeb.API
 
         #region HomeProducts
 
-        public static async Task<List<Products>> GetBestSellerProducts()
+        public static async Task<List<Product>> GetBestSellerProducts()
         {
             var bestSellerTag = Tags.FirstOrDefault(x => x.Name == "BestSeller");
             var httpResponse = await Get("Product/getAllProductsByTag/" + bestSellerTag?.Oid);
-            var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse) ?? new List<Products>();
+            var products = JsonConvert.DeserializeObject<List<Product>>(httpResponse) ?? new List<Product>();
             return products;
         }
 
-        public static async Task<List<Products>> GetOpportunityProducts()
+        public static async Task<List<Product>> GetOpportunityProducts()
         {
             var opprtunityTag = Tags.FirstOrDefault(x => x.Name == "Opportunity");
             var httpResponse = await Get("Product/getAllProductsByTag/" + opprtunityTag?.Oid);
-            var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse) ?? new List<Products>();
+            var products = JsonConvert.DeserializeObject<List<Product>>(httpResponse) ?? new List<Product>();
             return products;
         }
 
-        public static async Task<List<Products>> GetNewProducts()
+        public static async Task<List<Product>> GetNewProducts()
         {
             var newTag = Tags.FirstOrDefault(x => x.Name == "New");
             var httpResponse = await Get("Product/getAllProductsByTag/" + newTag?.Oid);
-            var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse) ?? new List<Products>();
+            var products = JsonConvert.DeserializeObject<List<Product>>(httpResponse) ?? new List<Product>();
             return products;
         }
 
-        public static async Task<List<Products>> GetOutletProducts()
+        public static async Task<List<Product>> GetOutletProducts()
         {
             var outletTag = Tags.FirstOrDefault(x => x.Name == "Outlet");
             var httpResponse = await Get("Product/getAllProductsByTag/"+ outletTag?.Oid);
-            var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse) ?? new List<Products>();
+            var products = JsonConvert.DeserializeObject<List<Product>>(httpResponse) ?? new List<Product>();
             return products;
         }
 
-        public static async Task<List<Products>> GetMainScreenProducts()
+        public static async Task<List<Product>> GetMainScreenProducts()
         {
             var mainScreenTag = Tags.FirstOrDefault(x => x.Name == "MainScreenProduct");
             var httpResponse = await Get("Product/getAllProductsByTag/" + mainScreenTag?.Oid);
-            var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse) ?? new List<Products>();
+            var products = JsonConvert.DeserializeObject<List<Product>>(httpResponse) ?? new List<Product>();
             return products;
         }
 
@@ -224,39 +224,39 @@ namespace OfferWeb.API
 
         #region CategoryProduct
 
-        public static async Task<List<Products>> GetProductByCategory(Guid id)
+        public static async Task<List<Product>> GetProductByCategory(Guid id)
         {
             var httpResponse = await Get("Product/GetProductByCategory/" + id.ToString());
-            var products = JsonConvert.DeserializeObject<List<Products>>(httpResponse);
+            var products = JsonConvert.DeserializeObject<List<Product>>(httpResponse);
             return products;
         }
 
         #endregion
 
         #region Brand
-        public static async Task<List<Brands>> GetBrandList()
+        public static async Task<List<Brand>> GetBrandList()
         {
             var httpResponse = await Get("Management/getAllBrands");
-            var brands = JsonConvert.DeserializeObject<List<Brands>>(httpResponse);
+            var brands = JsonConvert.DeserializeObject<List<Brand>>(httpResponse);
             return brands;
         }
 
-        public static async Task<Brands> GetBrand(Guid id)
+        public static async Task<Brand> GetBrand(Guid id)
         {
             var httpResponse = await Get("Management/getBrand/" + id.ToString());
-            var resp = JsonConvert.DeserializeObject<Brands>(httpResponse);
+            var resp = JsonConvert.DeserializeObject<Brand>(httpResponse);
             return resp;
         }
 
-        public static async Task<string> AddBrand(Brands brand)
+        public static async Task<string> AddBrand(Brand brand)
         {
-            var httpResponse = await Post<Brands>("Management/addBrand/", brand);
+            var httpResponse = await Post<Brand>("Management/addBrand/", brand);
             return httpResponse;
         }
 
-        public static async Task<string> UpdateBrand(Brands brand)
+        public static async Task<string> UpdateBrand(Brand brand)
         {
-            var httpResponse = await Post<Brands>("Management/updateBrand/" + brand.Oid, brand);
+            var httpResponse = await Post<Brand>("Management/updateBrand/" + brand.Oid, brand);
             return httpResponse;
         }
 

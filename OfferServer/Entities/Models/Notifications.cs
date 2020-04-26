@@ -5,7 +5,7 @@ using System;
 namespace Entities.Models
 {
     [JsonObject(IsReference = true)]
-    public partial class Notifications : Entity
+    public partial class Notification : Entity
     {
         public Guid UserOid { get; set; }
         public string Message { get; set; }

@@ -16,6 +16,6 @@ namespace Entities.Models
         public string ZipCode { get; set; }
         public string Phone { get; set; }
 
-        public virtual Users User { get; set; }
+        public virtual User User { get; set; }
     }
 }

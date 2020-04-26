@@ -1,13 +1,11 @@
 ﻿@using Entities.Models
-@model Products
+@model Product
 @{
     ViewBag.Title = "AddProduct";
 }
 
-
-<link href="~/Assets/inspinia/css/plugins/dualListbox/bootstrap-duallistbox.min.css" rel="stylesheet" />
-<link href="~/Assets/inspinia/css/plugins/select2/select2.min.css" rel="stylesheet" />
-<link href="C:\Users\yavuz\source\repos\Offer\OfferWeb\OfferWeb\Assets\inspinia\css\plugins\select2\select2.min.css" rel="stylesheet" />
+<link href="~/Assets/inspinia/css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
+<link href="~/Assets/inspinia/css/plugins/chosen/chosen.css" rel="stylesheet" />
 
 <div class="wrapper wrapper-content animated fadeInRight">
 
@@ -50,11 +48,9 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Tagler</label>
-                            <select name="ProductTags" id="tagSelect" multiple="multiple" class="form-control" asp-items="ViewBag.Data[" TagList"]"></select>
-                            @*<div class="col-sm-10">
-                                @Html.ListBoxFor(m => m.ProductTags, new MultiSelectList(ViewBag.Data["TagList"] as List<Tags>, "Oid", "Name", @Model.ProductTags),
-                                    new { @class = "form-control dual_select", name = "ProductTags", multiple = "multiple", tabindex = "4", id = "ProductTags", value = Model.ProductTags })
-                            </div>*@
+                            <div class="col-sm-10">
+                                @Html.ListBoxFor(model => model.SelectedTags, new MultiSelectList(Model.TagList, "Oid", "Name"), new { id="productTagsMultiSelect", multiple="multiple"})
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Fiyat</label>
@@ -99,11 +95,13 @@
 </div>
 
 <script src="~/Assets/inspinia/js/jquery-3.1.1.min.js"></script>
-<script src="~/Assets/inspinia/js/plugins/dualListbox/jquery.bootstrap-duallistbox.js"></script>
-@*<script src="~/Assets/inspinia/js/plugins/select2/select2.full.min.js"></script>*@
-<script src="C:\Users\yavuz\source\repos\Offer\OfferWeb\OfferWeb\Assets\inspinia\js\plugins\select2\select2.full.min.js"></script>
+<script src="~/Assets/inspinia/js/plugins/chosen/chosen.jquery.js"></script>
 
 <script>
+
+    $('.chosen-select').chosen({ width: "100%" });
+    $('#productTagsMultiSelect').chosen({ width: "100%" });
+
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -118,29 +116,4 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
-
-    $(function () {
-        $('#tagSelect').tagsinput({
-            tagClass: 'label label-primary'
-        });
-        //select2 eklentimizin tanımı
-        //$('#tagSelect').select2();
-        //hepsiniSec kodlarımız
-        //$("#hepsiniSec").on("click", function () {
-        //    if ($(this).is(':checked')) {
-        //        $("#tagSelect > option").prop("selected", "selected");
-        //        $("#tagSelect").trigger("change");
-        //    } else {
-        //        $("#tagSelect > option").removeAttr("selected");
-        //        $("#tagSelect").trigger("change");
-        //    }
-        //});
-
-        $('.dual_select').bootstrapDualListbox({
-            selectorMinimalHeight: 160,
-            nonSelectedListLabel: 'NonSelected',
-            selectedListLabel: 'Selected',
-            preserveSelectionOnMove: 'moved'
-        });
-    });
 </script>

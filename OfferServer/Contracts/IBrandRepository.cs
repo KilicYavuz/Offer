@@ -2,7 +2,7 @@
 
 namespace Contracts
 {
-    public interface IBrandRepository : IRepositoryBase<Brands>
+    public interface IBrandRepository : IRepositoryBase<Brand>
     {
     }
 }

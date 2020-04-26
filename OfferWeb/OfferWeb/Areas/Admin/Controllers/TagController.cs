@@ -19,7 +19,7 @@ namespace OfferWeb.Areas.Admin.Controllers
             {
                 if (id == null)
                 {
-                    return View(new Tags());
+                    return View(new Tag());
                 }
                 else
                 {
@@ -33,7 +33,7 @@ namespace OfferWeb.Areas.Admin.Controllers
             }
         }
 
-        public ActionResult SaveTag(Tags tag)
+        public ActionResult SaveTag(Tag tag)
         {
             try
             {

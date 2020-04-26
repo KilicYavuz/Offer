@@ -2,7 +2,7 @@
 
 namespace Contracts
 {
-    public interface ITagRepository : IRepositoryBase<Tags>
+    public interface ITagRepository : IRepositoryBase<Tag>
     {
     }
 }

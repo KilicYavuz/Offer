@@ -2,7 +2,7 @@
 
 namespace Contracts
 {
-    public interface ICartRepository : IRepositoryBase<Carts>
+    public interface ICartRepository : IRepositoryBase<Cart>
     {
     }
 }

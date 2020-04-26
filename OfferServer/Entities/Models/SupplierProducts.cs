@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 namespace Entities.Models
 {
     [JsonObject(IsReference = true)]
-    public partial class SupplierProducts : Entity
+    public partial class SupplierProduct : Entity
     {
         public Guid SupplierOid { get; set; }
         public int State { get; set; }
@@ -13,7 +13,7 @@ namespace Entities.Models
         public Guid ProductOid { get; set; }
         public string Description { get; set; }
 
-        public virtual Products Product { get; set; }
-        public virtual Users Supplier { get; set; }
+        public virtual Product Product { get; set; }
+        public virtual User Supplier { get; set; }
     }
 }

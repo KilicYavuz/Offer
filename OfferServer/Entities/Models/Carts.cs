@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Entities.Models
 {
     [JsonObject(IsReference = true)]
-    public partial class Carts : Entity
+    public partial class Cart : Entity
     {
         public Guid CustomerOid { get; set; }
         public Guid SupplierOid { get; set; }

@@ -5,12 +5,12 @@ using Newtonsoft.Json;
 namespace Entities.Models
 {
     [JsonObject(IsReference = true)]
-    public partial class ProductTags : Entity
+    public partial class ProductTag : Entity
     {
         public Guid TagOid { get; set; }
         public Guid ProductOid { get; set; }
 
-        public virtual Products Product { get; set; }
-        public virtual Tags Tags { get; set; }
+        public virtual Product Product { get; set; }
+        public virtual Tag Tag { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Contracts
 {
-    public interface IOrderRepository : IRepositoryBase<Orders>
+    public interface IOrderRepository : IRepositoryBase<Order>
     {
     }
 }

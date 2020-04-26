@@ -105,7 +105,7 @@
                                     <div class="select-custom">
                                         <select id="cat" name="cat">
                                             <option value="">Kategoriler</option>
-                                            @foreach (var item in ViewBag.Data["SearchCategories"] as List<Categories>)
+                                            @foreach (var item in ViewBag.Data["SearchCategories"] as List<Category>)
                                             {
                                                 //if(ViewBag.Data["SearchCategories"].count>15)
                                                 //15 yükle
@@ -248,7 +248,7 @@
                             <div class="dropdown-menu">
                                 <nav class="side-nav">
                                     <ul class="menu-vertical sf-arrows">
-                                        @foreach (var item in ViewBag.Data["SearchCategories"] as List<Categories>)
+                                        @foreach (var item in ViewBag.Data["SearchCategories"] as List<Category>)
                                         {
                                             if (item.SubCategories.Count == 0)
                                             {

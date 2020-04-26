@@ -10,11 +10,11 @@ namespace OfferWeb.Controllers
 {
     public class BaseController : Controller
     {
-        private List<Categories> categories;
+        private List<Category> categories;
 
-        protected List<Categories> Categories { get => categories ?? GetCategories(); set => categories = value; }
+        protected List<Category> Categories { get => categories ?? GetCategories(); set => categories = value; }
 
-        private List<Categories> GetCategories()
+        private List<Category> GetCategories()
         {
             Categories = ApiUtil.GetCategoryList().Result;
             return categories;
@@ -35,7 +35,7 @@ namespace OfferWeb.Controllers
             ApiUtil.InitData();
             GetCategories();
             var objects = ViewBag.Data as Dictionary<string, dynamic> ?? new Dictionary<string, dynamic>();
-            objects.Add("SearchCategories", Categories ?? new List<Categories>());
+            objects.Add("SearchCategories", Categories ?? new List<Category>());
             ViewBag.Data = objects;
         }
     }

@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Entities.Models
 {
@@ -16,31 +14,22 @@ namespace Entities.Models
         }
 
         public virtual DbSet<Address> Address { get; set; }
-        public virtual DbSet<Brands> Brands { get; set; }
-        public virtual DbSet<Carts> Carts { get; set; }
-        public virtual DbSet<Categories> Categories { get; set; }
-        public virtual DbSet<ErrorLogs> ErrorLogs { get; set; }
-        public virtual DbSet<Notifications> Notifications { get; set; }
-        public virtual DbSet<OrderProducts> OrderProducts { get; set; }
-        public virtual DbSet<Orders> Orders { get; set; }
-        public virtual DbSet<ProductTags> ProductTags { get; set; }
-        public virtual DbSet<Products> Products { get; set; }
-        public virtual DbSet<RequestOfferProducts> RequestOfferProducts { get; set; }
-        public virtual DbSet<RequestOffers> RequestOffers { get; set; }
-        public virtual DbSet<RequestProducts> RequestProducts { get; set; }
-        public virtual DbSet<Requests> Requests { get; set; }
-        public virtual DbSet<SupplierProducts> SupplierProducts { get; set; }
-        public virtual DbSet<Tags> Tags { get; set; }
-        public virtual DbSet<Users> Users { get; set; }
-
-//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//        {
-//            if (!optionsBuilder.IsConfigured)
-//            {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-//                optionsBuilder.UseSqlServer("Server=DESKTOP-F747QN4;Database=Offer;Trusted_Connection=True;");
-//            }
-//        }
+        public virtual DbSet<Brand> Brands { get; set; }
+        public virtual DbSet<Cart> Carts { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<ErrorLog> ErrorLogs { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
+        public virtual DbSet<OrderProduct> OrderProducts { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<ProductTag> ProductTags { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<RequestOfferProduct> RequestOfferProducts { get; set; }
+        public virtual DbSet<RequestOffer> RequestOffers { get; set; }
+        public virtual DbSet<RequestProduct> RequestProducts { get; set; }
+        public virtual DbSet<Request> Requests { get; set; }
+        public virtual DbSet<SupplierProduct> SupplierProducts { get; set; }
+        public virtual DbSet<Tag> Tags { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -83,7 +72,7 @@ namespace Entities.Models
                     .HasConstraintName("FK_Address_Users");
             });
 
-            modelBuilder.Entity<Brands>(entity =>
+            modelBuilder.Entity<Brand>(entity =>
             {
                 entity.HasKey(e => e.Oid);
 
@@ -96,7 +85,7 @@ namespace Entities.Models
                     .HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Carts>(entity =>
+            modelBuilder.Entity<Cart>(entity =>
             {
                 entity.HasKey(e => e.Oid);
 
@@ -112,7 +101,7 @@ namespace Entities.Models
                 entity.Property(e => e.SupplierOid).HasColumnName("SupplierOId");
             });
 
-            modelBuilder.Entity<Categories>(entity =>
+            modelBuilder.Entity<Category>(entity =>
             {
                 entity.HasKey(e => e.Oid);
 
@@ -132,7 +121,7 @@ namespace Entities.Models
                     .HasConstraintName("FK_Categories_Categories");
             });
 
-            modelBuilder.Entity<ErrorLogs>(entity =>
+            modelBuilder.Entity<ErrorLog>(entity =>
             {
                 entity.HasKey(e => e.Oid)
                     .HasName("PK_dbo.ErrorLogs");
@@ -152,7 +141,7 @@ namespace Entities.Models
                 entity.Property(e => e.Tag).HasMaxLength(20);
             });
 
-            modelBuilder.Entity<Notifications>(entity =>
+            modelBuilder.Entity<Notification>(entity =>
             {
                 entity.HasKey(e => e.Oid);
 
@@ -168,7 +157,7 @@ namespace Entities.Models
                 entity.Property(e => e.UserOid).HasColumnName("UserOId");
             });
 
-            modelBuilder.Entity<OrderProducts>(entity =>
+            modelBuilder.Entity<OrderProduct>(entity =>
             {
                 entity.HasKey(e => e.Oid);
 
@@ -202,10 +191,10 @@ namespace Entities.Models
                     .HasConstraintName("FK_OrderProducts_Users");
             });
 
-            modelBuilder.Entity<Orders>(entity =>
+            modelBuilder.Entity<Order>(entity =>
             {
                 entity.HasKey(e => e.Oid)
-                    .HasName("PK_Orders_1");
+                    .HasName("PK_Orders");
 
                 entity.Property(e => e.Oid)
                     .HasColumnName("OId");
@@ -222,18 +211,15 @@ namespace Entities.Models
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.CustomerOid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Orders_Users1");
+                    .HasConstraintName("FK_Orders_Users");
             });
 
-            modelBuilder.Entity<ProductTags>(entity =>
+            modelBuilder.Entity<ProductTag>(entity =>
             {
-                entity.HasKey(e => e.Oid);
-
-                entity.Property(e => e.Oid).HasColumnName("OId");
-
                 entity.Property(e => e.ProductOid).HasColumnName("ProductOId");
-
                 entity.Property(e => e.TagOid).HasColumnName("TagOId");
+
+                entity.HasKey(pt => new { pt.ProductOid, pt.TagOid });
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.ProductTags)
@@ -241,17 +227,17 @@ namespace Entities.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ProductTags_Products");
 
-                entity.HasOne(d => d.Tags)
+                entity.HasOne(d => d.Tag)
                     .WithMany(p => p.ProductTags)
                     .HasForeignKey(d => d.TagOid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ProductTags_Tags");
             });
 
-            modelBuilder.Entity<Products>(entity =>
+            modelBuilder.Entity<Product>(entity =>
             {
                 entity.HasKey(e => e.Oid)
-                    .HasName("PK_Products_1");
+                    .HasName("PK_Products");
 
                 entity.Property(e => e.Oid)
                     .HasColumnName("OId");
@@ -281,7 +267,7 @@ namespace Entities.Models
                     .HasConstraintName("FK_Products_Categories");
             });
 
-            modelBuilder.Entity<RequestOfferProducts>(entity =>
+            modelBuilder.Entity<RequestOfferProduct>(entity =>
             {
                 entity.HasKey(e => e.Oid);
 
@@ -294,23 +280,23 @@ namespace Entities.Models
 
                 entity.Property(e => e.RequestProductOid).HasColumnName("RequestProductOId");
 
-                entity.HasOne(d => d.RequestOfferO)
+                entity.HasOne(d => d.RequestOffer)
                     .WithMany(p => p.RequestOfferProducts)
                     .HasForeignKey(d => d.RequestOfferOid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_RequestOfferProducts_RequestOffers");
 
-                entity.HasOne(d => d.RequestProductO)
+                entity.HasOne(d => d.RequestProduct)
                     .WithMany(p => p.RequestOfferProducts)
                     .HasForeignKey(d => d.RequestProductOid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_RequestOfferProducts_RequestProducts");
             });
 
-            modelBuilder.Entity<RequestOffers>(entity =>
+            modelBuilder.Entity<RequestOffer>(entity =>
             {
                 entity.HasKey(e => e.Oid)
-                    .HasName("PK_RequestOffers_1");
+                    .HasName("PK_RequestOffers");
 
                 entity.Property(e => e.Oid)
                     .HasColumnName("OId");
@@ -336,7 +322,7 @@ namespace Entities.Models
                     .HasConstraintName("FK_RequestOffers_Users");
             });
 
-            modelBuilder.Entity<RequestProducts>(entity =>
+            modelBuilder.Entity<RequestProduct>(entity =>
             {
                 entity.HasKey(e => e.Oid);
 
@@ -362,10 +348,10 @@ namespace Entities.Models
                     .HasConstraintName("FK_RequestProducts_Requests");
             });
 
-            modelBuilder.Entity<Requests>(entity =>
+            modelBuilder.Entity<Request>(entity =>
             {
                 entity.HasKey(e => e.Oid)
-                    .HasName("PK_Requests_1");
+                    .HasName("PK_Requests");
 
                 entity.Property(e => e.Oid)
                     .HasColumnName("OId");
@@ -383,7 +369,7 @@ namespace Entities.Models
                     .HasConstraintName("FK_Requests_Users");
             });
 
-            modelBuilder.Entity<SupplierProducts>(entity =>
+            modelBuilder.Entity<SupplierProduct>(entity =>
             {
                 entity.HasKey(e => e.Oid)
                     .HasName("PK_SalesList");
@@ -409,7 +395,7 @@ namespace Entities.Models
                     .HasConstraintName("FK_SalesLists_Users");
             });
 
-            modelBuilder.Entity<Tags>(entity =>
+            modelBuilder.Entity<Tag>(entity =>
             {
                 entity.HasKey(e => e.Oid);
 
@@ -422,7 +408,7 @@ namespace Entities.Models
                     .HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Users>(entity =>
+            modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(e => e.Oid);
 

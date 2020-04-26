@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Repository
 {
-    public class CategoryRepository : RepositoryBase<Categories>, ICategoryRepository
+    public class CategoryRepository : RepositoryBase<Category>, ICategoryRepository
     {
         public CategoryRepository(OfferContext offerContext)
             : base(offerContext)
