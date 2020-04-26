@@ -50,11 +50,12 @@ namespace OfferWeb.Areas.Admin.Controllers
         {
             try
             {
-                var image = Util.GetBase64FromImage(model.ImageFile);
-                if (!string.IsNullOrEmpty(image))
+                if (model.ImageFile != null)
                 {
                     model.Image = Util.GetBase64FromImage(model.ImageFile);
                 }
+                model.ImageFile = null;
+
                 if (model.Oid == Guid.Empty)
                 {
                     model.State = Entities.Enums.ItemState.Active;

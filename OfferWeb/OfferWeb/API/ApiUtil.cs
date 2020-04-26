@@ -256,7 +256,7 @@ namespace OfferWeb.API
 
         public static async Task<string> UpdateBrand(Brand brand)
         {
-            var httpResponse = await Post<Brand>("Management/updateBrand/" + brand.Oid, brand);
+            var httpResponse = await Post<Brand>("Management/updateBrand/", brand);
             return httpResponse;
         }
 
@@ -292,7 +292,7 @@ namespace OfferWeb.API
                 if (response.StatusCode != System.Net.HttpStatusCode.OK && response.StatusCode != System.Net.HttpStatusCode.NoContent)
                 {
                     var r = JsonConvert.DeserializeObject<ErrorApiModel>(res);
-                    return r.Message;
+                    return r?.Message;
                 }
                 return res;
             }

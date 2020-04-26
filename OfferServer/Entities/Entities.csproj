@@ -13,6 +13,8 @@
   <ItemGroup>
     <Compile Include="Migrations\20200426101705_refactor.cs" />
     <Compile Include="Migrations\20200426101705_refactor.designer.cs" />
+    <Compile Include="Migrations\20200426203827_state.cs" />
+    <Compile Include="Migrations\20200426203827_state.designer.cs" />
     <Compile Include="Migrations\OfferContextModelSnapshot.cs" />
   </ItemGroup>
 

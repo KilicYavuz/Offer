@@ -8,21 +8,18 @@ namespace Entities.Models
     public abstract class Entity
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]        
-        [BindNever] 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Oid { get; set; }
 
         private DateTime? createdDate;
         
         [DataType(DataType.DateTime)]
-        [BindNever]
         public DateTime CreatedDate
         {
             get { return createdDate ?? DateTime.Now; }
             set { createdDate = value; }
         }
 
-        [BindNever]
         public DateTime? UpdatedDate { get; set; }
     }
 }

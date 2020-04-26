@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using Entities.Enums;
 using Newtonsoft.Json;
 
 namespace Entities.Models
@@ -8,7 +8,7 @@ namespace Entities.Models
     public partial class SupplierProduct : Entity
     {
         public Guid SupplierOid { get; set; }
-        public int State { get; set; }
+        public ItemState State { get; set; }
         public double? Price { get; set; }
         public Guid ProductOid { get; set; }
         public string Description { get; set; }

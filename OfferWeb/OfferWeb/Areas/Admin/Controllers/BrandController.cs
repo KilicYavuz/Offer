@@ -24,8 +24,8 @@ namespace OfferWeb.Areas.Admin.Controllers
                 }
                 else
                 {
-                    var brand = ApiUtil.GetBrand(id.Value);
-                    return View(brand.Result);
+                    var brand = ApiUtil.GetBrand(id.Value)?.Result;
+                    return View(brand);
                 }
             }
             catch (Exception ex)
@@ -39,8 +39,7 @@ namespace OfferWeb.Areas.Admin.Controllers
         {
             try
             {
-                var image = Util.GetBase64FromImage(model.ImageFile);
-                if (!string.IsNullOrEmpty(image))
+                if (model.ImageFile != null)
                 {
                     model.Image = Util.GetBase64FromImage(model.ImageFile);
                 }

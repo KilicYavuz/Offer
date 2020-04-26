@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Entities.Enums;
 using Newtonsoft.Json;
 
 namespace Entities.Models
@@ -15,7 +16,7 @@ namespace Entities.Models
 
         public Guid CustomerOid { get; set; }
         public bool CanPartial { get; set; }        
-        public int Status { get; set; }
+        public ItemState State { get; set; }
         public Guid? SupplierOid { get; set; }
 
         public virtual User Customer { get; set; }

@@ -108,8 +108,8 @@ namespace OfferServer.Controllers
             }
         }
 
-        [HttpPost("updateProduct/{id}")]
-        public IActionResult UpdateProduct(Guid id, [FromBody]object postData)
+        [HttpPost("updateProduct")]
+        public IActionResult UpdateProduct([FromBody]object postData)
         {
             try
             {
@@ -120,7 +120,7 @@ namespace OfferServer.Controllers
 
                 var data = JsonConvert.DeserializeObject<Product>(postData.ToString());
 
-                var product = _repoWrapper.Product.GetById(id);
+                var product = _repoWrapper.Product.GetById(data.Oid);
                 if (product == null)
                 {
                     return NotFound();
@@ -245,8 +245,8 @@ namespace OfferServer.Controllers
             }
         }
 
-        [HttpPost("updateBrand/{id}")]
-        public IActionResult UpdateBrand(Guid id, [FromBody]object postData)
+        [HttpPost("updateBrand")]
+        public IActionResult UpdateBrand([FromBody]object postData)
         {
             try
             {
@@ -257,13 +257,12 @@ namespace OfferServer.Controllers
 
                 var data = JsonConvert.DeserializeObject<Brand>(postData.ToString());
 
-                var product = _repoWrapper.Brand.GetById(id);
-                if (product == null)
+                var brand = _repoWrapper.Brand.GetById(data.Oid);
+                if (brand == null)
                 {
                     return NotFound();
                 }
 
-                data.Oid = id;
                 data.UpdatedDate = DateTime.Now;
                 _repoWrapper.Brand.Update(data);
                 _repoWrapper.Save();
@@ -377,8 +376,8 @@ namespace OfferServer.Controllers
             }
         }
 
-        [HttpPost("updateCategory/{id}")]
-        public IActionResult UpdateCategory(Guid id, [FromBody]object postData)
+        [HttpPost("updateCategory")]
+        public IActionResult UpdateCategory([FromBody]object postData)
         {
             try
             {
@@ -389,13 +388,12 @@ namespace OfferServer.Controllers
 
                 var data = JsonConvert.DeserializeObject<Category>(postData.ToString());
 
-                var product = _repoWrapper.Category.GetById(id);
-                if (product == null)
+                var category = _repoWrapper.Category.GetById(data.Oid);
+                if (category == null)
                 {
                     return NotFound();
                 }
 
-                data.Oid = id;
                 data.UpdatedDate = DateTime.Now;
                 _repoWrapper.Category.Update(data);
                 _repoWrapper.Save();
@@ -517,8 +515,8 @@ namespace OfferServer.Controllers
             }
         }
 
-        [HttpPost("updateTag/{id}")]
-        public IActionResult UpdateTag(Guid id, [FromBody]object postData)
+        [HttpPost("updateTag")]
+        public IActionResult UpdateTag([FromBody]object postData)
         {
             try
             {
@@ -529,13 +527,12 @@ namespace OfferServer.Controllers
 
                 var data = JsonConvert.DeserializeObject<Tag>(postData.ToString());
 
-                var product = _repoWrapper.Tag.GetById(id);
-                if (product == null)
+                var tag = _repoWrapper.Tag.GetById(data.Oid);
+                if (tag == null)
                 {
                     return NotFound();
                 }
 
-                data.Oid = id;
                 _repoWrapper.Tag.Update(data);
                 _repoWrapper.Save();
 

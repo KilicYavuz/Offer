@@ -4,6 +4,8 @@
     ViewBag.Title = "AddCategory";
 }
 
+<link href="~/Assets/inspinia/css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet" />
+
 <div class="wrapper wrapper-content animated fadeInRight">
 
     <div class="row">
@@ -13,8 +15,12 @@
                     <h5>Kategori Ekle</h5>
                 </div>
                 <div class="ibox-content">
-                    @using (Html.BeginForm("SaveCategory", "Category", FormMethod.Post, new { @class = "form-horizontal", @id = "addCategoryform" }))
+                    @using (Html.BeginForm("SaveCategory", "Category", FormMethod.Post, new { @class = "form-horizontal", @id = "addCategoryform", enctype = "multipart/form-data" }))
                     {
+                        @Html.HiddenFor(model => model.Oid)
+                        @Html.HiddenFor(model => model.CreatedDate)
+                        @Html.HiddenFor(model => model.UpdatedDate)
+                        @Html.HiddenFor(model => model.Type)
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Adı</label>
                             <div class="col-sm-10">
@@ -28,14 +34,14 @@
 
                             </div>
                         </div>
+                        @*<div class="form-group">
+                                <label class="col-sm-2 control-label">Tipi</label>
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(x => x.Type, new { @class = "form-control", name = "Type", required = "required", value = Model.Type })
+                                </div>
+                            </div>*@
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Tipi</label>
-                            <div class="col-sm-10">
-                                @Html.TextBoxFor(x => x.Type, new { @class = "form-control", name = "Type", required = "required", value = Model.Type })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Üst Kategorisi</label>
+                            <label class="col-sm-2 control-label">Üst Kategori</label>
                             <div class="col-sm-10">
                                 @Html.DropDownListFor(model => model.ParentOid, new SelectList(ViewBag.Data["Categories"], "Oid", "Name"),
                                               "-- Kategori Seçiniz  --", new { @class = "form-control", name = "ParentOid", value = Model.ParentOid })
@@ -53,7 +59,7 @@
                                     </span>
                                     <span id="myText" class="fileinput-filename"></span>
                                     <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
-                                    <img id="blah" src="@String.Format("data:image/gif;base64,{0}", Model.Image)" alt="your image" />
+                                    <img id="imgModel" src="@String.Format("data:image/gif;base64,{0}", Model.Image)" alt="your image" />
                                     <p style="display: none; color:red;"><i>Uyarı</i></p>
                                 </div>
                             </div>
@@ -71,13 +77,16 @@
         </div>
     </div>
 </div>
+
+<script src="~/Assets/inspinia/js/plugins/jasny/jasny-bootstrap.min.js"></script>
+
 <script>
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
             reader.onload = function (e) {
-                $('#blah')
+                $('#imgModel')
                     .attr('src', e.target.result)
                     .width(64)
                     .height(64);

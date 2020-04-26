@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Entities.Enums;
 using Newtonsoft.Json;
 
 namespace Entities.Models
@@ -15,7 +16,7 @@ namespace Entities.Models
         public Guid SupplierOid { get; set; }
         public int SupplierDisplayId { get; set; }
         public bool IsPartialOffer { get; set; }
-        public int Status { get; set; }
+        public ItemState State { get; set; }
         public Guid RequestOid { get; set; }
 
         public virtual Request Request { get; set; }

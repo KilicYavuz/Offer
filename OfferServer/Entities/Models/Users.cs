@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Entities.Enums;
 using Newtonsoft.Json;
 
 namespace Entities.Models
@@ -24,7 +25,7 @@ namespace Entities.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public DateTime? BirthDate { get; set; }
-        public int State { get; set; }
+        public ItemState State { get; set; }
         public int UserType { get; set; }
         public string PhoneNumber { get; set; }
 

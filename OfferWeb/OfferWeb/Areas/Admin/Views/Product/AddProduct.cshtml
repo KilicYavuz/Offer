@@ -6,6 +6,7 @@
 
 <link href="~/Assets/inspinia/css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 <link href="~/Assets/inspinia/css/plugins/chosen/chosen.css" rel="stylesheet" />
+<link href="~/Assets/inspinia/css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet" />
 
 <div class="wrapper wrapper-content animated fadeInRight">
 
@@ -16,8 +17,11 @@
                     <h5>Ürün Ekle</h5>
                 </div>
                 <div class="ibox-content">
-                    @using (Html.BeginForm("SaveProduct", "Product", FormMethod.Post, new { @class = "form-horizontal", @id = "productform" }))
+                    @using (Html.BeginForm("SaveProduct", "Product", FormMethod.Post, new { @class = "form-horizontal", @id = "productform", enctype = "multipart/form-data" }))
                     {
+                        @Html.HiddenFor(model => model.Oid)
+                        @Html.HiddenFor(model => model.CreatedDate)
+                        @Html.HiddenFor(model => model.UpdatedDate)
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Adı</label>
                             <div class="col-sm-10">
@@ -49,7 +53,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Tagler</label>
                             <div class="col-sm-10">
-                                @Html.ListBoxFor(model => model.SelectedTags, new MultiSelectList(Model.TagList, "Oid", "Name"), new { id="productTagsMultiSelect", multiple="multiple"})
+                                @Html.ListBoxFor(model => model.SelectedTags, new MultiSelectList(Model.TagList, "Oid", "Name"), new { id = "productTagsMultiSelect", multiple = "multiple" })
                             </div>
                         </div>
                         <div class="form-group">
@@ -65,6 +69,18 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-2 control-label">Adı</label>
+                            <div class="col-sm-10">
+                                @Html.TextBoxFor(x => x.ShortDescription, new { @class = "form-control", name = "Name", required = "required", value = Model.Name })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Adı</label>
+                            <div class="col-sm-10">
+                                @Html.TextAreaFor(x => x.Description, new { @class = "form-control", name = "Name", required = "required", value = Model.Name })
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-2 control-label">Image</label>
                             <div class="col-sm-10">
                                 @*@Html.TextBoxFor(x => x.Image, new { @class = "form-control", name = "Image", required = "required", value = Model.Image })*@
@@ -76,7 +92,7 @@
                                     </span>
                                     <span id="myText" class="fileinput-filename"></span>
                                     <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
-                                    <img id="blah" src="@String.Format("data:image/gif;base64,{0}", Model.Image)" alt="your image" />
+                                    <img id="imgModel" src="@String.Format("data:image/gif;base64,{0}", Model.Image)" alt="your image" />
                                     <p style="color:red; display: none;"><i>Uyarı</i></p>
                                 </div>
                             </div>
@@ -96,6 +112,7 @@
 
 <script src="~/Assets/inspinia/js/jquery-3.1.1.min.js"></script>
 <script src="~/Assets/inspinia/js/plugins/chosen/chosen.jquery.js"></script>
+<script src="~/Assets/inspinia/js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
 <script>
 
@@ -107,7 +124,7 @@
             var reader = new FileReader();
 
             reader.onload = function (e) {
-                $('#blah')
+                $('#imgModel')
                     .attr('src', e.target.result)
                     .width(64)
                     .height(64);

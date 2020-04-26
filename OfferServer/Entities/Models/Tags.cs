@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using Entities.Enums;
 using Newtonsoft.Json;
 
 namespace Entities.Models
@@ -14,7 +15,7 @@ namespace Entities.Models
         }
 
         public string Name { get; set; }
-        public int State { get; set; }
+        public ItemState State { get; set; }
 
         public virtual ICollection<ProductTag> ProductTags { get; set; }
     }

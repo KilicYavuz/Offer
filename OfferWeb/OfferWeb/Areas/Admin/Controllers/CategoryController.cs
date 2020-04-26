@@ -38,23 +38,24 @@ namespace OfferWeb.Areas.Admin.Controllers
 
         }
 
-        public ActionResult SaveCategory(Category category)
+        public ActionResult SaveCategory(Category model)
         {
             try
             {
-                var image = Util.GetBase64FromImage(category.ImageFile);
-                if (!string.IsNullOrEmpty(image))
+                if (model.ImageFile != null)
                 {
-                    category.Image = Util.GetBase64FromImage(category.ImageFile);
+                    model.Image = Util.GetBase64FromImage(model.ImageFile);
                 }
-                if (category.Oid == Guid.Empty)
+                model.ImageFile = null;
+
+                if (model.Oid == Guid.Empty)
                 {
-                    category.State = Entities.Enums.ItemState.Active;
-                    var res = ApiUtil.AddCategory(category).Result;
+                    model.State = Entities.Enums.ItemState.Active;
+                    var res = ApiUtil.AddCategory(model).Result;
                 }
                 else
                 {
-                    var res = ApiUtil.UpdateCategory(category).Result;
+                    var res = ApiUtil.UpdateCategory(model).Result;
                 }
 
                 return RedirectToAction("ListCategory");
