@@ -44,6 +44,9 @@ namespace Repository
         public void Update(T entity)
         {
             entity.UpdatedDate = DateTime.Now;
+            //this.OfferContext.Attach<T>(entity);
+            //this.OfferContext.Entry<T>(entity).Property("Oid").IsModified= true;
+            //this.OfferContext.Entry<T>(entity).State = EntityState.Modified;
             this.OfferContext.Set<T>().Update(entity);
         }
 
@@ -60,8 +63,14 @@ namespace Repository
 
         public void TryUpdateManyToMany(IEnumerable<T> deleteItems, IEnumerable<T> newItems)
         {
-            this.OfferContext.Set<T>().RemoveRange(deleteItems);
-            this.OfferContext.Set<T>().AddRange(newItems);
+            if (deleteItems.Any())
+            {
+                this.OfferContext.Set<T>().RemoveRange(deleteItems);
+            }
+            if (newItems.Any())
+            {
+                this.OfferContext.Set<T>().AddRange(newItems);
+            }
         }
     }
 }

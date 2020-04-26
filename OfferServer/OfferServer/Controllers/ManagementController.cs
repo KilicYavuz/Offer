@@ -120,18 +120,29 @@ namespace OfferServer.Controllers
 
                 var data = JsonConvert.DeserializeObject<Product>(postData.ToString());
 
-                var product = _repoWrapper.Product.GetById(data.Oid);
-                if (product == null)
+                //var product = _repoWrapper.Product.GetById(data.Oid);
+                if (data == null)
                 {
                     return NotFound();
                 }
 
-                var deleteTags = data.ProductTags.Where(x => !data.SelectedTags.Contains(x.TagOid));
-                var addTags = data.SelectedTags.Where(x => !data.ProductTags.Select(t => t.TagOid).Contains(x))?.Select(a=> new ProductTag { TagOid = a, ProductOid = data.Oid});
-
-                _repoWrapper.ProductTag.TryUpdateManyToMany(deleteTags, addTags);
-
-                data.UpdatedDate = DateTime.Now;
+                 if (data.SelectedTags != null)
+                {
+                    var tags = _repoWrapper.ProductTag.FindByCondition(x => x.ProductOid == data.Oid).ToList();
+                    var deleteTags = tags.Where(x => !data.SelectedTags.Contains(x.TagOid)).ToList();
+                    var addTags = data.SelectedTags.Where(x => !tags.Select(t => t.TagOid).Contains(x))?.Select(a => new ProductTag { TagOid = a, ProductOid = data.Oid }).ToList();
+                    foreach (var addTag in addTags)
+                    {
+                        _repoWrapper.ProductTag.Add(addTag);
+                    }
+                    foreach (var tag in deleteTags)
+                    {
+                        _repoWrapper.ProductTag.Delete(tag);
+                    }
+                   // _repoWrapper.ProductTag.TryUpdateManyToMany(deleteTags, addTags);
+                   // _repoWrapper.Save();
+                }
+                
                 _repoWrapper.Product.Update(data);
                 _repoWrapper.Save();
 
