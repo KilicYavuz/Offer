@@ -25,5 +25,10 @@ namespace OfferWeb.Controllers
             ViewBag.Data = objects;
             return View(product);
         }
+
+        public ActionResult Search()
+        {
+            return View();
+        }
     }
 }

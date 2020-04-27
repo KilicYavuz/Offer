@@ -121,6 +121,29 @@ namespace OfferServer.Controllers
             }
         }
 
+        [HttpGet("search")]
+        public IActionResult Search()
+        {
+            try
+            {
+                var term = HttpContext.Request.Query["term"].ToString();
+                var productNames = _repoWrapper.Product.FindByCondition(x => x.Name.Contains(term)).ToList();
+
+                if (productNames == null || productNames.Any())
+                {
+                    return NotFound();
+                }
+
+                var json = JsonConvert.SerializeObject(productNames);
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetProduct action: {ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         #endregion
 
         #region Category
