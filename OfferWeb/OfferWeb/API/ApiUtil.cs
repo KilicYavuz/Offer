@@ -207,7 +207,7 @@ namespace OfferWeb.API
         public static async Task<List<Product>> GetOutletProducts()
         {
             var outletTag = Tags.FirstOrDefault(x => x.Name == "Outlet");
-            var httpResponse = await Get("Product/getAllProductsByTag/"+ outletTag?.Oid);
+            var httpResponse = await Get("Product/getAllProductsByTag/" + outletTag?.Oid);
             var products = JsonConvert.DeserializeObject<List<Product>>(httpResponse) ?? new List<Product>();
             return products;
         }
@@ -275,6 +275,17 @@ namespace OfferWeb.API
             var httpResponse = await Get("Interaction/addWishList/" + id.ToString());
             return httpResponse;
         }
+        #endregion
+
+        #region Search
+
+        public static async Task<List<Product>> Search(string key)
+        {
+            var httpResponse = await Get("Product/search?term=" + key);
+            var products = JsonConvert.DeserializeObject<List<Product>>(httpResponse);
+            return products;
+        }
+
         #endregion
 
         #region Generic Methods
