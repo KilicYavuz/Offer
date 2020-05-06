@@ -124,8 +124,74 @@ namespace OfferWeb.API
         {
             var httpResponse = await Get("Management/getAllCategories");
             var categories = JsonConvert.DeserializeObject<List<Category>>(httpResponse);
-            return categories;
+            return OrderCategories(categories);
         }
+
+        //TODO:Refaktör edilecek en basit haliyle yazıldı
+        private static List<Category> OrderCategories(List<Category> categories)
+        {
+            List<Category> rootCategory = new List<Category>();
+            List<Category> secondCategory = new List<Category>();
+            List<Category> thirdCategory = new List<Category>();
+
+            //1.Seviye
+            foreach (var item in categories.Where(x => x.ParentOid == null))
+            {
+                rootCategory.Add(item);
+            }
+
+            //2.Seviye
+            foreach (var item in categories.Where(x => rootCategory.Exists(y => y.Oid == x.ParentOid)))
+            {
+                secondCategory.Add(item);
+            }
+
+            //3. Seviye
+            foreach (var item in categories.Where(x => secondCategory.Exists(y => y.Oid == x.ParentOid)))
+            {
+                thirdCategory.Add(item);
+            }
+
+            foreach (var root in rootCategory)
+            {
+                foreach (var second in secondCategory.Where(x => x.ParentOid == root.Oid))
+                {
+                    foreach (var third in thirdCategory.Where(x => x.ParentOid == second.Oid))
+                    {
+                        third.ParentCategory = second;
+                        second.SubCategories.Add(third);
+                    }
+                    second.ParentCategory = root;
+                    root.SubCategories.Add(second);
+                }
+            }
+
+            return rootCategory;
+        }
+
+        //private static Category FindAndAddParents(Guid value, List<Category> categories, List<Category> root)
+        //{
+        //    var cat = categories.FirstOrDefault(x => x.Oid == value);
+        //    if (cat?.ParentOid != null)
+        //    {
+        //        var parent = root.FirstOrDefault(x => x.Oid == cat?.ParentOid);
+        //        if (parent != null)
+        //        {
+        //            parent.SubCategories.Add(cat);
+        //            return parent;
+        //        }
+        //        return FindAndAddParents(parent.Oid, categories, root);
+        //    }
+        //    return cat;
+        //}
+
+        //public static async Task<List<Category>> GetParentCategoryList()
+        //{
+        //    var httpResponse = await Get("Management/getParentCategories");
+        //    var categories = JsonConvert.DeserializeObject<List<Category>>(httpResponse);
+        //    return categories;
+        //}
+
 
         public static async Task<string> DeleteCategory(Guid id, bool permanent = true)
         {

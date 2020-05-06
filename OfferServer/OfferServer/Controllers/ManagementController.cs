@@ -56,7 +56,7 @@ namespace OfferServer.Controllers
         {
             try
             {
-                var product = _repoWrapper.Product.FindByCondition(x => x.Oid == id, i => i.Brand, i => i.Category, i=>i.ProductOptions, i=>i.ProductTags).FirstOrDefault();
+                var product = _repoWrapper.Product.FindByCondition(x => x.Oid == id, i => i.Brand, i => i.Category, i => i.ProductOptions, i => i.ProductTags).FirstOrDefault();
 
                 if (product == null)
                 {
@@ -92,9 +92,12 @@ namespace OfferServer.Controllers
                     return BadRequest(eam);
                 }
 
-                foreach (var tagId in data.SelectedTags)
+                if (data.SelectedTags != null)
                 {
-                    data.ProductTags.Add(new ProductTag() { Oid= Guid.NewGuid(), TagOid = tagId, ProductOid = data.Oid, CreatedDate = DateTime.Now });
+                    foreach (var tagId in data.SelectedTags)
+                    {
+                        data.ProductTags.Add(new ProductTag() { Oid = Guid.NewGuid(), TagOid = tagId, ProductOid = data.Oid, CreatedDate = DateTime.Now });
+                    }
                 }
 
                 _repoWrapper.Product.Add(data);
@@ -104,6 +107,7 @@ namespace OfferServer.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"Something went wrong inside AddProduct action: {ex.InnerException?.Message ?? ex.Message}");
+                _logger.LogError($"Something went wrong inside AddProduct action: {ex.StackTrace}");
                 return StatusCode(500, "Internal server error");
             }
         }
@@ -126,7 +130,7 @@ namespace OfferServer.Controllers
                     return NotFound();
                 }
 
-                 if (data.SelectedTags != null)
+                if (data.SelectedTags != null)
                 {
                     var tags = _repoWrapper.ProductTag.FindByCondition(x => x.ProductOid == data.Oid).ToList();
                     var deleteTags = tags.Where(x => !data.SelectedTags.Contains(x.TagOid)).ToList();
@@ -139,10 +143,10 @@ namespace OfferServer.Controllers
                     {
                         _repoWrapper.ProductTag.Delete(tag);
                     }
-                   // _repoWrapper.ProductTag.TryUpdateManyToMany(deleteTags, addTags);
-                   // _repoWrapper.Save();
+                    // _repoWrapper.ProductTag.TryUpdateManyToMany(deleteTags, addTags);
+                    // _repoWrapper.Save();
                 }
-                
+
                 _repoWrapper.Product.Update(data);
                 _repoWrapper.Save();
 
@@ -327,7 +331,7 @@ namespace OfferServer.Controllers
         {
             try
             {
-                var categories = _repoWrapper.Category.FindByCondition(x => x.CreatedDate > new DateTime(2020, 4, 13), i => i.ParentCategory, i => i.SubCategories).OrderBy(u => u.ParentOid).ToList();
+                var categories = _repoWrapper.Category.FindAll().OrderBy(u => u.ParentOid).ToList();//.FindByCondition(x => x.ParentOid == null, i => i.ParentCategory, i => i.SubCategories).OrderBy(u => u.ParentOid).ToList();
 
                 _logger.LogInfo($"Returned all categories from database.");
                 var json = JsonConvert.SerializeObject(categories);

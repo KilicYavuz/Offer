@@ -15,7 +15,7 @@ namespace OfferWeb.Areas.Admin.Controllers
             }
             catch (System.Exception ex)
             {
-                return RedirectToAction("Index", new RouteValueDictionary(new { controller = "ErrorHandler", action = "Index", data = ex.InnerException }));
+                return RedirectToAction("Index", new RouteValueDictionary(new { controller = "ErrorHandler", action = "Index", data = ex.InnerException?.Message ?? ex.Message }));
             }
         }
     }

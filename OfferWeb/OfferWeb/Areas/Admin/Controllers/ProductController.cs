@@ -42,7 +42,7 @@ namespace OfferWeb.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Index", new RouteValueDictionary(new { controller = "ErrorHandler", action = "Index", data = ex }));
+                return RedirectToAction("Index", new RouteValueDictionary(new { controller = "ErrorHandler", action = "Index", data = ex.InnerException?.Message ?? ex.Message}));
             }
         }
 
@@ -69,7 +69,7 @@ namespace OfferWeb.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Index", new RouteValueDictionary(new { controller = "ErrorHandler", action = "Index", data = ex }));
+                return RedirectToAction("Index", new RouteValueDictionary(new { controller = "ErrorHandler", action = "Index", data = ex.InnerException?.Message ?? ex.Message }));
             }
         }
 
@@ -82,7 +82,7 @@ namespace OfferWeb.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Index", new RouteValueDictionary(new { controller = "ErrorHandler", action = "Index", data = ex }));
+                return RedirectToAction("Index", new RouteValueDictionary(new { controller = "ErrorHandler", action = "Index", data = ex.InnerException?.Message ?? ex.Message }));
             }
 
         }
@@ -96,7 +96,7 @@ namespace OfferWeb.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Index", new RouteValueDictionary(new { controller = "ErrorHandler", action = "Index", data = ex }));
+                return RedirectToAction("Index", new RouteValueDictionary(new { controller = "ErrorHandler", action = "Index", data = ex.InnerException?.Message ?? ex.Message }));
             }
 
         }

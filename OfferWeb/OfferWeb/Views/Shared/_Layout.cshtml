@@ -111,7 +111,18 @@
                                                 //15 yükle
                                                 //<a value="@item.Oid">Tüm kategoriler</a>
                                                 //
-                                                <option value="@item.Oid">@item.Name</option>
+                                                if (item.ParentOid == null)
+                                                {
+                                            <option value="@item.Oid">@item.Name</option>
+                                                    foreach (var second in item.SubCategories)
+                                                    {
+                                            <option value="@second.Oid">- @second.Name</option>
+                                                        foreach (var third in second.SubCategories)
+                                                        {
+                                            <option value="@third.Oid"> &nbsp; &nbsp;-@third.Name</option>
+                                                        }
+                                                    }
+                                                }
                                             }
                                             @*<option value="1">Anestesi &amp; Enjeksiyon</option>
                                                 <option value="2">Besleme, Protez &amp; Tamir</option>
@@ -252,33 +263,43 @@
                                         {
                                             if (item.SubCategories.Count == 0)
                                             {
-                                                <li><a href="@Url.Action("CategoryResult", "Category", new { id = item.Oid })">@item.Name</a></li>
+                                        <li><a href="@Url.Action("CategoryResult", "Category", new { id = item.Oid })">@item.Name</a></li>
                                             }
                                             else if (item.SubCategories.Count > 0)
                                             {
-                                                <li class="megamenu-container">
-                                                    <a class="sf-with-ul" href="#">@item.Name</a>
+                                        <li class="megamenu-container">
+                                            <a class="sf-with-ul" href="#">@item.Name</a>
 
-                                                    <div class="megamenu">
-                                                        <div class="row no-gutters">
-                                                            <div class="col-md-8">
-                                                                <div class="menu-col">
-                                                                    <div class="row">
-                                                                        <div class="col-md-6">
-                                                                            <div class="menu-title">@item.Name</div>
-                                                                            <ul>
-                                                                                @foreach (var subCat in item.SubCategories)
-                                                                                {
-                                                                                    <li><a href="@Url.Action("CategoryResult", "Category", new { id = subCat.Oid })">@subCat.Name</a></li>
+                                            <div class="megamenu">
+                                                <div class="row no-gutters">
+                                                    <div class="col-md-12">
+                                                        <div class="menu-col">
+                                                            <div class="row">
+                                                                @foreach (var subCat in item.SubCategories.OrderByDescending(x=>x.SubCategories.Count).Take(6))
+                                                                {
+                                                                <div class="col-md-4">
+                                                                    <div class="menu-title">@subCat.Name</div>
+                                                                    <ul>
+                                                                        @foreach (var last in subCat.SubCategories)
+                                                                        {
+                                                                        <li><a href="@Url.Action("CategoryResult", "Category", new { id = last.Oid })">@last.Name</a></li>
                                                                                 }
-                                                                            </ul>
-                                                                        </div>
+                                                                    </ul>
+                                                                </div>
+                                                                 }
+                                                                @if(item.SubCategories.Count>6){
+                                                                <div class="col-md-6">
+                                                                    <div class="menu-title" style="float:right;">
+                                                                    <a href="@Url.Action("CategoryResult", "Category", new { id = item.Oid })">Tümünü Gör</a>
                                                                     </div>
                                                                 </div>
+                                                                    }
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </li>
+                                                </div>
+                                            </div>
+                                        </li>
                                             }
                                         }
                                     </ul>
@@ -302,47 +323,47 @@
                                     <a href="#" class="sf-with-ul">Hakkımızda</a>
 
                                     @*<ul>
-                                        <li>
-                                            <a href="~/Assets/about.html" class="sf-with-ul">About</a>
+                                            <li>
+                                                <a href="~/Assets/about.html" class="sf-with-ul">About</a>
 
-                                            <ul>
-                                                <li><a href="~/Assets/about.html">About 01</a></li>
-                                                <li><a href="~/Assets/about-2.html">About 02</a></li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <a href="~/Assets/contact.html" class="sf-with-ul">Contact</a>
+                                                <ul>
+                                                    <li><a href="~/Assets/about.html">About 01</a></li>
+                                                    <li><a href="~/Assets/about-2.html">About 02</a></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <a href="~/Assets/contact.html" class="sf-with-ul">Contact</a>
 
-                                            <ul>
-                                                <li><a href="~/Assets/contact.html">Contact 01</a></li>
-                                                <li><a href="~/Assets/contact-2.html">Contact 02</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="~/Assets/login.html">Login</a></li>
-                                        <li><a href="~/Assets/faq.html">FAQs</a></li>
-                                        <li><a href="~/Assets/404.html">Error 404</a></li>
-                                        <li><a href="~/Assets/coming-soon.html">Coming Soon</a></li>
-                                    </ul>*@
+                                                <ul>
+                                                    <li><a href="~/Assets/contact.html">Contact 01</a></li>
+                                                    <li><a href="~/Assets/contact-2.html">Contact 02</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="~/Assets/login.html">Login</a></li>
+                                            <li><a href="~/Assets/faq.html">FAQs</a></li>
+                                            <li><a href="~/Assets/404.html">Error 404</a></li>
+                                            <li><a href="~/Assets/coming-soon.html">Coming Soon</a></li>
+                                        </ul>*@
                                 </li>
                                 <li>
                                     <a href="~/Assets/elements-list.html" class="sf-with-ul">İletisim</a>
 
                                     @*<ul>
-                                        <li><a href="~/Assets/elements-products.html">Products</a></li>
-                                        <li><a href="~/Assets/elements-typography.html">Typography</a></li>
-                                        <li><a href="~/Assets/elements-titles.html">Titles</a></li>
-                                        <li><a href="~/Assets/elements-banners.html">Banners</a></li>
-                                        <li><a href="~/Assets/elements-product-category.html">Product Category</a></li>
-                                        <li><a href="~/Assets/elements-video-banners.html">Video Banners</a></li>
-                                        <li><a href="~/Assets/elements-buttons.html">Buttons</a></li>
-                                        <li><a href="~/Assets/elements-accordions.html">Accordions</a></li>
-                                        <li><a href="~/Assets/elements-tabs.html">Tabs</a></li>
-                                        <li><a href="~/Assets/elements-testimonials.html">Testimonials</a></li>
-                                        <li><a href="~/Assets/elements-blog-posts.html">Blog Posts</a></li>
-                                        <li><a href="~/Assets/elements-portfolio.html">Portfolio</a></li>
-                                        <li><a href="~/Assets/elements-cta.html">Call to Action</a></li>
-                                        <li><a href="~/Assets/elements-icon-boxes.html">Icon Boxes</a></li>
-                                    </ul>*@
+                                            <li><a href="~/Assets/elements-products.html">Products</a></li>
+                                            <li><a href="~/Assets/elements-typography.html">Typography</a></li>
+                                            <li><a href="~/Assets/elements-titles.html">Titles</a></li>
+                                            <li><a href="~/Assets/elements-banners.html">Banners</a></li>
+                                            <li><a href="~/Assets/elements-product-category.html">Product Category</a></li>
+                                            <li><a href="~/Assets/elements-video-banners.html">Video Banners</a></li>
+                                            <li><a href="~/Assets/elements-buttons.html">Buttons</a></li>
+                                            <li><a href="~/Assets/elements-accordions.html">Accordions</a></li>
+                                            <li><a href="~/Assets/elements-tabs.html">Tabs</a></li>
+                                            <li><a href="~/Assets/elements-testimonials.html">Testimonials</a></li>
+                                            <li><a href="~/Assets/elements-blog-posts.html">Blog Posts</a></li>
+                                            <li><a href="~/Assets/elements-portfolio.html">Portfolio</a></li>
+                                            <li><a href="~/Assets/elements-cta.html">Call to Action</a></li>
+                                            <li><a href="~/Assets/elements-icon-boxes.html">Icon Boxes</a></li>
+                                        </ul>*@
                                 </li>
                             </ul><!-- End .menu -->
                         </nav><!-- End .main-nav -->
@@ -867,11 +888,11 @@
     <script src="~/Assets/assets/js/demos/demo-13.js"></script>
 
     <script>
-        //$(document).ready(function () {
-        //    $("#searchProduct").autocomplete({
-        //        source:'product/search'
-        //    })
-        //})
+                                                                                                //$(document).ready(function () {
+                                                                                                //    $("#searchProduct").autocomplete({
+                                                                                                //        source:'product/search'
+                                                                                                //    })
+                                                                                                //})
     </script>
 </body>
 
