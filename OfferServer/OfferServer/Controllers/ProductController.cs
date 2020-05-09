@@ -89,7 +89,7 @@ namespace OfferServer.Controllers
             try
             {
                 var products = _repoWrapper.Product
-                    .FindByCondition(x=>x.State == Entities.Enums.ItemState.Active && x.Verified && x.CategoryOid == id,
+                    .FindByCondition(x=>x.State == Entities.Enums.ItemState.Active && /*x.Verified && */ x.CategoryOid == id,
                     i=>i.Brand,i=>i.Category,i=>i.ProductTags, i=>i.ProductOptions).OrderByDescending(u => u.CreatedDate).ToList();
 
                 var json = JsonConvert.SerializeObject(products);
@@ -108,7 +108,7 @@ namespace OfferServer.Controllers
             try
             {
                 var products = _repoWrapper.Product
-                    .FindByCondition(x=>x.State == Entities.Enums.ItemState.Active && x.Verified && x.BrandOid == id, 
+                    .FindByCondition(x=>x.State == Entities.Enums.ItemState.Active && /*x.Verified &&*/ x.BrandOid == id, 
                     i=>i.Brand,i=>i.Category,i=>i.ProductTags, i=>i.ProductOptions).OrderByDescending(u => u.CreatedDate).ToList();
 
                 var json = JsonConvert.SerializeObject(products);

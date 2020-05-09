@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Entities.Models
 {
@@ -43,11 +42,9 @@ namespace Entities.Models
         public virtual ICollection<SupplierProduct> SupplierProducts { get; set; }
         
         [NotMapped]
-        [BindProperty]
         public virtual ICollection<Guid> SelectedTags { get; set; }
 
         [NotMapped]
-        [BindProperty]
         public virtual ICollection<Tag> TagList { get; set; }
     }
 }

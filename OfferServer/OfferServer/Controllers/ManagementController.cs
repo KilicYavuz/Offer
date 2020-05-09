@@ -134,7 +134,7 @@ namespace OfferServer.Controllers
                 {
                     var tags = _repoWrapper.ProductTag.FindByCondition(x => x.ProductOid == data.Oid).ToList();
                     var deleteTags = tags.Where(x => !data.SelectedTags.Contains(x.TagOid)).ToList();
-                    var addTags = data.SelectedTags.Where(x => !tags.Select(t => t.TagOid).Contains(x))?.Select(a => new ProductTag { TagOid = a, ProductOid = data.Oid }).ToList();
+                    var addTags = data.SelectedTags.Where(x => !tags.Select(t => t.TagOid).Contains(x))?.Select(a => new ProductTag { TagOid = a, ProductOid = data.Oid, CreatedDate = DateTime.Now, Oid = Guid.NewGuid() }).ToList();
                     foreach (var addTag in addTags)
                     {
                         _repoWrapper.ProductTag.Add(addTag);
