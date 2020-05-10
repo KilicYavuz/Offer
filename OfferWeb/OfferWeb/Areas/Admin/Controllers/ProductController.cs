@@ -20,7 +20,7 @@ namespace OfferWeb.Areas.Admin.Controllers
             {
                 var objects = new Dictionary<string, dynamic>();
                 var brands = ApiUtil.GetBrandList().Result ?? new List<Brand>();
-                var categories = ApiUtil.GetCategoryList().Result ?? new List<Category>();
+                var categories = ApiUtil.GetCategoryListForArea().Result ?? new List<Category>();
                 var tagList = ApiUtil.GetTagList().Result ?? new List<Tag>();
 
                 objects.Add("Brands", brands);

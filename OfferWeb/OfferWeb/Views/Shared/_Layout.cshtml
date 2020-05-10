@@ -113,13 +113,13 @@
                                                 //
                                                 if (item.ParentOid == null)
                                                 {
-                                            <option value="@item.Oid">@item.Name</option>
+                                                    <option value="@item.Oid">@item.Name</option>
                                                     foreach (var second in item.SubCategories)
                                                     {
-                                            <option value="@second.Oid">- @second.Name</option>
+                                                        <option value="@second.Oid">- @second.Name</option>
                                                         foreach (var third in second.SubCategories)
                                                         {
-                                            <option value="@third.Oid"> &nbsp; &nbsp;-@third.Name</option>
+                                                            <option value="@third.Oid"> &nbsp; &nbsp;-@third.Name</option>
                                                         }
                                                     }
                                                 }
@@ -263,43 +263,49 @@
                                         {
                                             if (item.SubCategories.Count == 0)
                                             {
-                                        <li><a href="@Url.Action("CategoryResult", "Category", new { id = item.Oid })">@item.Name</a></li>
+                                                <li><a href="@Url.Action("CategoryResult", "Category", new { id = item.Oid })">@item.Name</a></li>
                                             }
                                             else if (item.SubCategories.Count > 0)
                                             {
-                                        <li class="megamenu-container">
-                                            <a class="sf-with-ul" href="#">@item.Name</a>
+                                                <li class="megamenu-container">
+                                                    <a class="sf-with-ul" href="#">@item.Name</a>
 
-                                            <div class="megamenu">
-                                                <div class="row no-gutters">
-                                                    <div class="col-md-12">
-                                                        <div class="menu-col">
-                                                            <div class="row">
-                                                                @foreach (var subCat in item.SubCategories.OrderByDescending(x=>x.SubCategories.Count).Take(6))
-                                                                {
-                                                                <div class="col-md-4">
-                                                                    <div class="menu-title">@subCat.Name</div>
-                                                                    <ul>
-                                                                        @foreach (var last in subCat.SubCategories)
+                                                    <div class="megamenu">
+                                                        <div class="row no-gutters">
+                                                            <div class="col-md-12">
+                                                                <div class="menu-col">
+                                                                    <div class="row">
+                                                                        @foreach (var subCat in item.SubCategories.OrderByDescending(x => x.SubCategories.Count).Take(6))
                                                                         {
-                                                                        <li><a href="@Url.Action("CategoryResult", "Category", new { id = last.Oid })">@last.Name</a></li>
-                                                                                }
-                                                                    </ul>
-                                                                </div>
-                                                                 }
-                                                                @if(item.SubCategories.Count>6){
-                                                                <div class="col-md-6">
-                                                                    <div class="menu-title" style="float:right;">
-                                                                    <a href="@Url.Action("CategoryResult", "Category", new { id = item.Oid })">Tümünü Gör</a>
+                                                                            <div class="col-md-4">
+                                                                                <div @*onmouseover="showUl(@subCat.Oid)"*@ class="menu-title">@subCat.Name</div>
+                                                                                <ul @*style="visibility:hidden" id="@subCat.Oid"*@>
+                                                                                    @foreach (var last in subCat.SubCategories.Take(6))
+                                                                                    {
+                                                                                        <li><a href="@Url.Action("CategoryResult", "Category", new { id = last.Oid })">@last.Name</a></li>
+                                                                                    }
+                                                                                    @if (subCat.SubCategories.Count > 6)
+                                                                                    {
+                                                                                        <li><a href="@Url.Action("CategoryResult", "Category", new { id = subCat.Oid })"><b><i><u>Devamını Gör</u></i></b></a></li>
+
+                                                                                    }
+                                                                                </ul>
+                                                                            </div>
+                                                                        }
+                                                                        @if (item.SubCategories.Count > 6)
+                                                                        {
+                                                                            <div class="col-md-6">
+                                                                                <div class="menu-title" style="float:right;">
+                                                                                    <a href="@Url.Action("CategoryResult", "Category", new { id = item.Oid })">Tümünü Gör</a>
+                                                                                </div>
+                                                                            </div>
+                                                                        }
                                                                     </div>
                                                                 </div>
-                                                                    }
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </li>
+                                                </li>
                                             }
                                         }
                                     </ul>
@@ -888,11 +894,13 @@
     <script src="~/Assets/assets/js/demos/demo-13.js"></script>
 
     <script>
-                                                                                                //$(document).ready(function () {
-                                                                                                //    $("#searchProduct").autocomplete({
-                                                                                                //        source:'product/search'
-                                                                                                //    })
-                                                                                                //})
+                //function showUl(data) {
+                //    document.getElementById(data).style.visibility = "visible";
+                //}
+                                                                                                                                //    $("#searchProduct").autocomplete({
+                                                                                                                                //        source:'product/search'
+                                                                                                                                //    })
+                                                                                                                                //})
     </script>
 </body>
 
