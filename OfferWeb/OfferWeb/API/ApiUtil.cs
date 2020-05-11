@@ -345,9 +345,11 @@ namespace OfferWeb.API
 
         #region Search
 
-        public static async Task<List<Product>> Search(string key)
+        public static async Task<List<Product>> Search(string term, Guid? categoryId = null)
         {
-            var httpResponse = await Get("Product/search?term=" + key);
+            if (string.IsNullOrEmpty(term) || term.Length < 2)
+                return null;
+            var httpResponse = await Get("Product/searchproduct?term=" + term+"&categoryid="+categoryId);
             var products = JsonConvert.DeserializeObject<List<Product>>(httpResponse);
             return products;
         }

@@ -33,6 +33,9 @@
     <link rel="stylesheet" href="~/Assets/assets/css/style.css">
     <link rel="stylesheet" href="~/Assets/assets/css/skins/skin-demo-13.css">
     <link rel="stylesheet" href="~/Assets/assets/css/demos/demo-13.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 </head>
 <body>
     <div class="page-wrapper">
@@ -113,13 +116,13 @@
                                                 //
                                                 if (item.ParentOid == null)
                                                 {
-                                            <option value="@item.Oid">@item.Name</option>
+                                                    <option value="@item.Oid">@item.Name</option>
                                                     foreach (var second in item.SubCategories)
                                                     {
-                                            <option value="@second.Oid">- @second.Name</option>
+                                                        <option value="@second.Oid">- @second.Name</option>
                                                         foreach (var third in second.SubCategories)
                                                         {
-                                            <option value="@third.Oid"> &nbsp; &nbsp;-@third.Name</option>
+                                                            <option value="@third.Oid"> &nbsp; &nbsp;-@third.Name</option>
                                                         }
                                                     }
                                                 }
@@ -141,7 +144,7 @@
                                         </select>
                                     </div><!-- End .select-custom -->
                                     <label for="searchProduct" class="sr-only">Search</label>
-                                    <input type="search" class="form-control" name="searchProduct" id="searchProduct" placeholder="Ürün ara ..." required>
+                                    <input type="search" class="form-control auto-complete" name="searchProduct" id="searchProduct" placeholder="Ürün ara ..." required>
                                     <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                                 </div><!-- End .header-search-wrapper -->
                             </form>
@@ -263,43 +266,44 @@
                                         {
                                             if (item.SubCategories.Count == 0)
                                             {
-                                        <li><a href="@Url.Action("CategoryResult", "Category", new { id = item.Oid })">@item.Name</a></li>
+                                                <li><a href="@Url.Action("CategoryResult", "Category", new { id = item.Oid })">@item.Name</a></li>
                                             }
                                             else if (item.SubCategories.Count > 0)
                                             {
-                                        <li class="megamenu-container">
-                                            <a class="sf-with-ul" href="#">@item.Name</a>
+                                                <li class="megamenu-container">
+                                                    <a class="sf-with-ul" href="#">@item.Name</a>
 
-                                            <div class="megamenu">
-                                                <div class="row no-gutters">
-                                                    <div class="col-md-12">
-                                                        <div class="menu-col">
-                                                            <div class="row">
-                                                                @foreach (var subCat in item.SubCategories.OrderByDescending(x=>x.SubCategories.Count).Take(6))
-                                                                {
-                                                                <div class="col-md-4">
-                                                                    <div class="menu-title">@subCat.Name</div>
-                                                                    <ul>
-                                                                        @foreach (var last in subCat.SubCategories)
+                                                    <div class="megamenu">
+                                                        <div class="row no-gutters">
+                                                            <div class="col-md-12">
+                                                                <div class="menu-col">
+                                                                    <div class="row">
+                                                                        @foreach (var subCat in item.SubCategories.OrderByDescending(x => x.SubCategories.Count).Take(6))
                                                                         {
-                                                                        <li><a href="@Url.Action("CategoryResult", "Category", new { id = last.Oid })">@last.Name</a></li>
-                                                                                }
-                                                                    </ul>
-                                                                </div>
-                                                                 }
-                                                                @if(item.SubCategories.Count>6){
-                                                                <div class="col-md-6">
-                                                                    <div class="menu-title" style="float:right;">
-                                                                    <a href="@Url.Action("CategoryResult", "Category", new { id = item.Oid })">Tümünü Gör</a>
+                                                                            <div class="col-md-4">
+                                                                                <div class="menu-title">@subCat.Name</div>
+                                                                                <ul>
+                                                                                    @foreach (var last in subCat.SubCategories)
+                                                                                    {
+                                                                                        <li><a href="@Url.Action("CategoryResult", "Category", new { id = last.Oid })">@last.Name</a></li>
+                                                                                    }
+                                                                                </ul>
+                                                                            </div>
+                                                                        }
+                                                                        @if (item.SubCategories.Count > 6)
+                                                                        {
+                                                                            <div class="col-md-6">
+                                                                                <div class="menu-title" style="float:right;">
+                                                                                    <a href="@Url.Action("CategoryResult", "Category", new { id = item.Oid })">Tümünü Gör</a>
+                                                                                </div>
+                                                                            </div>
+                                                                        }
                                                                     </div>
                                                                 </div>
-                                                                    }
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </li>
+                                                </li>
                                             }
                                         }
                                     </ul>
@@ -872,7 +876,7 @@
             </div>
         </div>*@
     <!-- Plugins JS File -->
-    <script src="~/Assets/assets/js/jquery.min.js"></script>
+    @*<script src="~/Assets/assets/js/jquery.min.js"></script>*@
     <script src="~/Assets/assets/js/bootstrap.bundle.min.js"></script>
     <script src="~/Assets/assets/js/jquery.hoverIntent.min.js"></script>
     <script src="~/Assets/assets/js/jquery.waypoints.min.js"></script>
@@ -888,11 +892,63 @@
     <script src="~/Assets/assets/js/demos/demo-13.js"></script>
 
     <script>
-                                                                                                //$(document).ready(function () {
-                                                                                                //    $("#searchProduct").autocomplete({
-                                                                                                //        source:'product/search'
-                                                                                                //    })
-                                                                                                //})
+        $(document).ready(function () {
+            $("#searchProduct").autocomplete({
+        //        source: 'product/search'
+        //    })
+        //})
+
+        //autoComplete: function () {
+        //    var categoryList = $('cat');
+        //    var categoryId = categoryList.options[categoryList.selectedIndex].value;
+        //    var selector = $(".auto-complete");
+        //    if (selector.length == 0) {
+        //        return;
+        //    }
+        //    selector.autoComplete({
+                minChars: 2,
+                delay: 200,
+                cache: true,
+                source: function (request, response) {
+                    var categoryList = $("#cat")[0];
+                    var categoryId = categoryList.options[categoryList.selectedIndex].value;
+                    $.ajax({
+                        url: "@Url.Action("SearchProduct", "Search")",
+                        type: "POST",
+                        dataType: "json",
+                        data: { term: request.term, categoryId: categoryId },
+                        success: function (data) {
+                            //$.unblockUI(),
+                            //    response($.map(data, function (item) {
+                            //        return { label: item.Baslik, value: item.Baslik };
+                            //    }))
+                            response(data);
+                        }
+                    })
+                    //$.get('/index.php?do=catalog/search.ajax&q=' + request, function (data) {
+                    //    response(data);
+                    //});
+                },
+                renderItem: function (item, search) {
+                    search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+                    var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
+                    return '' +
+                        '<div class="autocomplete-suggestion" data-val="' + item.name + '">' +
+                        '<a href="/product/' + item.Oid + '" title="' + item.name + '">' +
+                        '   <div class="suggestion-image"><img src="' + item.primary_image_thumb_path + '" alt="' + item.name + '"></div>' +
+                        '   <div class="suggestion-content">' +
+                        '       <div class="suggestion-title">' + item.name.replace(re, "<b>$1</b>") + '</div>' +
+                        '   </div>' +
+                        '</a>' +
+                        '</div>';
+                },
+                onSelect: function (event, term, item) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    window.location.href = item.find('a').attr('href');
+                }
+            });
+        })
     </script>
 </body>
 

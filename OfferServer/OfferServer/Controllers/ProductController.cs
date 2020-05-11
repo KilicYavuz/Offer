@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace OfferServer.Controllers
 {
@@ -121,20 +122,30 @@ namespace OfferServer.Controllers
             }
         }
 
-        [HttpGet("search")]
-        public IActionResult Search()
+        [HttpGet("searchproduct")]
+        public IActionResult SearchProduct()
         {
             try
             {
                 var term = HttpContext.Request.Query["term"].ToString();
-                var productNames = _repoWrapper.Product.FindByCondition(x => x.Name.Contains(term)).ToList();
+                var categoryId = HttpContext.Request.Query["categoryid"].ToString();
+                var predicate = PredicateBuilder.True<Product>();
 
-                if (productNames == null || productNames.Any())
+                if (!string.IsNullOrEmpty(categoryId))
+                {
+                    predicate = predicate.And(x=>x.CategoryOid == Guid.Parse(categoryId));
+                }
+
+                predicate.And(x => x.Name.Contains(term) || x.Description.Contains(term) || x.ShortDescription.Contains(term) || x.Category.Name.Contains(term));
+
+                var products = _repoWrapper.Product.FindByCondition(predicate, i=>i.Category).ToList();
+
+                if (products == null)
                 {
                     return NotFound();
                 }
 
-                var json = JsonConvert.SerializeObject(productNames);
+                var json = JsonConvert.SerializeObject(products);
                 return Ok(json);
             }
             catch (Exception ex)
