@@ -17,7 +17,11 @@ namespace OfferWeb.Controllers
 
         public ActionResult CategoryResult(Guid id)
         {
-            var productList = ApiUtil.GetProductByCategory(id);
+            var productList = ApiUtil.GetProductByCategory(id).Result;
+            if (productList == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View(productList);
         }
     }

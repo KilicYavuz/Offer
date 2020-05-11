@@ -120,6 +120,13 @@ namespace OfferWeb.API
             return httpResponse;
         }
 
+        public static async Task<List<Category>> GetCategoryListForArea()
+        {
+            var httpResponse = await Get("Management/getAllCategories");
+            var categories = JsonConvert.DeserializeObject<List<Category>>(httpResponse);
+            return categories;
+        }
+
         public static async Task<List<Category>> GetCategoryList()
         {
             var httpResponse = await Get("Management/getAllCategories");
@@ -294,6 +301,10 @@ namespace OfferWeb.API
         {
             var httpResponse = await Get("Product/GetProductByCategory/" + id.ToString());
             var products = JsonConvert.DeserializeObject<List<Product>>(httpResponse);
+            if (products.Count == 0 || products == null)
+            {
+                return null;
+            }
             return products;
         }
 

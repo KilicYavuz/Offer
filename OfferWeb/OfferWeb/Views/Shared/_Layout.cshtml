@@ -281,11 +281,16 @@
                                                                         @foreach (var subCat in item.SubCategories.OrderByDescending(x => x.SubCategories.Count).Take(6))
                                                                         {
                                                                             <div class="col-md-4">
-                                                                                <div class="menu-title">@subCat.Name</div>
-                                                                                <ul>
-                                                                                    @foreach (var last in subCat.SubCategories)
+                                                                                <div @*onmouseover="showUl(@subCat.Oid)"*@ class="menu-title">@subCat.Name</div>
+                                                                                <ul @*style="visibility:hidden" id="@subCat.Oid"*@>
+                                                                                    @foreach (var last in subCat.SubCategories.Take(6))
                                                                                     {
                                                                                         <li><a href="@Url.Action("CategoryResult", "Category", new { id = last.Oid })">@last.Name</a></li>
+                                                                                    }
+                                                                                    @if (subCat.SubCategories.Count > 6)
+                                                                                    {
+                                                                                        <li><a href="@Url.Action("CategoryResult", "Category", new { id = subCat.Oid })"><b><i><u>Devamını Gör</u></i></b></a></li>
+
                                                                                     }
                                                                                 </ul>
                                                                             </div>
