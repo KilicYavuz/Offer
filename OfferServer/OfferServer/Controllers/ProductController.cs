@@ -67,7 +67,7 @@ namespace OfferServer.Controllers
                 }
                 else
                 {
-                   products = _repoWrapper.ProductTag.FindByCondition(x=>x.Tag.Oid == tagId.Value && x.Product.Verified && x.Product.State == Entities.Enums.ItemState.Active, i=>i.Product,i=>i.Product.Brand, i => i.Product.Category, i => i.Product.ProductTags)
+                   products = _repoWrapper.ProductTag.FindByCondition(x=>x.Tag.Oid == tagId.Value /*&& x.Product.Verified*/ && x.Product.State == Entities.Enums.ItemState.Active, i=>i.Product,i=>i.Product.Brand, i => i.Product.Category, i => i.Product.ProductTags)
                         .Select(s=>s.Product).ToList();
                         //.OrderByDescending(u=>u.CreatedDate).ThenBy(u =>u.Product.CategoryOid)
                 }
