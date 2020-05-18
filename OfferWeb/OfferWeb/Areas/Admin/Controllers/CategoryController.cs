@@ -17,7 +17,7 @@ namespace OfferWeb.Areas.Admin.Controllers
             try
             {
                 var objects = new Dictionary<string, dynamic>();
-                var categories = ApiUtil.GetCategoryList().Result;
+                var categories = ApiUtil.GetCategoryListForAdmin().Result;
                 objects.Add("Categories", categories);
                 ViewBag.Data = objects;
 
@@ -70,7 +70,7 @@ namespace OfferWeb.Areas.Admin.Controllers
         {
             try
             {
-                var categoryList = ApiUtil.GetCategoryList().Result;
+                var categoryList = ApiUtil.GetCategoryListForAdmin().Result;
                 return View(categoryList);
             }
             catch (System.Exception ex)

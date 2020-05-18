@@ -331,7 +331,7 @@ namespace OfferServer.Controllers
         {
             try
             {
-                var categories = _repoWrapper.Category.FindAll().OrderBy(u => u.ParentOid).ToList();//.FindByCondition(x => x.ParentOid == null, i => i.ParentCategory, i => i.SubCategories).OrderBy(u => u.ParentOid).ToList();
+                var categories = _repoWrapper.Category.FindByCondition(x=>x.State == ItemState.Active, i=>i.ParentCategory).OrderBy(u => u.ParentOid).ToList();//.FindByCondition(x => x.ParentOid == null, i => i.ParentCategory, i => i.SubCategories).OrderBy(u => u.ParentOid).ToList();
 
                 _logger.LogInfo($"Returned all categories from database.");
                 var json = JsonConvert.SerializeObject(categories);
@@ -344,6 +344,23 @@ namespace OfferServer.Controllers
             }
         }
 
+        [HttpGet("getLeafCategories")]
+        public IActionResult GetLeafCategories()
+        {
+            try
+            {
+                //var cats = _repoWrapper.Category.FindByCondition(x=>x.State == ItemState.Active, i=>i.SubCategories).OrderBy(u => u.ParentOid).ToList();
+                var categories = _repoWrapper.Category.FindByCondition(x=>x.SubCategories.Count == 0, i=>i.ParentCategory, i=>i.SubCategories).OrderBy(u => u.ParentOid).ToList();
+
+                var json = JsonConvert.SerializeObject(categories);
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetLeafCategories action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
         [HttpGet("getCategory/{id}")]
         public IActionResult GetCategory(Guid id)
         {
