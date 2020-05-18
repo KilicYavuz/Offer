@@ -36,6 +36,23 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
     <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <style>
+        .autocomplete-suggestions {
+            text-align: left;
+            cursor: default;
+            border: 1px solid #ccc;
+            border-top: 0;
+            background: #fff;
+            box-shadow: -1px 1px 3px rgba(0,0,0,.1);
+            position: absolute;
+            display: none;
+            z-index: 9999;
+            max-height: 254px;
+            overflow: hidden;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+    </style>
 </head>
 <body>
     <div class="page-wrapper">
@@ -934,7 +951,7 @@
                     //    response(data);
                     //});
                 },
-                renderItem: function (item, search) {
+                _renderItem: function (item, search) {
                     search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
                     var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
                     return '' +
