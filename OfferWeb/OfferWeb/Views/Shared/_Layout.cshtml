@@ -295,12 +295,12 @@
                                                             <div class="col-md-12">
                                                                 <div class="menu-col">
                                                                     <div class="row">
-                                                                        @foreach (var subCat in item.SubCategories.OrderByDescending(x => x.SubCategories.Count).Take(6))
+                                                                        @foreach (var subCat in item.SubCategories.OrderByDescending(x => x.SubCategories.Count))
                                                                         {
                                                                             <div class="col-md-4">
                                                                                 <div @*onmouseover="showUl(@subCat.Oid)"*@ class="menu-title">@subCat.Name</div>
                                                                                 <ul @*style="visibility:hidden" id="@subCat.Oid"*@>
-                                                                                    @foreach (var last in subCat.SubCategories.Take(6))
+                                                                                    @foreach (var last in subCat.SubCategories.Take(3))
                                                                                     {
                                                                                         <li><a href="@Url.Action("CategoryResult", "Category", new { id = last.Oid })">@last.Name</a></li>
                                                                                     }
@@ -312,14 +312,14 @@
                                                                                 </ul>
                                                                             </div>
                                                                         }
-                                                                        @if (item.SubCategories.Count > 6)
+                                                                        @*@if (item.SubCategories.Count > 6)
                                                                         {
                                                                             <div class="col-md-6">
                                                                                 <div class="menu-title" style="float:right;">
                                                                                     <a href="@Url.Action("CategoryResult", "Category", new { id = item.Oid })">Tümünü Gör</a>
                                                                                 </div>
                                                                             </div>
-                                                                        }
+                                                                        }*@
                                                                     </div>
                                                                 </div>
                                                             </div>
