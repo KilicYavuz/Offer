@@ -141,6 +141,7 @@ namespace OfferWeb.API
             return OrderCategories(categories);
         }
 
+
         //TODO:Refaktör edilecek en basit haliyle yazıldı
         private static List<Category> OrderCategories(List<Category> categories)
         {

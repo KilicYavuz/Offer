@@ -5,6 +5,7 @@ using System.Web;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using OfferWeb.API;
+using OfferWeb.Models;
 
 namespace OfferWeb.Controllers
 {
@@ -27,7 +28,7 @@ namespace OfferWeb.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            return View(productList);
+            return View(new CategoryResultVM() { ProductList = productList, Category = categories.FirstOrDefault(x => x.Oid == id) });
         }
     }
 }
