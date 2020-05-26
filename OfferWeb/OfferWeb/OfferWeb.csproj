@@ -11,8 +11,8 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="API\" />
+    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Assets\popup\assets\images\demos\demo-6\products\" />
     <Folder Include="Assets\popup\assets\images\popup\quickView\" />
     <Folder Include="Assets\popup\popup\" />

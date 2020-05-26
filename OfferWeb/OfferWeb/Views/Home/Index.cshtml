@@ -16,7 +16,7 @@
             @foreach (var item in ViewBag.Data["MainScreenProducts"] as List<Product>)
             {
                 @*<div class="intro-slide" style="background-image: url(https://www.dciedge.com/images/360/series5SM-large-01.jpg);">*@
-                <div class="intro-slide" style="background-image:url(@String.Format("data:image/gif;base64,{0}", item.Image))">
+                <div class="intro-slide" style="height: 500px !important;width: 100% !important; background-image:url(@String.Format("data:image/gif;base64,{0}", item.Image))">
                     <div class="container intro-content">
                         <div class="row">
                             <div class="col-auto offset-lg-3 intro-col">
@@ -430,7 +430,7 @@
                                 @*<span class="product-label label-new">New</span>*@
                                 <a href="~/Assets/product.html">
                                     @*<img src="~/Assets/assets/images/demos/demo-13/products/product-11.jpg" alt="Product image" class="product-image">*@
-                                    <img src="@String.Format("data:image/gif;base64,{0}", item.Image)" alt="Product image" class="product-image" />
+                                    <img src="@String.Format("data:image/gif;base64,{0}", item.Image)" style="width: 250px !important; height: 217px !important;" alt="Product image" class="product-image" />
 
                                 </a>
 
