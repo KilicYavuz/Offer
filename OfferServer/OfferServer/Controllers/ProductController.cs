@@ -129,18 +129,17 @@ namespace OfferServer.Controllers
             {
                 var term = HttpContext.Request.Query["term"].ToString();
                 var categoryId = HttpContext.Request.Query["categoryid"].ToString();
-                var predicate = PredicateBuilder.True<Product>();
-
+                List<Product> products = null;
                 if (!string.IsNullOrEmpty(categoryId))
                 {
-                    predicate = predicate.And(x=>x.CategoryOid == Guid.Parse(categoryId));
+                    products = _repoWrapper.Product.FindByCondition(x => x.CategoryOid == Guid.Parse(categoryId) && (x.Name.Contains(term) || x.Description.Contains(term) || x.ShortDescription.Contains(term) || x.Category.Name.Contains(term)))?.ToList();
+                }
+                else
+                {
+                    products = _repoWrapper.Product.FindByCondition(x => x.Name.Contains(term) || x.Description.Contains(term) || x.ShortDescription.Contains(term) || x.Category.Name.Contains(term))?.ToList();
                 }
 
-                predicate.And(x => x.Name.Contains(term) || x.Description.Contains(term) || x.ShortDescription.Contains(term) || x.Category.Name.Contains(term));
-
-                var products = _repoWrapper.Product.FindByCondition(predicate, i=>i.Category).ToList();
-
-                if (products == null)
+                if (products == null || products.Count == 0)
                 {
                     return NotFound();
                 }

@@ -313,13 +313,13 @@
                                                                             </div>
                                                                         }
                                                                         @*@if (item.SubCategories.Count > 6)
-                                                                        {
-                                                                            <div class="col-md-6">
-                                                                                <div class="menu-title" style="float:right;">
-                                                                                    <a href="@Url.Action("CategoryResult", "Category", new { id = item.Oid })">Tümünü Gör</a>
+                                                                            {
+                                                                                <div class="col-md-6">
+                                                                                    <div class="menu-title" style="float:right;">
+                                                                                        <a href="@Url.Action("CategoryResult", "Category", new { id = item.Oid })">Tümünü Gör</a>
+                                                                                    </div>
                                                                                 </div>
-                                                                            </div>
-                                                                        }*@
+                                                                            }*@
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -916,21 +916,9 @@
     <script>
         $(document).ready(function () {
             $("#searchProduct").autocomplete({
-        //        source: 'product/search'
-        //    })
-        //})
-
-        //autoComplete: function () {
-        //    var categoryList = $('cat');
-        //    var categoryId = categoryList.options[categoryList.selectedIndex].value;
-        //    var selector = $(".auto-complete");
-        //    if (selector.length == 0) {
-        //        return;
-        //    }
-        //    selector.autoComplete({
-                minChars: 2,
-                delay: 200,
-                cache: true,
+                minLength: 2,
+                delay: 500,
+                autoFocus: true,
                 source: function (request, response) {
                     var categoryList = $("#cat")[0];
                     var categoryId = categoryList.options[categoryList.selectedIndex].value;
@@ -940,37 +928,41 @@
                         dataType: "json",
                         data: { term: request.term, categoryId: categoryId },
                         success: function (data) {
-                            //$.unblockUI(),
-                            //    response($.map(data, function (item) {
-                            //        return { label: item.Baslik, value: item.Baslik };
-                            //    }))
                             response(data);
                         }
                     })
-                    //$.get('/index.php?do=catalog/search.ajax&q=' + request, function (data) {
-                    //    response(data);
-                    //});
                 },
-                _renderItem: function (item, search) {
-                    search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-                    var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
-                    return '' +
-                        '<div class="autocomplete-suggestion" data-val="' + item.name + '">' +
-                        '<a href="/product/' + item.Oid + '" title="' + item.name + '">' +
-                        '   <div class="suggestion-image"><img src="' + item.primary_image_thumb_path + '" alt="' + item.name + '"></div>' +
-                        '   <div class="suggestion-content">' +
-                        '       <div class="suggestion-title">' + item.name.replace(re, "<b>$1</b>") + '</div>' +
-                        '   </div>' +
-                        '</a>' +
-                        '</div>';
+                focus: function (event, ui) {
+                    $("#searchProduct").val(ui.item.Name);
                 },
-                onSelect: function (event, term, item) {
+                select: function (event, ui) {
                     event.preventDefault();
                     event.stopPropagation();
-                    window.location.href = item.find('a').attr('href');
+                    window.location.href = '/product/' + ui.item.Oid;//.find('a').attr('href');
                 }
             });
-        })
+            $("#searchProduct").data('ui-autocomplete')._renderItem = function (ul, item) {
+                //item = item.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+                //var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
+                var $li = $('<li>');
+                $li.html('<a href="/product/' + item.Oid + '" title="' + item.Name + '">' +
+                    '<img src="data:image/gif;base64,' + item.Image + '" />' +
+                    '<span class="itemname">' + item.Name + '</span>' +
+                    '</a>');
+
+                return $li.appendTo(ul);
+
+                //return '' +
+                //    '<div class="autocomplete-suggestion" data-val="' + item.name + '">' +
+                //    '<a href="/product/' + item.Oid + '" title="' + item.name + '">' +
+                //    '   <div class="suggestion-image"><img src="' + item.primary_image_thumb_path + '" alt="' + item.name + '"></div>' +
+                //    '   <div class="suggestion-content">' +
+                //    '       <div class="suggestion-title">' + item.name.replace(re, "<b>$1</b>") + '</div>' +
+                //    '   </div>' +
+                //    '</a>' +
+                //    '</div>';
+            };
+        });
     </script>
 </body>
 
