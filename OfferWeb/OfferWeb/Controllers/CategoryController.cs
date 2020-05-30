@@ -24,6 +24,7 @@ namespace OfferWeb.Controllers
             objects.Add("SearchCategories", categories ?? new List<Category>());
             ViewBag.Data = objects;
             var productList = ApiUtil.GetProductByCategory(id).Result;
+
             if (productList == null)
             {
                 return RedirectToAction("Index", "Home");

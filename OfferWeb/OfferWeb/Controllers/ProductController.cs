@@ -23,6 +23,7 @@ namespace OfferWeb.Controllers
             var categories = ApiUtil.GetCategoryList().Result;
             objects.Add("SearchCategories", categories ?? new List<Category>());
             ViewBag.Data = objects;
+
             return View(product);
         }
 

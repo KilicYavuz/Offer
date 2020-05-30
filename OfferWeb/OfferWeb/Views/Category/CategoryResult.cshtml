@@ -4,7 +4,184 @@
 @{
     ViewBag.Title = "CategoryResult";
 }
+<style>
+    .selector {
+        position: relative;
+        padding: 20px;
+        width: 400px;
+        color: #fff9ff;
+    }
 
+        .selector ul {
+            position: relative;
+            display: block;
+            overflow: auto;
+            min-width: 138px;
+            max-height: 200px;
+            background: #fff;
+            list-style: none;
+            white-space: inherit;
+            padding-right: 17px;
+            width: calc(100% + 17px)
+        }
+
+        .selector li {
+            position: relative;
+            padding: 3px 20px 3px 25px;
+            cursor: pointer
+        }
+
+            .selector li:before {
+                position: absolute;
+                top: 50%;
+                left: 0;
+                top: 4px;
+                display: inline-block;
+                margin-right: 9px;
+                width: 17px;
+                height: 17px;
+                background-color: #f4f4f4;
+                border: 1px solid #d5d5d5;
+                content: ""
+            }
+
+            .selector li[data-selected="1"]:before {
+                border: 1px solid #d7d7d7;
+                background-color: #fff
+            }
+
+            .selector li[data-selected="1"]:after {
+                position: absolute;
+                top: 50%;
+                left: 3px;
+                top: 11px;
+                display: inline-block;
+                width: 4px;
+                height: 10px;
+                border-right: 2px solid;
+                border-bottom: 2px solid;
+                background: none;
+                color: #39c9a9;
+                content: "";
+                -webkit-transform: rotate(40deg) translateY(-50%);
+                transform: rotate(40deg) translateY(-50%)
+            }
+
+            .selector li:hover {
+                color: #aaa
+            }
+
+            .selector li .total {
+                position: absolute;
+                right: 0;
+                color: #d7d7d7
+            }
+
+        .selector .price-slider {
+            width:50%;
+            text-align: center;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            position: relative;
+            padding-top: 17px
+        }
+
+
+            .selector .price-slider:before {
+                position: absolute;
+                top: 50%;
+                left: 0;
+                margin-top: 0;
+                /*color: #39c9a9;*/
+                content: attr(data-currency);
+                -webkit-transform: translateY(-50%);
+                transform: translateY(-50%)
+            }
+
+        .selector #slider-range {
+            width: 90%;
+            margin-bottom: 30px;
+            border: none;
+            background: #e2f7f2;
+            height: 3px;
+            margin-left: 8px;
+            margin-right: 8px
+        }
+
+
+        .selector .ui-slider-range {
+            background-color: #d7d7d7
+        }
+
+        .selector .slider-price {
+            position: relative;
+            display: inline-block;
+            padding: 5px 40px;
+            width: 40%;
+            background-color: #3399ff;
+            line-height: 28px;
+            text-align: center
+        }
+
+            .selector .slider-price:before {
+                position: absolute;
+                top: 50%;
+                left: 13px;
+                margin-top: 0;
+                /*color: #39c9a9;*/
+                content: attr(data-currency);
+                -webkit-transform: translateY(-50%);
+                transform: translateY(-50%)
+            }
+
+        .selector .show-all {
+            position: relative;
+            padding-left: 25px;
+            color: #39c9a9;
+            cursor: pointer;
+            line-height: 28px
+        }
+
+            .selector .show-all:after, .selector .show-all:before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 4px;
+                margin-top: -1px;
+                color: #39c9a9;
+                width: 10px;
+                border-bottom: 1px solid
+            }
+
+            .selector .show-all:after {
+                -webkit-transform: rotate(90deg);
+                transform: rotate(90deg)
+            }
+
+        .selector.open ul {
+            max-height: none
+        }
+
+        .selector.open .show-all:after {
+            display: none
+        }
+
+
+    * {
+        -webkit-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+</style>
 <main class="main">
     @*<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
             <div class="container">
@@ -25,69 +202,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-9">
-                    <div class="toolbox">
-                        <div class="toolbox-left">
-                            <div class="toolbox-info">
-                                Showing <span>9 of 56</span> Products
-                            </div><!-- End .toolbox-info -->
-                        </div><!-- End .toolbox-left -->
 
-                        <div class="toolbox-right">
-                            <div class="toolbox-sort">
-                                <label for="sortby">Sort by:</label>
-                                <div class="select-custom">
-                                    <select name="sortby" id="sortby" class="form-control">
-                                        <option value="popularity" selected="selected">Most Popular</option>
-                                        <option value="rating">Most Rated</option>
-                                        <option value="date">Date</option>
-                                    </select>
-                                </div>
-                            </div><!-- End .toolbox-sort -->
-                            <div class="toolbox-layout">
-                                <a href="category-list.html" class="btn-layout">
-                                    <svg width="16" height="10">
-                                        <rect x="0" y="0" width="4" height="4" />
-                                        <rect x="6" y="0" width="10" height="4" />
-                                        <rect x="0" y="6" width="4" height="4" />
-                                        <rect x="6" y="6" width="10" height="4" />
-                                    </svg>
-                                </a>
-
-                                <a href="category-2cols.html" class="btn-layout">
-                                    <svg width="10" height="10">
-                                        <rect x="0" y="0" width="4" height="4" />
-                                        <rect x="6" y="0" width="4" height="4" />
-                                        <rect x="0" y="6" width="4" height="4" />
-                                        <rect x="6" y="6" width="4" height="4" />
-                                    </svg>
-                                </a>
-
-                                <a href="category.html" class="btn-layout">
-                                    <svg width="16" height="10">
-                                        <rect x="0" y="0" width="4" height="4" />
-                                        <rect x="6" y="0" width="4" height="4" />
-                                        <rect x="12" y="0" width="4" height="4" />
-                                        <rect x="0" y="6" width="4" height="4" />
-                                        <rect x="6" y="6" width="4" height="4" />
-                                        <rect x="12" y="6" width="4" height="4" />
-                                    </svg>
-                                </a>
-
-                                <a href="category-4cols.html" class="btn-layout active">
-                                    <svg width="22" height="10">
-                                        <rect x="0" y="0" width="4" height="4" />
-                                        <rect x="6" y="0" width="4" height="4" />
-                                        <rect x="12" y="0" width="4" height="4" />
-                                        <rect x="18" y="0" width="4" height="4" />
-                                        <rect x="0" y="6" width="4" height="4" />
-                                        <rect x="6" y="6" width="4" height="4" />
-                                        <rect x="12" y="6" width="4" height="4" />
-                                        <rect x="18" y="6" width="4" height="4" />
-                                    </svg>
-                                </a>
-                            </div><!-- End .toolbox-layout -->
-                        </div><!-- End .toolbox-right -->
-                    </div><!-- End .toolbox -->
 
                     <div class="products mb-3">
                         <div class="row justify-content-center">
@@ -123,6 +238,7 @@
                                     </div><!-- End .product -->
                                 </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
                             }
+
                         </div><!-- End .row -->
                     </div><!-- End .products -->
 
@@ -152,189 +268,100 @@
                                 <label>Filters:</label>
                                 <a href="#" class="sidebar-filter-clear">Clean All</a>
                             </div>*@<!-- End .widget widget-clean -->
+                        @if (Model.Category != null)
+                        {
+                            <div class="widget widget-collapsible">
+                                <h3 class="widget-title">
+                                    <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true" aria-controls="widget-1">
+                                        Kategoriler
+                                    </a>
+                                </h3><!-- End .widget-title -->
 
-                        <div class="widget widget-collapsible">
-                            <h3 class="widget-title">
-                                <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true" aria-controls="widget-1">
-                                    Kategoriler
-                                </a>
-                            </h3><!-- End .widget-title -->
+                                <div class="collapse show" id="widget-1">
+                                    <div class="widget-body">
+                                        <div class="filter-items filter-items-count">
 
-                            <div class="collapse show" id="widget-1">
-                                <div class="widget-body">
-                                    <div class="filter-items filter-items-count">
-                                        @if (Model.Category.SubCategories.Count == 0)
-                                        {
-                                            <div class="filter-item">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="cat-1">
-                                                    <label class="custom-control-label" for="cat-1">@Model.Category.Name</label>
-                                                </div><!-- End .custom-checkbox -->
-                                                <span class="item-count">3</span>
-                                            </div><!-- End .filter-item -->
-                                        }
-                                        else
-                                        {
-                                            foreach (var category in Model.Category.SubCategories)
+                                            @if (Model.Category?.SubCategories.Count == 0)
                                             {
                                                 <div class="filter-item">
                                                     <div class="custom-control custom-checkbox">
                                                         <input type="checkbox" class="custom-control-input" id="cat-1">
-                                                        <label class="custom-control-label" for="cat-1">@category.Name</label>
+                                                        <label class="custom-control-label" for="cat-1">@Model.Category.Name</label>
                                                     </div><!-- End .custom-checkbox -->
                                                     <span class="item-count">3</span>
                                                 </div><!-- End .filter-item -->
                                             }
+                                            else
+                                            {
+                                                foreach (var category in Model.Category?.SubCategories)
+                                                {
+                                                    <div class="filter-item">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input" id="cat-1">
+                                                            <label class="custom-control-label" for="cat-1">@category.Name</label>
+                                                        </div><!-- End .custom-checkbox -->
+                                                        <span class="item-count">3</span>
+                                                    </div><!-- End .filter-item -->
+                                                }
 
-                                        }
+                                            }
 
-                                    </div><!-- End .filter-items -->
-                                </div><!-- End .widget-body -->
-                            </div><!-- End .collapse -->
-                        </div><!-- End .widget -->
-
+                                        </div><!-- End .filter-items -->
+                                    </div><!-- End .widget-body -->
+                                </div><!-- End .collapse -->
+                            </div><!-- End .widget -->
+                        }
                         <div class="widget widget-collapsible">
                             <h3 class="widget-title">
                                 <a data-toggle="collapse" href="#widget-2" role="button" aria-expanded="true" aria-controls="widget-2">
-                                    Size
+                                    Marka
                                 </a>
                             </h3><!-- End .widget-title -->
 
                             <div class="collapse show" id="widget-2">
                                 <div class="widget-body">
                                     <div class="filter-items">
-                                        <div class="filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="size-1">
-                                                <label class="custom-control-label" for="size-1">XS</label>
-                                            </div><!-- End .custom-checkbox -->
-                                        </div><!-- End .filter-item -->
 
-                                        <div class="filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="size-2">
-                                                <label class="custom-control-label" for="size-2">S</label>
-                                            </div><!-- End .custom-checkbox -->
-                                        </div><!-- End .filter-item -->
+                                        @foreach (var item in Model.ProductList.GroupBy(x => x.Brand.Name))
+                                        {
+                                            <div class="filter-item">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" checked id="size-4">
+                                                    <label class="custom-control-label" for="size-4">@item.Key</label>
+                                                </div>
+                                            </div>
+                                        }
 
-                                        <div class="filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" checked id="size-3">
-                                                <label class="custom-control-label" for="size-3">M</label>
-                                            </div><!-- End .custom-checkbox -->
-                                        </div><!-- End .filter-item -->
 
-                                        <div class="filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" checked id="size-4">
-                                                <label class="custom-control-label" for="size-4">L</label>
-                                            </div><!-- End .custom-checkbox -->
-                                        </div><!-- End .filter-item -->
-
-                                        <div class="filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="size-5">
-                                                <label class="custom-control-label" for="size-5">XL</label>
-                                            </div><!-- End .custom-checkbox -->
-                                        </div><!-- End .filter-item -->
-
-                                        <div class="filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="size-6">
-                                                <label class="custom-control-label" for="size-6">XXL</label>
-                                            </div><!-- End .custom-checkbox -->
-                                        </div><!-- End .filter-item -->
-                                    </div><!-- End .filter-items -->
-                                </div><!-- End .widget-body -->
-                            </div><!-- End .collapse -->
-                        </div><!-- End .widget -->
-
-                        <div class="widget widget-collapsible">
-                            <h3 class="widget-title">
-                                <a data-toggle="collapse" href="#widget-3" role="button" aria-expanded="true" aria-controls="widget-3">
-                                    Colour
-                                </a>
-                            </h3><!-- End .widget-title -->
-
-                            <div class="collapse show" id="widget-3">
-                                <div class="widget-body">
-                                    <div class="filter-colors">
-                                        <a href="#" style="background: #b87145;"><span class="sr-only">Color Name</span></a>
-                                        <a href="#" style="background: #f0c04a;"><span class="sr-only">Color Name</span></a>
-                                        <a href="#" style="background: #333333;"><span class="sr-only">Color Name</span></a>
-                                        <a href="#" class="selected" style="background: #cc3333;"><span class="sr-only">Color Name</span></a>
-                                        <a href="#" style="background: #3399cc;"><span class="sr-only">Color Name</span></a>
-                                        <a href="#" style="background: #669933;"><span class="sr-only">Color Name</span></a>
-                                        <a href="#" style="background: #f2719c;"><span class="sr-only">Color Name</span></a>
-                                        <a href="#" style="background: #ebebeb;"><span class="sr-only">Color Name</span></a>
-                                    </div><!-- End .filter-colors -->
-                                </div><!-- End .widget-body -->
-                            </div><!-- End .collapse -->
-                        </div><!-- End .widget -->
-
-                        <div class="widget widget-collapsible">
-                            <h3 class="widget-title">
-                                <a data-toggle="collapse" href="#widget-4" role="button" aria-expanded="true" aria-controls="widget-4">
-                                    Brand
-                                </a>
-                            </h3><!-- End .widget-title -->
-
-                            <div class="collapse show" id="widget-4">
-                                <div class="widget-body">
-                                    <div class="filter-items">
-                                        <div class="filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="brand-1">
-                                                <label class="custom-control-label" for="brand-1">Next</label>
-                                            </div><!-- End .custom-checkbox -->
-                                        </div><!-- End .filter-item -->
-
-                                        <div class="filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="brand-2">
-                                                <label class="custom-control-label" for="brand-2">River Island</label>
-                                            </div><!-- End .custom-checkbox -->
-                                        </div><!-- End .filter-item -->
-
-                                        <div class="filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="brand-3">
-                                                <label class="custom-control-label" for="brand-3">Geox</label>
-                                            </div><!-- End .custom-checkbox -->
-                                        </div><!-- End .filter-item -->
-
-                                        <div class="filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="brand-4">
-                                                <label class="custom-control-label" for="brand-4">New Balance</label>
-                                            </div><!-- End .custom-checkbox -->
-                                        </div><!-- End .filter-item -->
-
-                                        <div class="filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="brand-5">
-                                                <label class="custom-control-label" for="brand-5">UGG</label>
-                                            </div><!-- End .custom-checkbox -->
-                                        </div><!-- End .filter-item -->
-
-                                        <div class="filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="brand-6">
-                                                <label class="custom-control-label" for="brand-6">F&F</label>
-                                            </div><!-- End .custom-checkbox -->
-                                        </div><!-- End .filter-item -->
-
-                                        <div class="filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="brand-7">
-                                                <label class="custom-control-label" for="brand-7">Nike</label>
-                                            </div><!-- End .custom-checkbox -->
-                                        </div><!-- End .filter-item -->
 
                                     </div><!-- End .filter-items -->
                                 </div><!-- End .widget-body -->
                             </div><!-- End .collapse -->
                         </div><!-- End .widget -->
+                        @*<div class="widget widget-collapsible">
+                                <h3 class="widget-title">
+                                    <a data-toggle="collapse" href="#widget-3" role="button" aria-expanded="true" aria-controls="widget-3">
+                                        Colour
+                                    </a>
+                                </h3>
+
+                                <div class="collapse show" id="widget-3">
+                                    <div class="widget-body">
+                                        <div class="filter-colors">
+                                            <a href="#" style="background: #b87145;"><span class="sr-only">Color Name</span></a>
+                                            <a href="#" style="background: #f0c04a;"><span class="sr-only">Color Name</span></a>
+                                            <a href="#" style="background: #333333;"><span class="sr-only">Color Name</span></a>
+                                            <a href="#" class="selected" style="background: #cc3333;"><span class="sr-only">Color Name</span></a>
+                                            <a href="#" style="background: #3399cc;"><span class="sr-only">Color Name</span></a>
+                                            <a href="#" style="background: #669933;"><span class="sr-only">Color Name</span></a>
+                                            <a href="#" style="background: #f2719c;"><span class="sr-only">Color Name</span></a>
+                                            <a href="#" style="background: #ebebeb;"><span class="sr-only">Color Name</span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>*@
+
+
 
                         <div class="widget widget-collapsible">
                             <h3 class="widget-title">
@@ -351,7 +378,15 @@
                                             <span id="filter-price-range"></span>
                                         </div><!-- End .filter-price-text -->
 
-                                        <div id="price-slider"></div><!-- End #price-slider -->
+                                        <div class="selector">
+                                            <div class="price-slider">
+                                                <div id="slider-range" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content">
+                                                    <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
+                                                    <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span><span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                                                </div>
+                                                <span id="min-price" data-currency="₺" class="slider-price">0</span> <span class="seperator">-</span> <span id="max-price" data-currency="₺" data-max="3500" class="slider-price">3500</span>
+                                            </div>
+                                        </div>
                                     </div><!-- End .filter-price -->
                                 </div><!-- End .widget-body -->
                             </div><!-- End .collapse -->
@@ -362,4 +397,23 @@
         </div><!-- End .container -->
     </div><!-- End .page-content -->
 </main>
+
+<script>
+    $("#slider-range").slider({
+        range: true,
+        min: 0,
+        max: 3500,
+        step: 50,
+        slide: function (event, ui) {
+            $("#min-price").html(ui.values[0]);
+
+            suffix = '';
+            if (ui.values[1] == $("#max-price").data('max')) {
+                suffix = ' +';
+            }
+            $("#max-price").html(ui.values[1] + suffix);
+        }
+    })
+
+</script>
 
