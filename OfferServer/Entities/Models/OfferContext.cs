@@ -14,12 +14,16 @@ namespace Entities.Models
         }
 
         public virtual DbSet<Address> Address { get; set; }
+        public virtual DbSet<Comment> Comments { get; set; }
+        public virtual DbSet<FavoriteList> FavoriteLists { get; set; }
+        public virtual DbSet<FavoriteListItem> FavoriteListItems { get; set; }
         public virtual DbSet<Brand> Brands { get; set; }
-        public virtual DbSet<Cart> Carts { get; set; }
+        public virtual DbSet<CartItem> CartItems { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<ErrorLog> ErrorLogs { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<OrderProduct> OrderProducts { get; set; }
+        public virtual DbSet<ProductOption> ProductOptions { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<ProductTag> ProductTags { get; set; }
         public virtual DbSet<Product> Products { get; set; }
@@ -33,6 +37,8 @@ namespace Entities.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+
             modelBuilder.Entity<Address>(entity =>
             {
                 entity.HasKey(e => e.Oid);
@@ -85,7 +91,7 @@ namespace Entities.Models
                     .HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Cart>(entity =>
+            modelBuilder.Entity<CartItem>(entity =>
             {
                 entity.HasKey(e => e.Oid);
 
@@ -435,6 +441,102 @@ namespace Entities.Models
                 entity.Property(e => e.Surname).HasMaxLength(50);
 
                 entity.Property(e => e.Username).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Comment>(entity =>
+            {
+                entity.HasKey(e => e.Oid);
+
+                entity.Property(e => e.Oid).HasColumnName("OId");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.CommentContent)
+                    .IsRequired()
+                    .HasMaxLength(1000);
+
+                entity.Property(e => e.ProductOid).HasColumnName("ProductOId");
+
+                entity.Property(e => e.UserOid).HasColumnName("UserOId");
+
+                entity.HasOne(d => d.User)
+                .WithMany(p => p.Comments)
+                .HasForeignKey(d => d.UserOid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Comments_User");
+
+                entity.HasOne(d => d.Product)
+                .WithMany(p => p.Comments)
+                .HasForeignKey(d => d.ProductOid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Comments_Product");
+            });
+
+            modelBuilder.Entity<ProductOption>(entity =>
+            {
+                entity.HasKey(e => e.Oid);
+
+                entity.Property(e => e.Oid).HasColumnName("OId");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Option)
+                    .IsRequired()
+                    .HasMaxLength(500);
+
+                entity.Property(e => e.ProductOid).HasColumnName("ProductOId");
+
+                entity.HasOne(d => d.Product)
+                .WithMany(p => p.ProductOptions)
+                .HasForeignKey(d => d.ProductOid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProductOptions_Product");
+            });
+
+            modelBuilder.Entity<FavoriteList>(entity =>
+            {
+                entity.HasKey(e => e.Oid);
+
+                entity.Property(e => e.Oid).HasColumnName("OId");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ListName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.State).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.UserOid).HasColumnName("UserOId");
+
+                entity.HasOne(d => d.User)
+               .WithMany(p => p.FavoriteLists)
+               .HasForeignKey(d => d.UserOid)
+               .OnDelete(DeleteBehavior.ClientSetNull)
+               .HasConstraintName("FK_FavoriteLists_User");
+
+            });
+
+            modelBuilder.Entity<FavoriteListItem>(entity =>
+            {
+                entity.HasKey(e => e.Oid);
+
+                entity.Property(e => e.Oid).HasColumnName("OId");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ProductOid).HasColumnName("ProductOId");
+
+           
+
+                entity.Property(e => e.FavoriteListOid).HasColumnName("FavoriteListOId");
+
+
+                entity.HasOne(d => d.FavoriteLists)
+                .WithMany(p => p.FavoriteListItems)
+                .HasForeignKey(d => d.FavoriteListOid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_FavoriteList_FavoriteListItems");
             });
 
             OnModelCreatingPartial(modelBuilder);

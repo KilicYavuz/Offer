@@ -4,14 +4,16 @@ using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Entities.Migrations
 {
     [DbContext(typeof(OfferContext))]
-    partial class OfferContextModelSnapshot : ModelSnapshot
+    [Migration("20200531133623_CommentAndFavorite")]
+    partial class CommentAndFavorite
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -181,30 +183,25 @@ namespace Entities.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Entities.Models.Comment", b =>
+            modelBuilder.Entity("Entities.Models.Comments", b =>
                 {
                     b.Property<Guid>("Oid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("OId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CommentContent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("ProductOid")
-                        .HasColumnName("ProductOId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserOid")
-                        .HasColumnName("UserOId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Oid");
@@ -259,70 +256,6 @@ namespace Entities.Migrations
                         .HasName("PK_dbo.ErrorLogs");
 
                     b.ToTable("ErrorLogs");
-                });
-
-            modelBuilder.Entity("Entities.Models.FavoriteList", b =>
-                {
-                    b.Property<Guid>("Oid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("OId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("ListName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<int>("State")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValueSql("((1))");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserOid")
-                        .HasColumnName("UserOId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Oid");
-
-                    b.HasIndex("UserOid");
-
-                    b.ToTable("FavoriteLists");
-                });
-
-            modelBuilder.Entity("Entities.Models.FavoriteListItem", b =>
-                {
-                    b.Property<Guid>("Oid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("OId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<Guid>("FavoriteListOid")
-                        .HasColumnName("FavoriteListOId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProductOid")
-                        .HasColumnName("ProductOId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Oid");
-
-                    b.HasIndex("FavoriteListOid");
-
-                    b.HasIndex("ProductOid");
-
-                    b.ToTable("FavoriteListItems");
                 });
 
             modelBuilder.Entity("Entities.Models.Notification", b =>
@@ -507,23 +440,19 @@ namespace Entities.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Entities.Models.ProductOption", b =>
+            modelBuilder.Entity("Entities.Models.ProductOptions", b =>
                 {
                     b.Property<Guid>("Oid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("OId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Option")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(500)")
-                        .HasMaxLength(500);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("ProductOid")
-                        .HasColumnName("ProductOId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("UpdatedDate")
@@ -853,41 +782,17 @@ namespace Entities.Migrations
                         .HasConstraintName("FK_Categories_Categories");
                 });
 
-            modelBuilder.Entity("Entities.Models.Comment", b =>
+            modelBuilder.Entity("Entities.Models.Comments", b =>
                 {
                     b.HasOne("Entities.Models.Product", "Product")
                         .WithMany("Comments")
                         .HasForeignKey("ProductOid")
-                        .HasConstraintName("FK_Comments_Product")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Entities.Models.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserOid")
-                        .HasConstraintName("FK_Comments_User")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Entities.Models.FavoriteList", b =>
-                {
-                    b.HasOne("Entities.Models.User", "User")
-                        .WithMany("FavoriteLists")
-                        .HasForeignKey("UserOid")
-                        .HasConstraintName("FK_FavoriteLists_User")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Entities.Models.FavoriteListItem", b =>
-                {
-                    b.HasOne("Entities.Models.FavoriteList", "FavoriteLists")
-                        .WithMany("FavoriteListItems")
-                        .HasForeignKey("FavoriteListOid")
-                        .HasConstraintName("FK_FavoriteList_FavoriteListItems")
-                        .IsRequired();
-
-                    b.HasOne("Entities.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductOid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -937,12 +842,12 @@ namespace Entities.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Entities.Models.ProductOption", b =>
+            modelBuilder.Entity("Entities.Models.ProductOptions", b =>
                 {
                     b.HasOne("Entities.Models.Product", "Product")
                         .WithMany("ProductOptions")
                         .HasForeignKey("ProductOid")
-                        .HasConstraintName("FK_ProductOptions_Product")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

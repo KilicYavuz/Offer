@@ -29,6 +29,8 @@
     <link rel="stylesheet" href="~/Assets/assets/css/plugins/owl-carousel/owl.carousel.css">
     <link rel="stylesheet" href="~/Assets/assets/css/plugins/magnific-popup/magnific-popup.css">
     <link rel="stylesheet" href="~/Assets/assets/css/plugins/jquery.countdown.css">
+    <link href="~/Assets/inspinia/font-awesome/css/font-awesome.css" rel="stylesheet">
+    S
     <!-- Main CSS File -->
     <link rel="stylesheet" href="~/Assets/assets/css/style.css">
     <link rel="stylesheet" href="~/Assets/assets/css/skins/skin-demo-13.css">
@@ -113,7 +115,8 @@
                         </button>
 
                         <a href='@Url.Action("Index", "Home")' class="logo">
-                            <img src="~/Assets/assets/images/demos/demo-13/logo.png" alt="Molla Logo" width="105" height="25">
+                            @*<img src="~/Assets/assets/images/demos/demo-13/logo.png" alt="Molla Logo" width="105" height="25">*@
+                            <img src="https://i.hizliresim.com/oat0ur.png" alt="Molla Logo" width="105" height="25">
                         </a>
                     </div><!-- End .header-left -->
 
@@ -195,6 +198,17 @@
                                     </div>
                                 </div>*@
 
+
+                            <a href='@Url.Action("Wishlist", "User")' class="wishlist-link">
+                                <i class="icon-user"></i>
+                                @*<span class="wishlist-count">3</span>*@
+                                <span class="wishlist-txt">Profil</span>
+                            </a>
+                            <a href='@Url.Action("Wishlist", "User")' class="wishlist-link">
+                                <i class="icon-home"></i>
+                                @*<span class="wishlist-count">3</span>*@
+                                <span class="wishlist-txt">Mağaza</span>
+                            </a>
                             <a href='@Url.Action("Wishlist", "User")' class="wishlist-link">
                                 <i class="icon-heart-o"></i>
                                 <span class="wishlist-count">3</span>
@@ -207,6 +221,9 @@
                                     <span class="cart-count">2</span>
                                     <span class="cart-txt">Sepet</span>
                                 </a>
+
+
+
 
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <div class="dropdown-cart-products">
@@ -587,7 +604,7 @@
                             </li>
                             <li>
                                 <a href="~/Assets/product.html" class="sf-with-ul">Outlet</a>
-                                
+
                             </li>
                             <li>
                                 <a href="#">Hakkımızda</a>

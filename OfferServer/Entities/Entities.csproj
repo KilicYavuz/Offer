@@ -15,6 +15,12 @@
     <Compile Include="Migrations\20200426101705_refactor.designer.cs" />
     <Compile Include="Migrations\20200426203827_state.cs" />
     <Compile Include="Migrations\20200426203827_state.designer.cs" />
+    <Compile Include="Migrations\20200530125745_CartToCartItems.cs" />
+    <Compile Include="Migrations\20200530125745_CartToCartItems.Designer.cs" />
+    <Compile Include="Migrations\20200531133623_CommentAndFavorite.cs" />
+    <Compile Include="Migrations\20200531133623_CommentAndFavorite.Designer.cs" />
+    <Compile Include="Migrations\20200531140833_CommentAndFavoriteEdit2.cs" />
+    <Compile Include="Migrations\20200531140833_CommentAndFavoriteEdit2.Designer.cs" />
     <Compile Include="Migrations\OfferContextModelSnapshot.cs" />
   </ItemGroup>
 

@@ -16,7 +16,8 @@ namespace Entities.Models
             ProductTags = new HashSet<ProductTag>();
             RequestProducts = new HashSet<RequestProduct>();
             SupplierProducts = new HashSet<SupplierProduct>();
-            ProductOptions = new HashSet<ProductOptions>();
+            ProductOptions = new HashSet<ProductOption>();
+            Comments = new HashSet<Comment>();
         }
 
         public string Name { get; set; }
@@ -37,7 +38,7 @@ namespace Entities.Models
         public virtual Category Category { get; set; }
         public virtual ICollection<OrderProduct> OrderProducts { get; set; }
         public virtual ICollection<ProductTag> ProductTags { get; set; }
-        public virtual ICollection<ProductOptions> ProductOptions { get; set; }
+        public virtual ICollection<ProductOption> ProductOptions { get; set; }
         public virtual ICollection<RequestProduct> RequestProducts { get; set; }
         public virtual ICollection<SupplierProduct> SupplierProducts { get; set; }
         
@@ -46,5 +47,10 @@ namespace Entities.Models
 
         [NotMapped]
         public virtual ICollection<Tag> TagList { get; set; }
+
+        /// <summary>
+        /// Ürün'e ait yorumlar
+        /// </summary>
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

@@ -21,7 +21,13 @@ namespace Entities.Models
         public Guid ShippingAddressOid { get; set; }
         public Guid? BillingAddresOid { get; set; }
 
+        /// <summary>
+        /// Satın Alan User
+        /// </summary>
         public virtual User Customer { get; set; }
+        /// <summary>
+        /// Siparişteki Ürünler
+        /// </summary>
         public virtual ICollection<OrderProduct> OrderProducts { get; set; }
     }
 }
