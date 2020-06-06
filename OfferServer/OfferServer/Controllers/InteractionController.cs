@@ -1,8 +1,13 @@
 ﻿using Contracts;
+using Entities;
+using Entities.Models;
 using LoggerService;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
 
 namespace OfferServer.Controllers
 {
@@ -24,23 +29,38 @@ namespace OfferServer.Controllers
             _logger = logger;
             _repoWrapper = repoWrapper;
         }
-        
-        [HttpGet("addWishList/{id}")]
-        public IActionResult AddWishList(Guid id)
+
+        #region Favori
+
+        [HttpGet("addWishList/{id}/{userId}")]
+        public IActionResult AddWishList(Guid id, Guid userId)
         {
             try
             {
-                var product = _repoWrapper.Product.GetById(id);
+                var favList = _repoWrapper.FavoriteList.FindByCondition(x => x.UserOid == userId).FirstOrDefault();
 
-                if (product == null)
+                if (favList == null)
                 {
-                    return NotFound();
+                    favList = new FavoriteList();
+                    favList.Oid = Guid.NewGuid();
+                    favList.State = Entities.Enums.ItemState.Active;
+                    favList.UserOid = userId;
+                    favList.CreatedDate = DateTime.Now;
+                    favList.ListName = "Favori Listem 1";
+                    _repoWrapper.FavoriteList.Add(favList);
                 }
 
-                var json = JsonConvert.SerializeObject(product);
-                
+                var fl = new FavoriteListItem();
+                fl.Oid = Guid.NewGuid();
+                fl.CreatedDate = DateTime.Now;
+                fl.FavoriteListOid = favList.Oid;
+                fl.ProductOid = id;
+
+                _repoWrapper.FavoriteListItem.Add(fl);
+                _repoWrapper.Save();
+
                 ///TODO:addWishList
-                
+
                 return NoContent();
             }
             catch (Exception ex)
@@ -49,6 +69,112 @@ namespace OfferServer.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+        [HttpGet("deleteFavoriteItem/{id}")]
+        public IActionResult DeleteFavoriteItem(Guid productId)
+        {
+            try
+            {
+                _repoWrapper.FavoriteListItem.Delete(_repoWrapper.FavoriteListItem.FindByCondition(x => x.ProductOid == productId).FirstOrDefault());
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetAllProducts action: {ex.Message}");
+                ErrorApiModel eam = new ErrorApiModel();
+                eam.Message = $"Something went wrong inside GetAllProducts action: {ex.Message}";
+                eam.StatusCode = "500";
+                return StatusCode(500, eam);
+            }
+        }
+
+        [HttpGet("getWishList/{id}")]
+        public IActionResult GetWishList(Guid userId)
+        {
+            try
+            {
+                ICollection<FavoriteListItem> favoriteListItems = _repoWrapper.FavoriteList.FindByCondition(x => x.UserOid == userId).ToList().Select(y => y.FavoriteListItems).FirstOrDefault();
+                var json = JsonConvert.SerializeObject(favoriteListItems);
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetAllProducts action: {ex.Message}");
+                ErrorApiModel eam = new ErrorApiModel();
+                eam.Message = $"Something went wrong inside GetAllProducts action: {ex.Message}";
+                eam.StatusCode = "500";
+                return StatusCode(500, eam);
+            }
+        }
+
+        #endregion
+
+        #region Yorum
+
+        [HttpPost("addComment")]
+        public IActionResult AddComment([FromBody] object postData)
+        {
+            try
+            {
+                if (postData == null)
+                {
+                    return BadRequest();
+                }
+                var data = JsonConvert.DeserializeObject<Comment>(postData.ToString());
+
+                data.Oid = Guid.NewGuid();
+                data.CreatedDate = DateTime.Now;
+
+                _repoWrapper.Comment.Add(data);
+                _repoWrapper.Save();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside AddProduct action: {ex.InnerException?.Message ?? ex.Message}");
+                _logger.LogError($"Something went wrong inside AddProduct action: {ex.StackTrace}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet("getCommentListForProduct/{id}")]
+        public IActionResult GetCommentListForProduct(Guid productId)
+        {
+            try
+            {
+                var comments = _repoWrapper.Comment.FindByCondition(x => x.ProductOid == productId).ToList();
+                var json = JsonConvert.SerializeObject(comments);
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetAllProducts action: {ex.Message}");
+                ErrorApiModel eam = new ErrorApiModel();
+                eam.Message = $"Something went wrong inside GetAllProducts action: {ex.Message}";
+                eam.StatusCode = "500";
+                return StatusCode(500, eam);
+            }
+        }
+
+        [HttpGet("deleteComment/{id}")]
+        public IActionResult DeleteComment(Guid commentId)
+        {
+            try
+            {
+                _repoWrapper.Comment.Delete(_repoWrapper.Comment.GetById(commentId));
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetAllProducts action: {ex.Message}");
+                ErrorApiModel eam = new ErrorApiModel();
+                eam.Message = $"Something went wrong inside GetAllProducts action: {ex.Message}";
+                eam.StatusCode = "500";
+                return StatusCode(500, eam);
+            }
+        }
+
+        #endregion
 
     }
 }

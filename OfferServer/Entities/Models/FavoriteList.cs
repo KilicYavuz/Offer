@@ -10,6 +10,10 @@ namespace Entities.Models
     [JsonObject(IsReference = true)]
     public class FavoriteList : Entity
     {
+        public FavoriteList()
+        {
+            FavoriteListItems = new HashSet<FavoriteListItem>();
+        }
         public Guid UserOid { get; set; }
         public string ListName { get; set; }
         public ItemState State { get; set; }

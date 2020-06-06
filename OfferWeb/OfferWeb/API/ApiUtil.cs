@@ -355,9 +355,15 @@ namespace OfferWeb.API
         #endregion
 
         #region User
-        public static async Task<string> AddWishList(Guid id)
+        public static async Task<List<Product>> GetBrandList(Guid userId)
         {
-            var httpResponse = await Get("Interaction/addWishList/" + id.ToString());
+            var httpResponse = await Get("Interaction/getWishList/" + userId.ToString());
+            var products = JsonConvert.DeserializeObject<List<Product>>(httpResponse);
+            return products;
+        }
+        public static async Task<string> AddWishList(Guid id, Guid userId)
+        {
+            var httpResponse = await Get("Interaction/addWishList/" + id.ToString() + "/" + userId.ToString());
             return httpResponse;
         }
         #endregion
@@ -368,7 +374,7 @@ namespace OfferWeb.API
         {
             if (string.IsNullOrEmpty(term) || term.Length < 2)
                 return null;
-            var httpResponse = await Get("Product/searchproduct?term=" + term+"&categoryid="+categoryId);
+            var httpResponse = await Get("Product/searchproduct?term=" + term + "&categoryid=" + categoryId);
             var products = JsonConvert.DeserializeObject<List<Product>>(httpResponse);
             return products;
         }

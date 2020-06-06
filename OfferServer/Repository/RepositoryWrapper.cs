@@ -10,6 +10,9 @@ namespace Repository
         private IAddressRepository _address;
         private ICategoryRepository _category;
         private IProductRepository _product;
+        private ICommentRepository _comment;
+        private IFavoriteListRepository _favoriteList;
+        private IFavoriteListItemRepository _favoriteListItem;
         private IBrandRepository _brand;
         private IProductTagRepository _productTag;
         private ITagRepository _tag;
@@ -37,6 +40,19 @@ namespace Repository
                 }
 
                 return _address;
+            }
+        }
+
+        public ICommentRepository Comment
+        {
+            get
+            {
+                if (_comment == null)
+                {
+                    _comment = new CommentRepository(_repoContext);
+                }
+
+                return _comment;
             }
         }
 
@@ -102,6 +118,32 @@ namespace Repository
                 }
 
                 return _tag;
+            }
+        }
+
+        public IFavoriteListRepository FavoriteList
+        {
+            get
+            {
+                if (_favoriteList == null)
+                {
+                    _favoriteList = new FavoriteListRepository(_repoContext);
+                }
+
+                return _favoriteList;
+            }
+        }
+
+        public IFavoriteListItemRepository FavoriteListItem
+        {
+            get
+            {
+                if (_favoriteListItem == null)
+                {
+                    _favoriteListItem = new FavoriteListItemRepository(_repoContext);
+                }
+
+                return _favoriteListItem;
             }
         }
 
