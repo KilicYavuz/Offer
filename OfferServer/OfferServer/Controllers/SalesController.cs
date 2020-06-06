@@ -1,4 +1,5 @@
 ﻿using Contracts;
+using Entities.Models;
 using LoggerService;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -42,5 +43,61 @@ namespace OfferServer.Controllers
         //        return StatusCode(500, "Internal server error");
         //    }
         //}
+
+
+        #region Order
+
+        [HttpPost("addOrder")]
+        public IActionResult AddOrder([FromBody] object postData)
+        {
+            try
+            {
+                if (postData == null)
+                {
+                    return BadRequest();
+                }
+                var data = JsonConvert.DeserializeObject<Order>(postData.ToString());
+
+
+                _repoWrapper.Order.Add(data);
+                _repoWrapper.Save();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside AddProduct action: {ex.InnerException?.Message ?? ex.Message}");
+                _logger.LogError($"Something went wrong inside AddProduct action: {ex.StackTrace}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        #endregion
+
+        #region OrderProuct
+        [HttpPost("addOrderProduct")]
+        public IActionResult AddOrderProduct([FromBody] object postData)
+        {
+            try
+            {
+                if (postData == null)
+                {
+                    return BadRequest();
+                }
+                var data = JsonConvert.DeserializeObject<OrderProduct>(postData.ToString());
+
+
+                _repoWrapper.OrderProduct.Add(data);
+                _repoWrapper.Save();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside AddProduct action: {ex.InnerException?.Message ?? ex.Message}");
+                _logger.LogError($"Something went wrong inside AddProduct action: {ex.StackTrace}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+        #endregion
+
     }
 }

@@ -10,10 +10,12 @@ namespace Repository
         private IAddressRepository _address;
         private ICategoryRepository _category;
         private IProductRepository _product;
+        private IOrderProductRepository _orderProduct;
         private ICommentRepository _comment;
         private IFavoriteListRepository _favoriteList;
         private IFavoriteListItemRepository _favoriteListItem;
         private IBrandRepository _brand;
+        private IOrderRepository _order;
         private IProductTagRepository _productTag;
         private ITagRepository _tag;
 
@@ -144,6 +146,32 @@ namespace Repository
                 }
 
                 return _favoriteListItem;
+            }
+        }
+
+        public IOrderRepository Order
+        {
+            get
+            {
+                if (_order == null)
+                {
+                    _order = new OrderRepository(_repoContext);
+                }
+
+                return _order;
+            }
+        }
+
+        public IOrderProductRepository OrderProduct
+        {
+            get
+            {
+                if (_orderProduct == null)
+                {
+                    _orderProduct = new OrderProductRepository(_repoContext);
+                }
+
+                return _orderProduct;
             }
         }
 

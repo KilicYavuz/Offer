@@ -6,6 +6,8 @@
         IAddressRepository Address { get; }
         ICategoryRepository Category { get; }
         IProductRepository Product { get; }
+        IOrderRepository Order { get; }
+        IOrderProductRepository OrderProduct { get; }
         ICommentRepository Comment { get; }
         IFavoriteListRepository FavoriteList { get; }
         IFavoriteListItemRepository FavoriteListItem { get; }
