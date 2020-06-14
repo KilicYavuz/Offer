@@ -26,7 +26,7 @@ namespace OfferServer.TokenAuth
             var tokenInstance = new Token();
 
             //Security  Key'in simetriğini alıyoruz.
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(user.Email+Configuration["Token:SecurityKey"]));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Token:SecurityKey"]));
 
             //Şifrelenmiş kimliği oluşturuyoruz.
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

@@ -72,7 +72,7 @@ namespace OfferServer.Controllers
             }
         }
 
-        [HttpGet("deleteFavoriteItem/{id}")]
+        [HttpGet("deleteFavoriteItem/{productId}")]
         public IActionResult DeleteFavoriteItem(Guid productId)
         {
             try
@@ -90,7 +90,7 @@ namespace OfferServer.Controllers
             }
         }
 
-        [HttpGet("getWishList/{id}")]
+        [HttpGet("getWishList/{userId}")]
         public IActionResult GetWishList(Guid userId)
         {
             try
