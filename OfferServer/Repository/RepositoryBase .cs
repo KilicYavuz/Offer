@@ -43,7 +43,7 @@ namespace Repository
 
         public void Update(T entity)
         {
-            entity.UpdatedDate = DateTime.Now;
+            entity.ModifiedDate = DateTime.Now;
             //this.OfferContext.Attach<T>(entity);
             //this.OfferContext.Entry<T>(entity).Property("Oid").IsModified= true;
             //this.OfferContext.Entry<T>(entity).State = EntityState.Modified;

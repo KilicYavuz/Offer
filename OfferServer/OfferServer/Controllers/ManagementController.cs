@@ -177,7 +177,7 @@ namespace OfferServer.Controllers
                 else
                 {
                     data.State = ItemState.Deleted;
-                    data.UpdatedDate = DateTime.Now;
+                    data.ModifiedDate = DateTime.Now;
                     _repoWrapper.Product.Update(data);
                 }
 
@@ -278,7 +278,7 @@ namespace OfferServer.Controllers
                     return NotFound();
                 }
 
-                data.UpdatedDate = DateTime.Now;
+                data.ModifiedDate = DateTime.Now;
                 _repoWrapper.Brand.Update(data);
                 _repoWrapper.Save();
                 return NoContent();
@@ -308,7 +308,7 @@ namespace OfferServer.Controllers
                 else
                 {
                     data.State = ItemState.Deleted;
-                    data.UpdatedDate = DateTime.Now;
+                    data.ModifiedDate = DateTime.Now;
                     _repoWrapper.Brand.Update(data);
                 }
 
@@ -426,7 +426,7 @@ namespace OfferServer.Controllers
                     return NotFound();
                 }
 
-                data.UpdatedDate = DateTime.Now;
+                data.ModifiedDate = DateTime.Now;
                 _repoWrapper.Category.Update(data);
                 _repoWrapper.Save();
 
@@ -457,7 +457,7 @@ namespace OfferServer.Controllers
                 else
                 {
                     data.State = ItemState.Deleted;
-                    data.UpdatedDate = DateTime.Now;
+                    data.ModifiedDate = DateTime.Now;
                     _repoWrapper.Category.Update(data);
                 }
 

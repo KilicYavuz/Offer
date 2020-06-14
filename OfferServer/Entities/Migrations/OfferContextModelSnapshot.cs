@@ -49,6 +49,9 @@ namespace Entities.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime");
 
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("NameSurname")
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
@@ -56,9 +59,6 @@ namespace Entities.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(15)")
                         .HasMaxLength(15);
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserOid")
                         .HasColumnName("UserOId")
@@ -88,6 +88,9 @@ namespace Entities.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -95,9 +98,6 @@ namespace Entities.Migrations
 
                     b.Property<int>("State")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid");
 
@@ -121,6 +121,9 @@ namespace Entities.Migrations
                     b.Property<int>("ItemType")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
@@ -134,9 +137,6 @@ namespace Entities.Migrations
                     b.Property<Guid>("SupplierOid")
                         .HasColumnName("SupplierOId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid");
 
@@ -156,6 +156,9 @@ namespace Entities.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -170,9 +173,6 @@ namespace Entities.Migrations
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid");
 
@@ -196,12 +196,12 @@ namespace Entities.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime");
 
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("ProductOid")
                         .HasColumnName("ProductOId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserOid")
                         .HasColumnName("UserOId")
@@ -245,15 +245,15 @@ namespace Entities.Migrations
                         .HasColumnType("nvarchar(500)")
                         .HasMaxLength(500);
 
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("StackTrace")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Tag")
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid")
                         .HasName("PK_dbo.ErrorLogs");
@@ -276,13 +276,13 @@ namespace Entities.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("State")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValueSql("((1))");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserOid")
                         .HasColumnName("UserOId")
@@ -309,12 +309,12 @@ namespace Entities.Migrations
                         .HasColumnName("FavoriteListOId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("ProductOid")
                         .HasColumnName("ProductOId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid");
 
@@ -341,11 +341,11 @@ namespace Entities.Migrations
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("State")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserOid")
                         .HasColumnName("UserOId")
@@ -374,6 +374,9 @@ namespace Entities.Migrations
                         .HasColumnName("CustomerOId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("PaymentState")
                         .HasColumnType("bit");
 
@@ -389,9 +392,6 @@ namespace Entities.Migrations
 
                     b.Property<double>("TotalPrice")
                         .HasColumnType("float");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid")
                         .HasName("PK_Orders");
@@ -414,6 +414,9 @@ namespace Entities.Migrations
                     b.Property<int>("ItemType")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("OrderOid")
                         .HasColumnName("OrderOId")
                         .HasColumnType("uniqueidentifier");
@@ -431,9 +434,6 @@ namespace Entities.Migrations
                     b.Property<Guid>("SupplierOid")
                         .HasColumnName("SupplierOId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid");
 
@@ -470,6 +470,9 @@ namespace Entities.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -486,9 +489,6 @@ namespace Entities.Migrations
 
                     b.Property<int>("Stock")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("VerificationCode")
                         .HasColumnType("nvarchar(20)")
@@ -517,6 +517,9 @@ namespace Entities.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime");
 
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Option")
                         .IsRequired()
                         .HasColumnType("nvarchar(500)")
@@ -525,9 +528,6 @@ namespace Entities.Migrations
                     b.Property<Guid>("ProductOid")
                         .HasColumnName("ProductOId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid");
 
@@ -549,12 +549,12 @@ namespace Entities.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("Oid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("ProductOid", "TagOid");
 
@@ -580,15 +580,15 @@ namespace Entities.Migrations
                         .HasColumnName("CustomerOId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("State")
                         .HasColumnType("int");
 
                     b.Property<Guid?>("SupplierOid")
                         .HasColumnName("SupplierOId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid")
                         .HasName("PK_Requests");
@@ -613,6 +613,9 @@ namespace Entities.Migrations
                     b.Property<bool>("IsPartialOffer")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("RequestOid")
                         .HasColumnName("RequestOId")
                         .HasColumnType("uniqueidentifier");
@@ -626,9 +629,6 @@ namespace Entities.Migrations
                     b.Property<Guid>("SupplierOid")
                         .HasColumnName("SupplierOId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid")
                         .HasName("PK_RequestOffers");
@@ -650,6 +650,9 @@ namespace Entities.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime");
 
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<double?>("OfferedPrice")
                         .HasColumnType("float");
 
@@ -663,9 +666,6 @@ namespace Entities.Migrations
                     b.Property<Guid>("RequestProductOid")
                         .HasColumnName("RequestProductOId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid");
 
@@ -689,6 +689,9 @@ namespace Entities.Migrations
                     b.Property<bool>("IsPartial")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("ProductOid")
                         .HasColumnName("ProductOId")
                         .HasColumnType("uniqueidentifier");
@@ -699,9 +702,6 @@ namespace Entities.Migrations
                     b.Property<Guid>("RequestOid")
                         .HasColumnName("RequestOId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid");
 
@@ -725,6 +725,9 @@ namespace Entities.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<double?>("Price")
                         .HasColumnType("float");
 
@@ -738,9 +741,6 @@ namespace Entities.Migrations
                     b.Property<Guid>("SupplierOid")
                         .HasColumnName("SupplierOId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid")
                         .HasName("PK_SalesList");
@@ -762,6 +762,9 @@ namespace Entities.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime");
 
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -769,9 +772,6 @@ namespace Entities.Migrations
 
                     b.Property<int>("State")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Oid");
 
@@ -784,6 +784,9 @@ namespace Entities.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("OId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AccesToken")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("date");
@@ -800,6 +803,9 @@ namespace Entities.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
@@ -812,6 +818,12 @@ namespace Entities.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
 
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RefreshTokenEndDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("State")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
@@ -820,9 +832,6 @@ namespace Entities.Migrations
                     b.Property<string>("Surname")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("UserType")
                         .HasColumnType("int");

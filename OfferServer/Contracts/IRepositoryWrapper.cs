@@ -1,4 +1,6 @@
-﻿namespace Contracts
+﻿using System.Threading.Tasks;
+
+namespace Contracts
 {
     public interface IRepositoryWrapper
     {
@@ -16,5 +18,6 @@
         ITagRepository Tag { get; }
 
         void Save();
+        Task SaveAsync();
     }
 }

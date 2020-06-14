@@ -34,6 +34,11 @@ namespace Entities.Models
         public ItemState State { get; set; }
         public UserType UserType { get; set; }
         public string PhoneNumber { get; set; }
+        public string AccesToken { get; set; }
+        public string RefreshToken { get; set; }
+        public DateTime? RefreshTokenEndDate { get; set; }
+
+
         public virtual ICollection<Address> Address { get; set; }
 
 
@@ -68,7 +73,6 @@ namespace Entities.Models
         public virtual ICollection<Comment> Comments { get; set; }
 
         public virtual ICollection<FavoriteList> FavoriteLists { get; set; }
-
-
+        
     }
 }

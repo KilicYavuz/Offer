@@ -19,6 +19,6 @@ namespace Entities.Models
             set { createdDate = value; }
         }
 
-        public DateTime? UpdatedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
     }
 }

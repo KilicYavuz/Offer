@@ -2,6 +2,7 @@
 using Entities;
 using Entities.Models;
 using LoggerService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -11,6 +12,7 @@ using System.Security.Cryptography;
 
 namespace OfferServer.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class InteractionController : ControllerBase
