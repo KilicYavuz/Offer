@@ -1,0 +1,117 @@
+﻿@{
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+<main class="main">
+    <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+        <div class="container">
+            <h1 class="page-title">Siparişler<span>Sipariş</span></h1>
+        </div><!-- End .container -->
+    </div><!-- End .page-header -->
+    <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Anasayfa</a></li>
+                <li class="breadcrumb-item"><a href="#">Siparişler</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Sipariş Bilgilerim</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+
+    <div class="page-content">
+        <div class="dashboard">
+            <div class="container">
+                <div class="row">
+                    <aside class="col-md-4 col-lg-3">
+                        <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">Siparişlerim</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab" aria-controls="tab-address" aria-selected="false">Sipariş Takip</a>
+                            </li>
+                        </ul>
+                    </aside>
+
+                    <div class="col-md-8 col-lg-9">
+                        <div class="tab-content">
+                            <div class="tab-pane fade" id="tab-address" role="tabpanel" aria-labelledby="tab-address-link">
+                                <p>Adres Bilgilerinizi Güncel Tuttuğunuzdan Emin Olun.</p>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="card card-dashboard">
+                                            <div class="card-body">
+                                                <h3 class="card-title">Ödeme Adresi</h3><!-- End .card-title -->
+
+                                                <p>
+                                                    Ahmet Erdoğan<br>
+                                                    Yıldızlar Mahallesi<br>
+                                                    Demet Sokak<br>
+                                                    142/4<br>
+                                                    0 555 555 55 55 <br>
+                                                    ahmeterdogan@mail.com<br>
+                                                    <a href="#">Düzenle <i class="icon-edit"></i></a>
+                                                </p>
+                                            </div><!-- End .card-body -->
+                                        </div><!-- End .card-dashboard -->
+                                    </div><!-- End .col-lg-6 -->
+
+                                    <div class="col-lg-6">
+                                        <div class="card card-dashboard">
+                                            <div class="card-body">
+                                                <h3 class="card-title">Kargo Adresi</h3><!-- End .card-title -->
+
+                                                <p>
+                                                    Henüz Bir Kargo Adresi Eklemediniz.<br>
+                                                    <a href="#">Düzenle <i class="icon-edit"></i></a>
+                                                </p>
+                                            </div><!-- End .card-body -->
+                                        </div><!-- End .card-dashboard -->
+                                    </div><!-- End .col-lg-6 -->
+                                </div><!-- End .row -->
+                            </div>
+
+                            <div class="tab-pane fade show active" id="tab-account" role="tabpanel" aria-labelledby="tab-account-link">
+                                <form action="#">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>Ad *</label>
+                                            <input type="text" class="form-control" required>
+                                        </div><!-- End .col-sm-6 -->
+
+                                        <div class="col-sm-6">
+                                            <label>Soyad *</label>
+                                            <input type="text" class="form-control" required>
+                                        </div><!-- End .col-sm-6 -->
+                                    </div><!-- End .row -->
+
+                                    <label>Kullanıcı Adı *</label>
+                                    <input type="text" class="form-control" required>
+                                    <small class="form-text">Giriş Yaparken kullanacağınız kullanıcı isminiz.</small>
+
+                                    <label>Email *</label>
+                                    <input type="email" class="form-control" required>
+
+                                    <label>Mevcut Şifre</label>
+                                    <input type="password" class="form-control">
+
+                                    <label>Yeni Şifre</label>
+                                    <input type="password" class="form-control">
+
+                                    <label>Yeni Şifre Tekrarı</label>
+                                    <input type="password" class="form-control mb-2">
+
+                                    <button type="submit" class="btn btn-outline-primary-2">
+                                        <span>KAYDET</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </button>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

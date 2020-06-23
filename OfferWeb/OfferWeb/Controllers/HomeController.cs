@@ -37,11 +37,30 @@ namespace OfferWeb.Controllers
             return View();
         }
 
+        public ActionResult Login(string mail, string password)
+        {
+            var token = GetTokenByPassword(mail, password);
+            if(token != null)
+            {
+                HttpContext.Session.Set("token", System.Text.Encoding.UTF8.GetBytes(token));
+                ViewBag.Token = token;
+                return Content(token);
+            }
+            else
+            {
+                return Content("Error");
+            }
+
+            return View();
+        }
+                
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
 
             return View();
         }
+
+
     }
 }
