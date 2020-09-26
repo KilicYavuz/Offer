@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Entities.Models;
+using OfferWeb.Helpers;
 
 namespace OfferWeb.Controllers
 {
+    [ServiceFilter(typeof(LoginFilter))]
     public class HomeController : BaseController
     {
         public ActionResult Index()
@@ -37,10 +39,17 @@ namespace OfferWeb.Controllers
             return View();
         }
 
-        public ActionResult Login(string mail, string password)
+        [IgnoreAttribute]
+        public IActionResult Login(string mail, string password)
+        {
+            return View();
+        }
+
+        [IgnoreAttribute]
+        public ActionResult LogIn(string mail, string password)
         {
             var token = GetTokenByPassword(mail, password);
-            if(token != null)
+            if (token != null)
             {
                 HttpContext.Session.Set("token", System.Text.Encoding.UTF8.GetBytes(token));
                 ViewBag.Token = token;
@@ -53,7 +62,7 @@ namespace OfferWeb.Controllers
 
             return View();
         }
-                
+
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

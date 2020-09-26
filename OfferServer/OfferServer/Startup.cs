@@ -60,6 +60,11 @@ namespace OfferServer
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 }
             );
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(1);
+                options.Cookie.HttpOnly = true;
+            });
             services.ConfigureIISIntegration();
             services.ConfigureLoggerService();
             services.ConfigureDbContext(Configuration);
@@ -88,7 +93,7 @@ namespace OfferServer
             app.UseCors(MyAllowSpecificOrigins);
             app.UseAuthentication();
             app.UseAuthorization();
-
+            // TODO: açalým mý : app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

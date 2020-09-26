@@ -52,12 +52,7 @@ namespace OfferWeb
                 RequestPath=new PathString("/Assets")
             });
 
-            //Bu şart mı bakalım bi
-            //app.UseStaticFiles(new StaticFileOptions()
-            //{
-            //    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Areas")),
-            //    RequestPath = new PathString("/Admin")
-            //});
+            //app.UseSession();
 
             app.UseMvc(routes =>
             {
@@ -66,7 +61,6 @@ namespace OfferWeb
                   template: "{area:exists}/{controller=Login}/{action=Index}/{id?}"
                 );
 
-                //Default Route
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}"
@@ -77,12 +71,6 @@ namespace OfferWeb
 
             app.UseAuthorization();
 
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapControllerRoute(
-            //        name: "default",
-            //        pattern: "{controller=Home}/{action=Index}/{id?}");
-            //});
         }
     }
 }

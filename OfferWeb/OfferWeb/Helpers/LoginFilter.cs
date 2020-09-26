@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.AspNetCore.Mvc.Filters;
 using OfferWeb.Controllers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OfferWeb.Helpers
 {
@@ -11,7 +9,7 @@ namespace OfferWeb.Helpers
     {
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void OnActionExecuting(ActionExecutingContext context)
@@ -30,12 +28,29 @@ namespace OfferWeb.Helpers
             else
             {
                 string refreshToken = IsRefreshToken(result, context);
-                if(!string.IsNullOrWhiteSpace(refreshToken))
+                if (!string.IsNullOrWhiteSpace(refreshToken))
                 {
                     context.Result = controller.RedirectToAction(actionName, controllerName, new { tokrn = refreshToken });
                 }
             }
 
+        }
+
+        private bool HasIgnoreAttribute(ActionExecutingContext context)
+        {
+            foreach (var filterDescriptors in ((ControllerActionDescriptor)context.ActionDescriptor).MethodInfo.CustomAttributes)
+            {
+                if (filterDescriptors.AttributeType == typeof(IgnoreAttribute))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private string IsRefreshToken(byte[] sessionToken, ActionExecutingContext context)
+        {
+            throw new NotImplementedException();
         }
     }
 }
