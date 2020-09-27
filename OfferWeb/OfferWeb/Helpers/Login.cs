@@ -20,8 +20,8 @@ namespace OfferWeb.Helpers
             string controllerName = (string)context.RouteData.Values["controller"];
             var controller = (HomeController)context.Controller;
 
-            if (HasIgnoreAttribute(context))
-                return;
+            //if (HasIgnoreAttribute(context))
+            //    return;
             context.HttpContext.Session.TryGetValue("token", out var result);
             if(result == null)
             {
@@ -29,11 +29,11 @@ namespace OfferWeb.Helpers
             }
             else
             {
-                string refreshToken = IsRefreshToken(result, context);
-                if(!string.IsNullOrWhiteSpace(refreshToken))
-                {
-                    context.Result = controller.RedirectToAction(actionName, controllerName, new { tokrn = refreshToken });
-                }
+                //string refreshToken = IsRefreshToken(result, context);
+                //if(!string.IsNullOrWhiteSpace(refreshToken))
+                //{
+                //    context.Result = controller.RedirectToAction(actionName, controllerName, new { tokrn = refreshToken });
+                //}
             }
 
         }
